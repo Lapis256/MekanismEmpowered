@@ -405,7 +405,7 @@ tasks {
         disableVersionDetection()
 
         fun UploadArtifact.setShared() {
-            releaseType = CFGConstants.RELEASE_TYPE_ALPHA
+            releaseType = CFGConstants.RELEASE_TYPE_RELEASE
             changelog = System.getenv("CHANGELOG") ?: "No changelog provided"
             changelogType = CFGConstants.CHANGELOG_MARKDOWN
             displayName = "[$mcVersion] v${project.version}"
@@ -421,7 +421,7 @@ tasks {
             setShared()
 
             addRequirement("mekanism-empowered-core")
-//            addOptional("mekanism-extras")
+            addIncompatibility("mekanism-extras")
             addIncompatibility("mekanism-unleashed")
         }
 

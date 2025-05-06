@@ -3,19 +3,22 @@
   "category": "misc",
   "key": {
     "a": {
-      "tag": "c:alloys/advanced"
+        "tag": "mekanism:alloys/atomic"
     },
     "c": {
       "tag": "c:dusts/lithium"
     },
     "g": {
-      "tag": "c:glass_blocks"
+        "item": "mekanism:structural_glass"
+    },
+      "h": {
+          "item": "mekanism:hdpe_sheet"
     }
   },
   "pattern": [
-    " g ",
+      "hgh",
     "aca",
-    " g "
+      "hgh"
   ],
   "result": {
     "count": 1,

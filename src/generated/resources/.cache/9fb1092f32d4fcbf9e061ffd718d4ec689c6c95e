@@ -1,4 +1,4 @@
-// 1.21.1	2025-05-05T03:50:01.2179042	Recipes
+// 1.21.1	2025-05-07T07:41:17.702594	Recipes
 938292ba178c25ed90b871fe376a9ef4565a9aec data/mekanism_empowered/recipe/advanced_gauge_dropper.json
 78344d0d769161a69e868c6020b58ab469e1d3be data/mekanism_empowered/recipe/basic_gauge_dropper.json
 edb4e7ccdccf0d8d9e2520b8d4d4119924805eba data/mekanism_empowered/recipe/elite_gauge_dropper.json
@@ -8,4 +8,4 @@ b8a5c9317acb7b4ed1f84df19cbe000516065ed5 data/mekanism_empowered/recipe/ultimate
 f744dc260ab690a0da1375035588dd820baca7a7 data/mekanism_empowered/recipe/upgrade_empowered_speed.json
 177df9eb9cef481bbde22112f74600553d7de6b5 data/mekanism_empowered/recipe/upgrade_fast_item_eject.json
 422590b10d43318023c27f6c4d63ff2eab620ef3 data/mekanism_empowered/recipe/upgrade_fast_item_insert.json
-63fe95383254990cd4655723c184198c02e46ac5 data/mekanism_empowered/recipe/upgrade_io_capacity.json
+762f18087a5815e6f1f8371c8d7dc29e71542625 data/mekanism_empowered/recipe/upgrade_io_capacity.json

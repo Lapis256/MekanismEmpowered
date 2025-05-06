@@ -7,7 +7,7 @@ object Constants {
         const val NAME = "Mekanism: Empowered"
         const val DESCRIPTION = "An addon mod that empowers Mekanism."
         const val LICENSE = "MIT"
-        const val VERSION = "2.0.0"
+        const val VERSION = "2.0.1"
         const val GROUP = "dev.lapis256"
         const val AUTHOR = "Lapis256"
         const val REPOSITORY_URL = "https://github.com/Lapis256/MekanismEmpowered"
