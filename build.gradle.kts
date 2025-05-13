@@ -117,7 +117,8 @@ dependencies {
         coreCompileOnly(libs.easyNestConfig)
 
         val coreJarJar by configurations.getting
-        coreJarJar(variantOf(libs.mixinExtras, "slim")) {
+//        coreJarJar(variantOf(libs.mixinExtras, "slim")) { // https://github.com/Soaryn/XyCraftTracker/issues/83
+        coreJarJar(libs.mixinExtras) {
             version {
                 strictly("[$this,)")
                 prefer(this.toString())
@@ -238,12 +239,12 @@ neoForge {
 
 fun setupMetaDataTask(modId: String, modName: String, task: TaskProvider<ProcessResources>, deps: List<ModDep>, at: String? = null) {
     task {
-        val replaceProperties = mutableMapOf(
-            "version" to version,
-            "group" to project.group,
+        val replaceProperties: MutableMap<String, String> = mutableMapOf(
+            "version" to version.toString(),
+            "group" to project.group.toString(),
             "minecraft_version" to mcVersion,
             "mod_loader" to "kotlinforforge",
-            "mod_loader_version_range" to "[$kffVersion,)",
+            "mod_loader_version_range" to GreaterThan(kffVersion).toString(),
             "mod_name" to modName,
             "mod_author" to Constants.Mod.AUTHOR,
             "mod_id" to modId,
@@ -294,15 +295,15 @@ fun setupJarTask(modName: String, renameFile: Boolean, task: TaskProvider<Jar>, 
 }
 
 val baseDependencies = listOf(
-    ModDep("neoforge", libs.versions.neoforge.get()),
-    ModDep("minecraft", mcVersion),
-    ModDep("kotlinforforge", kffVersion),
-    ModDep("mekanism", "1.21.1-10.7.79", ordering = Order.AFTER),
+    ModDep("neoforge", GreaterThan(libs.versions.neoforge.get())),
+    ModDep("minecraft", Equal(mcVersion)),
+    ModDep("kotlinforforge", GreaterThan(kffVersion)),
+    ModDep("mekanism", Equal("10.7.14"), ordering = Order.AFTER),
 )
 val mainModDependencies = baseDependencies.toMutableList().apply {
-    add(ModDep("mekanism_empowered_core", Constants.Mod.VERSION, type = DependencyType.OPTIONAL, ordering = Order.AFTER))
-    add(ModDep("mekanism_extras", "1.21.1-1.2.1", type = DependencyType.INCOMPATIBLE, reason = "Incompatible Mixins"))
-    add(ModDep("mekanism_unleashed", "0.0.0", type = DependencyType.INCOMPATIBLE, reason = "Because Advanced Speed Upgrade becomes meaningless"))
+    add(ModDep("mekanism_empowered_core", Equal(Constants.Mod.VERSION), type = DependencyType.OPTIONAL, ordering = Order.AFTER))
+    add(ModDep("mekanism_extras", GreaterThan("1.21.1-1.2.1"), type = DependencyType.INCOMPATIBLE, reason = "Incompatible Mixins"))
+    add(ModDep("mekanism_unleashed", GreaterThan("0.0.0"), type = DependencyType.INCOMPATIBLE, reason = "Because Advanced Speed Upgrade becomes meaningless"))
 }
 
 setupMetaDataTask(modId, Constants.Mod.NAME, generateModMetadata, mainModDependencies)

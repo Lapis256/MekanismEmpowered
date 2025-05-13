@@ -23,32 +23,34 @@ enum class DependencyType {
     REQUIRED, OPTIONAL, INCOMPATIBLE, DISCOURAGED;
 }
 
+sealed class VersionRange(val versionRange: String) {
+    override fun toString(): String = versionRange
+}
+
+class Equal(version: String) : VersionRange("[$version]")
+class GreaterThan(version: String) : VersionRange("[$version,)")
+class LessThan(version: String) : VersionRange("(,$version]")
+
 @Suppress("unused")
 data class ModDep(
     val id: String,
-    val version: String,
+    val versionRange: VersionRange,
     val type: DependencyType = DependencyType.REQUIRED,
     val ordering: Order = Order.NONE,
     val side: Side = Side.BOTH,
     val reason: String? = null
-) {
-    init {
-        if (version.isEmpty()) {
-            throw IllegalArgumentException("Version cannot be empty")
-        }
-    }
-}
+)
 
 @Suppress("unused")
 fun buildDeps(
     vararg deps: ModDep,
     modId: String = Constants.Mod.ID,
 ): String {
-    return deps.joinToString(separator = "\n") { (id, version, type, ordering, side, reason) ->
+    return deps.joinToString(separator = "\n") { (id, versionRange, type, ordering, side, reason) ->
         """
             [[dependencies.$modId]]
             modId = "$id"
-            versionRange = "[$version,)"
+            versionRange = "$versionRange"
             type = "$type"
             ordering = "$ordering"
             side = "$side"
