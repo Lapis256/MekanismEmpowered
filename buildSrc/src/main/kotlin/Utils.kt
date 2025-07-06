@@ -28,8 +28,18 @@ sealed class VersionRange(val versionRange: String) {
 }
 
 class Equal(version: String) : VersionRange("[$version]")
-class GreaterThan(version: String) : VersionRange("[$version,)")
-class LessThan(version: String) : VersionRange("(,$version]")
+class GreaterThan(version: String) : VersionRange("($version,)")
+class GreaterThanOrEqual(version: String) : VersionRange("[$version,)")
+class LessThan(version: String) : VersionRange("(,$version)")
+class LessThanOrEqual(version: String) : VersionRange("(,$version]")
+class NotEqual(version: String) : VersionRange("(,$version),($version,)")
+
+class RangeExclusive(min: String, max: String) : VersionRange("($min,$max)")
+class RangeInclusive(min: String, max: String) : VersionRange("[$min,$max]")
+class RangeInclusiveMin(min: String, max: String) : VersionRange("[$min,$max)")
+class RangeInclusiveMax(min: String, max: String) : VersionRange("($min,$max]")
+
+class Or(vararg ranges: VersionRange) : VersionRange(ranges.joinToString(",") { it.versionRange })
 
 @Suppress("unused")
 data class ModDep(

@@ -251,7 +251,7 @@ fun setupMetaDataTask(modId: String, modName: String, task: TaskProvider<Process
             "group" to project.group.toString(),
             "minecraft_version" to mcVersion,
             "mod_loader" to "kotlinforforge",
-            "mod_loader_version_range" to GreaterThan(kffVersion).toString(),
+            "mod_loader_version_range" to GreaterThanOrEqual(kffVersion).toString(),
             "mod_name" to modName,
             "mod_author" to Constants.Mod.AUTHOR,
             "mod_id" to modId,
@@ -302,15 +302,16 @@ fun setupJarTask(modName: String, renameFile: Boolean, task: TaskProvider<Jar>, 
 }
 
 val baseDependencies = listOf(
-    ModDep("neoforge", GreaterThan(libs.versions.neoforge.get())),
+    ModDep("neoforge", RangeInclusiveMin(libs.versions.neoforge.get(), "21.2")),
     ModDep("minecraft", Equal(mcVersion)),
-    ModDep("kotlinforforge", GreaterThan(kffVersion)),
+    ModDep("kotlinforforge", GreaterThanOrEqual(kffVersion)),
     ModDep("mekanism", Equal("10.7.14"), ordering = Order.AFTER),
 )
 val mainModDependencies = baseDependencies.toMutableList().apply {
     add(ModDep("mekanism_empowered_core", Equal(Constants.Mod.VERSION), type = DependencyType.OPTIONAL, ordering = Order.AFTER))
-    add(ModDep("mekanism_extras", GreaterThan("1.21.1-1.2.1"), type = DependencyType.INCOMPATIBLE, reason = "Incompatible Mixins"))
-    add(ModDep("mekanism_unleashed", GreaterThan("0.0.0"), type = DependencyType.INCOMPATIBLE, reason = "Because Advanced Speed Upgrade becomes meaningless"))
+    add(ModDep("mekmm", RangeInclusiveMin("1.21.1-1.0.2", "1.21.1-2.0.0"), type = DependencyType.OPTIONAL))
+    add(ModDep("mekanism_extras", GreaterThanOrEqual("1.21.1-1.2.1"), type = DependencyType.INCOMPATIBLE, reason = "Incompatible Mixins"))
+    add(ModDep("mekanism_unleashed", GreaterThanOrEqual("0.0.0"), type = DependencyType.INCOMPATIBLE, reason = "Because Advanced Speed Upgrade becomes meaningless"))
 }
 
 setupMetaDataTask(modId, Constants.Mod.NAME, generateModMetadata, mainModDependencies)
@@ -429,6 +430,8 @@ tasks {
             setShared()
 
             addRequirement("mekanism-empowered-core")
+            addOptional("mekansim-more-machine")
+
             addIncompatibility("mekanism-extras")
             addIncompatibility("mekanism-unleashed")
         }
