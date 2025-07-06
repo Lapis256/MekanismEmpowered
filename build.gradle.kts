@@ -33,6 +33,7 @@ val jvmVendor = Constants.Dev.JVM_VENDOR
 
 val exportMixin = true
 val loadMekExt = false
+val loadAddons = true
 
 
 base {
@@ -147,11 +148,17 @@ dependencies {
     compileOnly(variantOf(libs.mekanism, "all"))
 
     compileOnly(libs.mekanismExtras)
+//    compileOnly(libs.mekanismElements)
+    compileOnly(libs.mekanismMoreMachine)
 
     localRuntime(libs.jei)
 
     if (loadMekExt) {
         localRuntime(libs.mekanismExtras)
+    }
+    if (loadAddons) {
+//        localRuntime(libs.mekanismElements)
+        localRuntime(libs.mekanismMoreMachine)
     }
 
     implementation(libs.easyNestConfig)

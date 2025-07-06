@@ -1,6 +1,7 @@
 package dev.lapis256.mekanism_empowered.client
 
 import dev.lapis256.mekanism_empowered.api.MekanismEmpoweredAPI
+import dev.lapis256.mekanism_empowered.integration.Integrations
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.ModContainer
@@ -18,6 +19,8 @@ class MekanismEmpoweredClient(modContainer: ModContainer, modEventBus: IEventBus
         modContainer.registerExtensionPoint(
             IConfigScreenFactory::class.java,
             IConfigScreenFactory { mc, parent -> ConfigurationScreen(mc, parent) })
+
+        Integrations.initClient()
     }
 
     private fun clientSetup(event: FMLClientSetupEvent) {

@@ -3,15 +3,14 @@ package dev.lapis256.mekanism_empowered.mixin_impl
 import dev.lapis256.mekanism_empowered.api.MekEmpUpgrade
 import dev.lapis256.mekanism_empowered.core.extension.getInstalled
 import dev.lapis256.mekanism_empowered.core.extension.isSpeedMaxed
-import mekanism.api.recipes.MekanismRecipe
 import mekanism.common.tile.base.TileEntityMekanism
-import mekanism.common.tile.prefab.TileEntityProgressMachine
+import mekanism.common.tile.prefab.TileEntityConfigurableMachine
 import kotlin.math.pow
 
 
 object MixinImplTileMachine {
     @JvmStatic
-    fun TileEntityProgressMachine<MekanismRecipe<*>>.prcRecalculateAdditionalUpgrades() {
+    fun TileEntityConfigurableMachine.prcRecalculateAdditionalUpgrades() {
         recalculateUpgrades(MekEmpUpgrade.EMPOWERED_SPEED)
     }
 

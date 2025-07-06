@@ -15,6 +15,8 @@ easyNestConfig = "4.0.0"
 jei = "19.21.0.247"
 mekanism = "1.21.1-10.7.14.79"
 mekanismExtras = "6498463"
+mekanismElements = "6393948"
+mekasnismMoreMachine = "6626668"
 
 
 [libraries]
@@ -25,6 +27,8 @@ easyNestConfig = { module = "dev.lapis256:EasyNestConfig", version.ref = "easyNe
 jei = { module = "mezz.jei:jei-1.21.1-neoforge", version.ref = "jei" }
 mekanism = { module = "mekanism:Mekanism", version.ref = "mekanism" }
 mekanismExtras = { module = "curse.maven:mekanism-extras-1026040", version.ref = "mekanismExtras" }
+mekanismElements = { module = "curse.maven:mekanism-elements-1103224", version.ref = "mekanismElements" }
+mekanismMoreMachine = { module = "curse.maven:mekanism-more-machine-1275257", version.ref = "mekasnismMoreMachine" }
 
 
 [plugins]

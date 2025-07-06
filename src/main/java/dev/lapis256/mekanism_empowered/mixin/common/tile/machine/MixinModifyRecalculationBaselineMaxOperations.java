@@ -1,6 +1,5 @@
 package dev.lapis256.mekanism_empowered.mixin.common.tile.machine;
 
-
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import dev.lapis256.mekanism_empowered.mixin_impl.MixinImplTileMachine;
 import mekanism.common.tile.base.TileEntityMekanism;
@@ -15,9 +14,11 @@ import net.minecraft.core.Holder;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 
 
+@Pseudo
 @Mixin(
     value = {
         TileEntityChemicalInfuser.class,
@@ -26,6 +27,11 @@ import org.spongepowered.asm.mixin.injection.At;
         TileEntityIsotopicCentrifuge.class,
         TileEntityPigmentMixer.class,
         TileEntityRotaryCondensentrator.class,
+    },
+    targets = {
+        "com.jerry.mekaf.common.tile.factory.TileEntityCentrifugingFactory",
+        "com.jerry.mekaf.common.tile.factory.TileEntityChemicalInfusingFactory",
+        "com.jerry.mekaf.common.tile.factory.TileEntityWashingFactory"
     },
     remap = false
 )

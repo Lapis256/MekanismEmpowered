@@ -7,6 +7,7 @@ import dev.lapis256.mekanism_empowered.common.init.MekEmpDataComponents
 import dev.lapis256.mekanism_empowered.common.init.MekEmpItems
 import dev.lapis256.mekanism_empowered.common.init.MekEmpUpgrades
 import dev.lapis256.mekanism_empowered.common.network.MekEmpPacketHandler
+import dev.lapis256.mekanism_empowered.integration.Integrations
 import mekanism.common.lib.Version
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.ModContainer
@@ -28,6 +29,8 @@ class MekanismEmpowered(modContainer: ModContainer, modEventBus: IEventBus) {
         MekEmpItems.REGISTRY.register(modEventBus)
         MekEmpCreativeTab.REGISTRY.register(modEventBus)
         MekEmpDataComponents.REGISTRY.register(modEventBus)
+
+        Integrations.initCommon()
     }
 
     val versionNumber = Version(modContainer)
