@@ -32,7 +32,7 @@ val jvmVendor = Constants.Dev.JVM_VENDOR
 
 
 val exportMixin = true
-val loadMekExt = false
+val loadMekExt = true
 val loadAddons = true
 
 
@@ -55,6 +55,10 @@ repositories {
     maven {
         name = "Curse Maven"
         url = uri("https://cursemaven.com")
+    }
+    maven {
+        name = "Mixin Squared"
+        url = uri("https://maven.bawnorton.com/releases")
     }
     maven {
         name = "R2"
@@ -126,6 +130,13 @@ dependencies {
             }
         }
 
+        coreJarJar(libs.mixinSquaredNeoForge) {
+            version {
+                strictly("[$this,)")
+                prefer(this.toString())
+            }
+        }
+
         coreJarJar(libs.easyNestConfig) {
             version {
                 strictly("[$this,)")
@@ -162,6 +173,10 @@ dependencies {
     }
 
     implementation(libs.easyNestConfig)
+
+    annotationProcessor(libs.mixinSquaredCommon)
+    compileOnly(libs.mixinSquaredCommon) { isTransitive = false }
+    implementation(libs.mixinSquaredNeoForge) { isTransitive = false }
 
     annotationProcessor(libs.mixinExtras)
     implementation(libs.mixinExtras) { isTransitive = false }
@@ -310,7 +325,7 @@ val baseDependencies = listOf(
 val mainModDependencies = baseDependencies.toMutableList().apply {
     add(ModDep("mekanism_empowered_core", Equal(Constants.Mod.VERSION), type = DependencyType.OPTIONAL, ordering = Order.AFTER))
     add(ModDep("mekmm", RangeInclusiveMin("1.21.1-1.0.2", "1.21.1-2.0.0"), type = DependencyType.OPTIONAL))
-    add(ModDep("mekanism_extras", GreaterThanOrEqual("1.21.1-1.2.1"), type = DependencyType.INCOMPATIBLE, reason = "Incompatible Mixins"))
+    add(ModDep("mekanism_extras", RangeInclusive("1.21.1-1.2.1", "1.21.1-1.2.2"), type = DependencyType.OPTIONAL, ordering = Order.AFTER))
     add(ModDep("mekanism_unleashed", GreaterThanOrEqual("0.0.0"), type = DependencyType.INCOMPATIBLE, reason = "Because Advanced Speed Upgrade becomes meaningless"))
 }
 

@@ -10,6 +10,7 @@ neoforge = "21.1.133"
 kotlinForForge = "5.7.0"
 parchmentmc = "2024.11.17"
 mixinExtras = "0.5.0-rc.2"
+mixinSquared = "0.3.3"
 
 easyNestConfig = "4.0.0"
 jei = "19.21.0.247"
@@ -22,6 +23,8 @@ mekasnismMoreMachine = "6626668"
 [libraries]
 kotlinForForge = { module = "thedarkcolour:kotlinforforge-neoforge", version.ref = "kotlinForForge" }
 mixinExtras = { module = "io.github.llamalad7:mixinextras-neoforge", version.ref = "mixinExtras" }
+mixinSquaredCommon = { module = "com.github.bawnorton.mixinsquared:mixinsquared-common", version.ref = "mixinSquared" }
+mixinSquaredNeoForge = { module = "com.github.bawnorton.mixinsquared:mixinsquared-neoforge", version.ref = "mixinSquared" }
 
 easyNestConfig = { module = "dev.lapis256:EasyNestConfig", version.ref = "easyNestConfig" }
 jei = { module = "mezz.jei:jei-1.21.1-neoforge", version.ref = "jei" }
