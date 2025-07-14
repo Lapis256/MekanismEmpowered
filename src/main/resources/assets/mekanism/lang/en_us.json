@@ -1,5 +1,0 @@
-{
-  "configuration.mekanism.client.last_window_positions.inserter": "Inserter Window Position",
-  "configuration.mekanism.client.last_window_positions.inserter.button": "Edit Inserter Position",
-  "configuration.mekanism.client.last_window_positions.inserter.tooltip": "The last position the Inserter window was in when it was closed."
-}

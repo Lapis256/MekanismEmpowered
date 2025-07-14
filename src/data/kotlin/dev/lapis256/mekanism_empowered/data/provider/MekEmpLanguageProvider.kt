@@ -40,17 +40,9 @@ class MekEmpLanguageProvider(output: PackOutput) : LanguageProvider(output, Meka
         addLangEnum(MekEmpAPILang::class)
         addLangEnum(MekEmpLang::class)
 
-        addItem(MekEmpItems.EMPOWERED_SPEED, "Empowered Speed Upgrade")
-        addItem(MekEmpItems.EMPOWERED_ENERGY, "Empowered Energy Upgrade")
-        addItem(MekEmpItems.FAST_ITEM_EJECT, "Fast Item Eject Upgrade")
-        addItem(MekEmpItems.FAST_ITEM_INSERT, "Fast Item Insert Upgrade")
-        addItem(MekEmpItems.AUTO_INSERTER, "Auto Insert Upgrade")
-        addItem(MekEmpItems.IO_CAPACITY, "I/O Capacity Upgrade")
-
-        addItem(MekEmpItems.BASIC_GAUGE_DROPPER, "Basic Gauge Dropper")
-        addItem(MekEmpItems.ADVANCED_GAUGE_DROPPER, "Advanced Gauge Dropper")
-        addItem(MekEmpItems.ELITE_GAUGE_DROPPER, "Elite Gauge Dropper")
-        addItem(MekEmpItems.ULTIMATE_GAUGE_DROPPER, "Ultimate Gauge Dropper")
+        for ((item, englishName) in MekEmpItems.ENGLISH_NAME_MAP) {
+            addItem(item, englishName)
+        }
     }
 
     fun <E> addLangEnum(enum: KClass<out E>) where E : Enum<E>, E : ILangEntry, E : ILangEnglishHolder {

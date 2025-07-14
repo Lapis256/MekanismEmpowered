@@ -10,6 +10,7 @@
   "mixins": [
     "common.MixinMachineEnergyContainer",
     "common.MixinMekanismUtils",
+    "common.MixinPacketDropperUse",
     "common.MixinUpgradeBasedUnsignedLongCache",
     "common.tile.MixinModifyRecalculationTarget$Energy",
     "common.tile.MixinModifyRecalculationTarget$Speed",
