@@ -28,15 +28,8 @@ object MekEmpItems {
     val FAST_ITEM_INSERT = registerUpgrade(MekEmpUpgrade.FAST_ITEM_INSERT)
     val AUTO_INSERTER = registerUpgrade(MekEmpUpgrade.AUTO_INSERTER)
     val IO_CAPACITY = registerUpgrade(MekEmpUpgrade.IO_CAPACITY, "I/O Capacity")
-
-    init {
-        UpgradeItemRegistry.register(MekEmpUpgrade.EMPOWERED_SPEED, EMPOWERED_SPEED)
-        UpgradeItemRegistry.register(MekEmpUpgrade.EMPOWERED_ENERGY, EMPOWERED_ENERGY)
-        UpgradeItemRegistry.register(MekEmpUpgrade.FAST_ITEM_EJECT, FAST_ITEM_EJECT)
-        UpgradeItemRegistry.register(MekEmpUpgrade.FAST_ITEM_INSERT, FAST_ITEM_INSERT)
-        UpgradeItemRegistry.register(MekEmpUpgrade.AUTO_INSERTER, AUTO_INSERTER)
-        UpgradeItemRegistry.register(MekEmpUpgrade.IO_CAPACITY, IO_CAPACITY)
-    }
+    val TANK_CAPACITY = registerUpgrade(MekEmpUpgrade.TANK_CAPACITY)
+    val ENERGY_CAPACITY = registerUpgrade(MekEmpUpgrade.ENERGY_CAPACITY)
 
     enum class GaugeDropperTier(val base: BaseTier, val rateSupplier: Supplier<CachedIntValue>, val capacitySupplier: Supplier<CachedIntValue>) {
         BASIC(BaseTier.BASIC, { MekEmpTierConfig.GaugeDropper.basicRate }, { MekEmpTierConfig.GaugeDropper.basicCapacity }),
@@ -69,7 +62,7 @@ object MekEmpItems {
     private fun registerUpgrade(upgrade: Upgrade, englishName: String? = null): ItemRegistryObject<ItemUpgrade> =
         registerItem("upgrade_${upgrade.serializedName}", "${englishName ?: upgrade.serializedName.toTitleCase()} Upgrade") {
             ItemUpgrade(upgrade, it)
-        }
+        }.also { UpgradeItemRegistry.register(upgrade, it) }
 
     private fun <ITEM : Item> registerItem(path: String, englishName: String, supplier: (Item.Properties) -> ITEM): ItemRegistryObject<ITEM> =
         REGISTRY.registerItem(path, supplier).also { ENGLISH_NAME_MAP[it] = englishName }

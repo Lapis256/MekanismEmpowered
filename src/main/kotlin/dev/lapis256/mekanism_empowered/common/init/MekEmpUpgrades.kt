@@ -21,7 +21,7 @@ import net.neoforged.fml.ModList
 
 object MekEmpUpgrades {
     val SPEED_AND_ENERGY_UPGRADES = arrayOf(MekEmpUpgrade.EMPOWERED_SPEED, MekEmpUpgrade.EMPOWERED_ENERGY)
-    val MACHINE_UPGRADES = arrayOf(*SPEED_AND_ENERGY_UPGRADES, MekEmpUpgrade.IO_CAPACITY, MekEmpUpgrade.AUTO_INSERTER)
+    val MACHINE_UPGRADES = arrayOf(*SPEED_AND_ENERGY_UPGRADES, MekEmpUpgrade.IO_CAPACITY, MekEmpUpgrade.AUTO_INSERTER, MekEmpUpgrade.TANK_CAPACITY, MekEmpUpgrade.ENERGY_CAPACITY) // TODO
     val ITEM_INPUT_MACHINE_UPGRADES = arrayOf(*MACHINE_UPGRADES, MekEmpUpgrade.FAST_ITEM_INSERT)
     val ITEM_OUTPUT_MACHINE_UPGRADES = arrayOf(*MACHINE_UPGRADES, MekEmpUpgrade.FAST_ITEM_EJECT)
     val ITEM_IN_OUT_MACHINE_UPGRADES = arrayOf(*MACHINE_UPGRADES, MekEmpUpgrade.FAST_ITEM_INSERT, MekEmpUpgrade.FAST_ITEM_EJECT)
@@ -57,15 +57,15 @@ object MekEmpUpgrades {
         AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.PURIFICATION_CHAMBER, *ITEM_IN_OUT_MACHINE_UPGRADES)
         AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.CHEMICAL_INJECTION_CHAMBER, *ITEM_IN_OUT_MACHINE_UPGRADES)
 
-        registerFactoryUpgrades(FactoryType.ENRICHING, ITEM_IN_OUT_MACHINE_UPGRADES)
-        registerFactoryUpgrades(FactoryType.CRUSHING, ITEM_IN_OUT_MACHINE_UPGRADES)
-        registerFactoryUpgrades(FactoryType.SMELTING, ITEM_IN_OUT_MACHINE_UPGRADES)
-        registerFactoryUpgrades(FactoryType.SAWING, ITEM_IN_OUT_MACHINE_UPGRADES)
-        registerFactoryUpgrades(FactoryType.COMPRESSING, ITEM_IN_OUT_MACHINE_UPGRADES)
-        registerFactoryUpgrades(FactoryType.COMBINING, ITEM_IN_OUT_MACHINE_UPGRADES)
-        registerFactoryUpgrades(FactoryType.INFUSING, ITEM_IN_OUT_MACHINE_UPGRADES)
-        registerFactoryUpgrades(FactoryType.PURIFYING, ITEM_IN_OUT_MACHINE_UPGRADES)
-        registerFactoryUpgrades(FactoryType.INJECTING, ITEM_IN_OUT_MACHINE_UPGRADES)
+        registerFactoryUpgrades(FactoryType.ENRICHING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        registerFactoryUpgrades(FactoryType.CRUSHING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        registerFactoryUpgrades(FactoryType.SMELTING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        registerFactoryUpgrades(FactoryType.SAWING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        registerFactoryUpgrades(FactoryType.COMPRESSING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        registerFactoryUpgrades(FactoryType.COMBINING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        registerFactoryUpgrades(FactoryType.INFUSING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        registerFactoryUpgrades(FactoryType.PURIFYING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        registerFactoryUpgrades(FactoryType.INJECTING, *ITEM_IN_OUT_MACHINE_UPGRADES)
 
         AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.PRESSURIZED_REACTION_CHAMBER, *ITEM_IN_OUT_MACHINE_UPGRADES)
         AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.FORMULAIC_ASSEMBLICATOR, *ITEM_IN_OUT_MACHINE_UPGRADES)
@@ -97,7 +97,7 @@ object MekEmpUpgrades {
         }
     }
 
-    private fun registerFactoryUpgrades(type: FactoryType, upgrades: Array<Upgrade>) {
+    private fun registerFactoryUpgrades(type: FactoryType, vararg upgrades: Upgrade) {
         AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.getFactory(FactoryTier.BASIC, type), *upgrades)
         AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.getFactory(FactoryTier.ADVANCED, type), *upgrades)
         AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.getFactory(FactoryTier.ELITE, type), *upgrades)

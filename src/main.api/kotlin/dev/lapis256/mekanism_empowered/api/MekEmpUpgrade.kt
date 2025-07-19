@@ -36,4 +36,14 @@ object MekEmpUpgrade : IAdditionalUpgrades {
     val AUTO_INSERTER by register(
         "auto_inserter", MekEmpAPILang.UPGRADE_AUTO_INSERTER, MekEmpAPILang.UPGRADE_AUTO_INSERTER_DESCRIPTION, 1, EnumColor.DARK_RED
     )
+
+    @JvmStatic
+    val TANK_CAPACITY by register(
+        "tank_capacity", MekEmpAPILang.UPGRADE_TANK_CAPACITY, MekEmpAPILang.UPGRADE_TANK_CAPACITY_DESCRIPTION, 16, EnumColor.DARK_BLUE
+    )
+
+    @JvmStatic
+    val ENERGY_CAPACITY by register(
+        "energy_capacity", MekEmpAPILang.UPGRADE_ENERGY_CAPACITY, MekEmpAPILang.UPGRADE_ENERGY_CAPACITY_DESCRIPTION, 16, EnumColor.YELLOW
+    )
 }
