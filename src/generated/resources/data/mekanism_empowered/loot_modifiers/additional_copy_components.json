@@ -1,0 +1,486 @@
+{
+  "type": "mekanism_empowered_core:additional_copy_components",
+  "conditions": [
+    {
+      "condition": "minecraft:any_of",
+      "terms": [
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/basic_smelting_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/basic_enriching_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/basic_crushing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/basic_compressing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/basic_combining_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/basic_purifying_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/basic_injecting_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/basic_infusing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/basic_sawing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/advanced_smelting_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/advanced_enriching_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/advanced_crushing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/advanced_compressing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/advanced_combining_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/advanced_purifying_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/advanced_injecting_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/advanced_infusing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/advanced_sawing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/elite_smelting_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/elite_enriching_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/elite_crushing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/elite_compressing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/elite_combining_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/elite_purifying_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/elite_injecting_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/elite_infusing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/elite_sawing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/ultimate_smelting_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/ultimate_enriching_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/ultimate_crushing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/ultimate_compressing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/ultimate_combining_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/ultimate_purifying_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/ultimate_injecting_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/ultimate_infusing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/ultimate_sawing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/enrichment_chamber"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/osmium_compressor"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/combiner"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/crusher"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/metallurgic_infuser"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/purification_chamber"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/energized_smelter"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/rotary_condensentrator"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/chemical_oxidizer"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/chemical_infuser"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/chemical_injection_chamber"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/electrolytic_separator"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/precision_sawmill"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/chemical_dissolution_chamber"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/chemical_washer"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/chemical_crystallizer"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/pressurized_reaction_chamber"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/isotopic_centrifuge"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/nutritional_liquifier"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/formulaic_assemblicator"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/antiprotonic_nucleosynthesizer"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/pigment_extractor"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/pigment_mixer"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekanism:blocks/painting_machine"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/basic_recycling_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/basic_planting_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/basic_stamping_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/basic_lathing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/basic_rolling_mill_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/basic_replicating_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/advanced_recycling_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/advanced_planting_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/advanced_stamping_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/advanced_lathing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/advanced_rolling_mill_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/advanced_replicating_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/elite_recycling_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/elite_planting_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/elite_stamping_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/elite_lathing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/elite_rolling_mill_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/elite_replicating_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/ultimate_recycling_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/ultimate_planting_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/ultimate_stamping_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/ultimate_lathing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/ultimate_rolling_mill_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/ultimate_replicating_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/recycler"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/planting_station"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/cnc_stamper"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/cnc_lathe"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/cnc_rolling_mill"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/replicator"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/basic_oxidizing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/basic_chemical_infusing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/basic_dissolving_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/basic_washing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/basic_crystallizing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/basic_pressurised_reacting_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/basic_centrifuging_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/advanced_oxidizing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/advanced_chemical_infusing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/advanced_dissolving_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/advanced_washing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/advanced_crystallizing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/advanced_pressurised_reacting_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/advanced_centrifuging_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/elite_oxidizing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/elite_chemical_infusing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/elite_dissolving_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/elite_washing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/elite_crystallizing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/elite_pressurised_reacting_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/elite_centrifuging_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/ultimate_oxidizing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/ultimate_chemical_infusing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/ultimate_dissolving_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/ultimate_washing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/ultimate_crystallizing_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/ultimate_pressurised_reacting_factory"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "mekmm:blocks/ultimate_centrifuging_factory"
+        }
+      ]
+    }
+  ],
+  "include": [
+    "mekanism_empowered:inserter_config"
+  ],
+  "source": "block_entity"
+}

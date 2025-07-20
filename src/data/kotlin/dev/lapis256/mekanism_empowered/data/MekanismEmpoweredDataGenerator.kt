@@ -1,6 +1,7 @@
 package dev.lapis256.mekanism_empowered.data
 
 import dev.lapis256.mekanism_empowered.api.MekanismEmpoweredAPI
+import dev.lapis256.mekanism_empowered.data.provider.MekEmpGlobalLootModifierProvider
 import dev.lapis256.mekanism_empowered.data.provider.MekEmpItemModelProvider
 import dev.lapis256.mekanism_empowered.data.provider.MekEmpLanguageProvider
 import dev.lapis256.mekanism_empowered.data.provider.MekEmpRecipeProvider
@@ -22,5 +23,6 @@ object MekanismEmpoweredDataGenerator {
         generator.addProvider(event.includeClient(), MekEmpItemModelProvider(output, existingFileHelper))
 
         generator.addProvider(event.includeServer(), MekEmpRecipeProvider(output, lookupProvider))
+        generator.addProvider(event.includeServer(), MekEmpGlobalLootModifierProvider(output, lookupProvider))
     }
 }
