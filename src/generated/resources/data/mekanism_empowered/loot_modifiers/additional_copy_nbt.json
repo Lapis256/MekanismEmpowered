@@ -1,0 +1,22 @@
+{
+  "type": "mekanism_empowered_core:additional_copy_nbt",
+  "conditions": [
+    {
+      "condition": "minecraft:any_of",
+      "terms": [
+        {
+          "component_key": "component_inserter_config",
+          "condition": "mekanism_empowered_core:has_additional_tile_component"
+        }
+      ]
+    }
+  ],
+  "ops": [
+    {
+      "op": "replace",
+      "source": "component_inserter_config",
+      "target": "mekData.component_inserter_config"
+    }
+  ],
+  "source": "block_entity"
+}

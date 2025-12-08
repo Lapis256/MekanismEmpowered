@@ -1,5 +1,5 @@
 [versions]
-plugin_kotlin = "2.0.0"
+plugin_kotlin = "2.2.21"
 plugin_moddev = "2.0.88"  # TODO: Incompatible with https://github.com/neoforged/ModDevGradle/pull/256
 plugin_curseForge = "1.+"
 plugin_modrinth = "2.+"
@@ -7,10 +7,10 @@ plugin_modrinth = "2.+"
 
 minecraft = "1.20.1"
 forge = "47.4.0"
-kotlinForForge = "4.11.0"
+kotlinForForge = "4.12.0"
 parchmentmc = "2023.09.03"
 mixin = "0.8.5"
-mixinExtras = "0.5.0-rc.2"
+mixinExtras = "0.5.0"
 
 easyNestConfig = "3.0.0"
 jei = "15.20.0.106"

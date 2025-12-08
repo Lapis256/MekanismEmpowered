@@ -1,7 +1,9 @@
 package dev.lapis256.mekanism_empowered.common.tile.component
 
+import dev.lapis256.mekanism_empowered.api.MekEmpSerializationConstants
 import dev.lapis256.mekanism_empowered.api.MekEmpUpgrade
 import dev.lapis256.mekanism_empowered.common.config.MekEmpGeneralConfig
+import dev.lapis256.mekanism_empowered.core.common.tile.component.IAdditionalTileComponent
 import dev.lapis256.mekanism_empowered.core.extension.canInput
 import dev.lapis256.mekanism_empowered.core.extension.getInstalledOrDefault
 import dev.lapis256.mekanism_empowered.core.extension.isUpgradeInstalled
@@ -18,6 +20,7 @@ import mekanism.api.math.MathUtils
 import mekanism.common.capabilities.Capabilities
 import mekanism.common.integration.energy.EnergyCompatUtils
 import mekanism.common.lib.transmitter.TransmissionType
+import mekanism.common.tile.base.TileEntityMekanism
 import mekanism.common.tile.component.ITileComponent
 import mekanism.common.tile.component.config.ConfigInfo
 import mekanism.common.tile.component.config.DataType
@@ -41,7 +44,7 @@ import kotlin.jvm.optionals.getOrNull
 import kotlin.math.pow
 
 
-class TileComponentInserter(private val tile: TileEntityConfigurableMachine) : ITileComponent {
+class TileComponentInserter(private val tile: TileEntityConfigurableMachine) : ITileComponent, IAdditionalTileComponent {
     private var tickDelay = 0
 
     private val blockPos get() = tile.blockPos
@@ -231,5 +234,12 @@ class TileComponentInserter(private val tile: TileEntityConfigurableMachine) : I
         put(TransmissionType.SLURRY, MathUtils.clampToLong(MekEmpGeneralConfig.AutoInserter.chemicalRate * (1 + 32 * (installed / max))))
         put(TransmissionType.FLUID, MathUtils.clampToLong(MekEmpGeneralConfig.AutoInserter.fluidRate * (1 + 32 * (installed / max))))
         put(TransmissionType.ENERGY, MathUtils.clampToLong(MekEmpGeneralConfig.AutoInserter.energyRate * (1 + 32 * (installed / max))))
+    }
+
+    // IAdditionalTileComponent
+    override val componentKey = MekEmpSerializationConstants.COMPONENT_INSERTER
+
+    override fun loadComponentNBT(tile: TileEntityMekanism, dataMap: CompoundTag) {
+        // No data to restore
     }
 }

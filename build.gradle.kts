@@ -67,14 +67,14 @@ repositories {
 val generateModMetadata by tasks.registering(ProcessResources::class)
 val generateCoreModMetadata by tasks.registering(ProcessResources::class)
 
-val coreApiSourceSet = sourceSets.create("core.api") {}
+val coreApiSourceSet = sourceSets.create("core.api")!!
 
-val mainApiSourceSet = sourceSets.create("main.api") {
+val mainApiSourceSet = sourceSets.create("main.api", Action {
     compileClasspath += coreApiSourceSet.output
     runtimeClasspath += coreApiSourceSet.output
-}
+})!!
 
-val coreSourceSet = sourceSets.create("core") {
+val coreSourceSet = sourceSets.create("core", Action {
     compileClasspath += coreApiSourceSet.output
     runtimeClasspath += coreApiSourceSet.output
 
@@ -86,7 +86,7 @@ val coreSourceSet = sourceSets.create("core") {
         )
         exclude("**/.cache")
     }
-}
+})!!
 
 val mainSourceSet = sourceSets.getByName("main") {
     compileClasspath += mainApiSourceSet.output + coreApiSourceSet.output + coreSourceSet.output
@@ -99,12 +99,12 @@ val mainSourceSet = sourceSets.getByName("main") {
         )
         exclude("**/.cache")
     }
-}
+}!!
 
-val dataSourceSet = sourceSets.create("data") {
+val dataSourceSet = sourceSets.create("data", Action {
     compileClasspath += coreSourceSet.output + mainSourceSet.compileClasspath + mainSourceSet.output
     runtimeClasspath += coreSourceSet.output + mainSourceSet.runtimeClasspath + mainSourceSet.output
-}
+})!!
 
 mixin {
     add(mainSourceSet, "${modId}.refmap.json")
@@ -208,16 +208,16 @@ legacyForge {
     }
 
     runs {
-        create("client") {
+        create("client", Action {
             client()
             gameDirectory.set(rootProject.file("run"))
             systemProperty("forge.enabledGameTestNamespaces", modId)
             jvmArgument("-Dmixin.debug=true")
             jvmArgument("-Dmixin.debug.export=$exportMixin")
             jvmArgument("-XX:+AllowEnhancedClassRedefinition")
-        }
+        })
 
-        create("server") {
+        create("server", Action {
             server()
             gameDirectory.set(rootProject.file("run-server"))
             programArgument("--nogui")
@@ -225,9 +225,9 @@ legacyForge {
             jvmArgument("-Dmixin.debug=true")
             jvmArgument("-Dmixin.debug.export=$exportMixin")
             jvmArgument("-XX:+AllowEnhancedClassRedefinition")
-        }
+        })
 
-        create("data") {
+        create("data", Action {
             data()
             sourceSet = dataSourceSet
             gameDirectory.set(rootProject.file("run-data"))
@@ -240,7 +240,7 @@ legacyForge {
                 "--existing",
                 file("src/main/resources/").absolutePath
             )
-        }
+        })
 
         configureEach {
             systemProperty("forge.logging.markers", "REGISTRIES")
@@ -444,6 +444,7 @@ tasks {
             languageVersion.set(JavaLanguageVersion.of(jdkVersion))
             vendor.set(jvmVendor)
         })
+        standardInput = System.`in`
     }
 
     withType<Jar>().configureEach {

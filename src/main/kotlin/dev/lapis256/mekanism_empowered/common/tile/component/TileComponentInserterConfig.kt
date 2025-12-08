@@ -2,16 +2,18 @@ package dev.lapis256.mekanism_empowered.common.tile.component
 
 import dev.lapis256.mekanism_empowered.api.MekEmpSerializationConstants
 import dev.lapis256.mekanism_empowered.common.tile.component.config.InserterConfigInfo
+import dev.lapis256.mekanism_empowered.core.common.tile.component.IAdditionalTileComponent
 import mekanism.api.NBTConstants
 import mekanism.api.RelativeSide
 import mekanism.common.tile.base.TileEntityMekanism
 import mekanism.common.tile.component.ITileComponent
+import mekanism.common.tile.interfaces.ISideConfiguration
 import mekanism.common.util.EnumUtils
 import mekanism.common.util.NBTUtils
 import net.minecraft.nbt.CompoundTag
 
 
-class TileComponentInserterConfig(val tile: TileEntityMekanism) : ITileComponent {
+class TileComponentInserterConfig(val tile: TileEntityMekanism) : ITileComponent, IAdditionalTileComponent {
     val configInfo = InserterConfigInfo()
 
     init {
@@ -26,18 +28,19 @@ class TileComponentInserterConfig(val tile: TileEntityMekanism) : ITileComponent
 
     fun isSideEnabled(relativeSide: RelativeSide) = configInfo.isSideEnabled(relativeSide)
 
-    fun getComponentKey() = MekEmpSerializationConstants.COMPONENT_INSERTER_CONFIG
-
     private fun readFromNBT(componentTag: CompoundTag) {
-        if (componentTag.contains(NBTConstants.CONFIG)) {
-            componentTag
-                .getByteArray(NBTConstants.CONFIG)
-                .forEachIndexed { i, byte -> configInfo.setSideConfig(RelativeSide.byIndex(i), byte == 1.toByte()) }
+        val key = when {
+            componentTag.contains(componentKey) -> componentKey
+            componentTag.contains(NBTConstants.CONFIG) -> NBTConstants.CONFIG // TODO: Remove this after major version
+            else -> return
         }
+        componentTag
+            .getByteArray(key)
+            .forEachIndexed { i, byte -> configInfo.setSideConfig(RelativeSide.byIndex(i), byte == 1.toByte()) }
     }
 
     override fun readFromUpdateTag(updateTag: CompoundTag) {
-        NBTUtils.setCompoundIfPresent(updateTag, getComponentKey(), ::readFromNBT)
+        NBTUtils.setCompoundIfPresent(updateTag, componentKey, ::readFromNBT)
     }
 
     override fun read(componentTag: CompoundTag) {
@@ -46,7 +49,7 @@ class TileComponentInserterConfig(val tile: TileEntityMekanism) : ITileComponent
 
     private fun writeToNBT(componentTag: CompoundTag) {
         componentTag.putByteArray(
-            NBTConstants.CONFIG,
+            componentKey,
             EnumUtils.SIDES.sortedBy(RelativeSide::ordinal).map { if (configInfo.isSideEnabled(it)) 1 else 0 }
         )
     }
@@ -56,6 +59,15 @@ class TileComponentInserterConfig(val tile: TileEntityMekanism) : ITileComponent
     }
 
     override fun addToUpdateTag(updateTag: CompoundTag) {
-        updateTag.put(getComponentKey(), CompoundTag().also(::writeToNBT))
+        updateTag.put(componentKey, CompoundTag().also(::writeToNBT))
+    }
+
+    // IAdditionalTileComponent
+    override val componentKey = MekEmpSerializationConstants.COMPONENT_INSERTER_CONFIG
+
+    override fun loadComponentNBT(tile: TileEntityMekanism, dataMap: CompoundTag) {
+        if (tile is ISideConfiguration) {
+            read(dataMap)
+        }
     }
 }
