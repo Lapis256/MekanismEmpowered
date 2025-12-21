@@ -20,8 +20,4 @@ class MekanismEmpoweredCore(context: FMLJavaModLoadingContext) {
         GlobalLootModifierSerializers.REGISTRY.register(context.modEventBus)
         LootConditionTypes.REGISTRY.register(context.modEventBus)
     }
-
-    object SerializationConstants {
-        const val UPGRADES = "additional_upgrades"
-    }
 }

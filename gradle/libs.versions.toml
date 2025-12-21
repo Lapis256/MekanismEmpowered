@@ -9,16 +9,18 @@ minecraft = "1.20.1"
 forge = "47.4.0"
 kotlinForForge = "4.12.0"
 parchmentmc = "2023.09.03"
-mixin = "0.8.5"
+mixin = "0.8.6"
 mixinExtras = "0.5.0"
 
 easyNestConfig = "3.0.0"
 jei = "15.20.0.106"
-mekanism = "1.20.1-10.4.15.75"
-mekanismExtras = "6498454"
-igleelib = "5329230"
-evolvedMekanism = "6456494"
-mekanismElements = "6537553"
+mekanism = "1.20.1-10.4.16.80"
+mekanismExtras = "6936409" # 1.4.6
+igleelib = "6987117" # 1.2.7
+evolvedMekanism = "7161181" # 1.2.1
+mekanismElements = "6537553" # 2.3
+mekanismMoreMachines = "7156475" # 1.0.1
+evolvedMekanismExtras = "6866367" # 1.3.3
 
 
 [libraries]
@@ -34,6 +36,8 @@ mekanismExtras = { module = "curse.maven:mekanism-extras-1026040", version.ref =
 igleelib = { module = "curse.maven:iglee-library-541199", version.ref = "igleelib" }
 evolvedMekanism = { module = "curse.maven:evolved-mekanism-1230085", version.ref = "evolvedMekanism" }
 mekanismElements = { module = "curse.maven:mekanism-elements-1103224", version.ref = "mekanismElements" }
+mekanismMoreMachines = { module = "curse.maven:mekanism-more-machine-1275257", version.ref = "mekanismMoreMachines" }
+evolvedMekanismExtras = { module = "curse.maven:evolved-mekanism-extras-1268159", version.ref = "evolvedMekanismExtras" }
 
 
 [plugins]

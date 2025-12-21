@@ -3,6 +3,7 @@ package dev.lapis256.mekanism_empowered.core.mixin.common;
 import dev.lapis256.mekanism_empowered.core.mixin_impl.MixinImplWindowType;
 import mekanism.common.inventory.container.SelectedWindowData;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -18,6 +19,7 @@ public class MixinWindowType {
     @Shadow
     @Final
     @Mutable
+    @Dynamic
     private static SelectedWindowData.WindowType[] $VALUES;
 
     @Invoker(value = "<init>")

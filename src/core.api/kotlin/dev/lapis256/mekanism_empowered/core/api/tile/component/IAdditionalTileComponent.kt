@@ -1,4 +1,4 @@
-package dev.lapis256.mekanism_empowered.core.common.tile.component
+package dev.lapis256.mekanism_empowered.core.api.tile.component
 
 import mekanism.common.tile.base.TileEntityMekanism
 import net.minecraft.nbt.CompoundTag

@@ -3,7 +3,8 @@ package dev.lapis256.mekanism_empowered.common.tile.component
 import dev.lapis256.mekanism_empowered.api.MekEmpSerializationConstants
 import dev.lapis256.mekanism_empowered.api.MekEmpUpgrade
 import dev.lapis256.mekanism_empowered.common.config.MekEmpGeneralConfig
-import dev.lapis256.mekanism_empowered.core.common.tile.component.IAdditionalTileComponent
+import dev.lapis256.mekanism_empowered.common.util.parallelCount
+import dev.lapis256.mekanism_empowered.core.api.tile.component.IAdditionalTileComponent
 import dev.lapis256.mekanism_empowered.core.extension.canInput
 import dev.lapis256.mekanism_empowered.core.extension.getInstalledOrDefault
 import dev.lapis256.mekanism_empowered.core.extension.isUpgradeInstalled
@@ -48,6 +49,8 @@ class TileComponentInserter(private val tile: TileEntityConfigurableMachine) : I
     private var tickDelay = 0
 
     private val blockPos get() = tile.blockPos
+
+    private val parallelCount by lazy { tile.parallelCount }
 
     private var ioCapacities = buildIOCapacities()
 
@@ -225,15 +228,15 @@ class TileComponentInserter(private val tile: TileEntityConfigurableMachine) : I
     private fun getTarget(level: ServerLevel, side: Direction) = level.getBlockEntity(blockPos.relative(side))
 
     private fun buildIOCapacities() = buildMap {
-        val installed = tile.getInstalledOrDefault(MekEmpUpgrade.IO_CAPACITY)
-        val max = MekEmpUpgrade.IO_CAPACITY.max.toDouble()
-        put(TransmissionType.ITEM, MathUtils.clampToLong(MekEmpGeneralConfig.AutoInserter.itemRate * 8.0.pow(installed / max)))
-        put(TransmissionType.GAS, MathUtils.clampToLong(MekEmpGeneralConfig.AutoInserter.chemicalRate * (1 + 32 * (installed / max))))
-        put(TransmissionType.INFUSION, MathUtils.clampToLong(MekEmpGeneralConfig.AutoInserter.chemicalRate * (1 + 32 * (installed / max))))
-        put(TransmissionType.PIGMENT, MathUtils.clampToLong(MekEmpGeneralConfig.AutoInserter.chemicalRate * (1 + 32 * (installed / max))))
-        put(TransmissionType.SLURRY, MathUtils.clampToLong(MekEmpGeneralConfig.AutoInserter.chemicalRate * (1 + 32 * (installed / max))))
-        put(TransmissionType.FLUID, MathUtils.clampToLong(MekEmpGeneralConfig.AutoInserter.fluidRate * (1 + 32 * (installed / max))))
-        put(TransmissionType.ENERGY, MathUtils.clampToLong(MekEmpGeneralConfig.AutoInserter.energyRate * (1 + 32 * (installed / max))))
+        val capacityRatio = tile.getInstalledOrDefault(MekEmpUpgrade.IO_CAPACITY) / MekEmpUpgrade.IO_CAPACITY.max.toDouble()
+        val rateMultiplier = 1 + 32 * capacityRatio * parallelCount
+        put(TransmissionType.ITEM, MathUtils.clampToLong(MekEmpGeneralConfig.AutoInserter.itemRate * 8.0.pow(capacityRatio) * parallelCount))
+        put(TransmissionType.GAS, MathUtils.clampToLong(MekEmpGeneralConfig.AutoInserter.chemicalRate * rateMultiplier))
+        put(TransmissionType.INFUSION, MathUtils.clampToLong(MekEmpGeneralConfig.AutoInserter.chemicalRate * rateMultiplier))
+        put(TransmissionType.PIGMENT, MathUtils.clampToLong(MekEmpGeneralConfig.AutoInserter.chemicalRate * rateMultiplier))
+        put(TransmissionType.SLURRY, MathUtils.clampToLong(MekEmpGeneralConfig.AutoInserter.chemicalRate * rateMultiplier))
+        put(TransmissionType.FLUID, MathUtils.clampToLong(MekEmpGeneralConfig.AutoInserter.fluidRate * rateMultiplier))
+        put(TransmissionType.ENERGY, MathUtils.clampToLong(MekEmpGeneralConfig.AutoInserter.energyRate * rateMultiplier))
     }
 
     // IAdditionalTileComponent

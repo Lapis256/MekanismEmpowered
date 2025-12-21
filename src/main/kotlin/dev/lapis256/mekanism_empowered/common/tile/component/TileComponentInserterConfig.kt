@@ -2,7 +2,8 @@ package dev.lapis256.mekanism_empowered.common.tile.component
 
 import dev.lapis256.mekanism_empowered.api.MekEmpSerializationConstants
 import dev.lapis256.mekanism_empowered.common.tile.component.config.InserterConfigInfo
-import dev.lapis256.mekanism_empowered.core.common.tile.component.IAdditionalTileComponent
+import dev.lapis256.mekanism_empowered.core.api.tile.component.IAdditionalTileComponent
+import dev.lapis256.mekanism_empowered.core.extension.getByteArrayOrNull
 import mekanism.api.NBTConstants
 import mekanism.api.RelativeSide
 import mekanism.common.tile.base.TileEntityMekanism
@@ -29,13 +30,10 @@ class TileComponentInserterConfig(val tile: TileEntityMekanism) : ITileComponent
     fun isSideEnabled(relativeSide: RelativeSide) = configInfo.isSideEnabled(relativeSide)
 
     private fun readFromNBT(componentTag: CompoundTag) {
-        val key = when {
-            componentTag.contains(componentKey) -> componentKey
-            componentTag.contains(NBTConstants.CONFIG) -> NBTConstants.CONFIG // TODO: Remove this after major version
-            else -> return
-        }
-        componentTag
-            .getByteArray(key)
+        val byteArray = componentTag.getByteArrayOrNull(componentKey)
+            ?: componentTag.getByteArrayOrNull(NBTConstants.CONFIG) ?: return
+
+        byteArray
             .forEachIndexed { i, byte -> configInfo.setSideConfig(RelativeSide.byIndex(i), byte == 1.toByte()) }
     }
 

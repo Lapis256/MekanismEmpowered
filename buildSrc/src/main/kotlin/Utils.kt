@@ -1,6 +1,7 @@
 import org.gradle.api.artifacts.MinimalExternalModuleDependency
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.api.provider.Provider
+import org.gradle.api.provider.ProviderConvertible
 
 
 @Suppress("unused")
@@ -55,4 +56,8 @@ fun extractVersionSegments(version: Provider<String>, numberOfSegments: Int = 1)
 
 @Suppress("unused")
 fun DependencyHandler.variantOf(dependency: Provider<MinimalExternalModuleDependency>, classifier: String) =
+    variantOf(dependency) { classifier(classifier) }
+
+@Suppress("unused")
+fun DependencyHandler.variantOf(dependency: ProviderConvertible<MinimalExternalModuleDependency>, classifier: String) =
     variantOf(dependency) { classifier(classifier) }

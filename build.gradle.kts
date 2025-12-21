@@ -67,14 +67,14 @@ repositories {
 val generateModMetadata by tasks.registering(ProcessResources::class)
 val generateCoreModMetadata by tasks.registering(ProcessResources::class)
 
-val coreApiSourceSet = sourceSets.create("core.api")!!
+val coreApiSourceSet: SourceSet = sourceSets.create("core.api")
 
-val mainApiSourceSet = sourceSets.create("main.api", Action {
+val mainApiSourceSet: SourceSet = sourceSets.create("main.api", Action {
     compileClasspath += coreApiSourceSet.output
     runtimeClasspath += coreApiSourceSet.output
-})!!
+})
 
-val coreSourceSet = sourceSets.create("core", Action {
+val coreSourceSet: SourceSet = sourceSets.create("core", Action {
     compileClasspath += coreApiSourceSet.output
     runtimeClasspath += coreApiSourceSet.output
 
@@ -86,9 +86,9 @@ val coreSourceSet = sourceSets.create("core", Action {
         )
         exclude("**/.cache")
     }
-})!!
+})
 
-val mainSourceSet = sourceSets.getByName("main") {
+val mainSourceSet: SourceSet = sourceSets.getByName("main") {
     compileClasspath += mainApiSourceSet.output + coreApiSourceSet.output + coreSourceSet.output
     runtimeClasspath += mainApiSourceSet.output + coreApiSourceSet.output + coreSourceSet.output
 
@@ -99,12 +99,12 @@ val mainSourceSet = sourceSets.getByName("main") {
         )
         exclude("**/.cache")
     }
-}!!
+}
 
-val dataSourceSet = sourceSets.create("data", Action {
+val dataSourceSet: SourceSet = sourceSets.create("data", Action {
     compileClasspath += coreSourceSet.output + mainSourceSet.compileClasspath + mainSourceSet.output
     runtimeClasspath += coreSourceSet.output + mainSourceSet.runtimeClasspath + mainSourceSet.output
-})!!
+})
 
 mixin {
     add(mainSourceSet, "${modId}.refmap.json")
@@ -153,7 +153,7 @@ dependencies {
         }
 
         coreApiCompileOnly(libs.kotlinForForge)
-        coreApiCompileOnly(variantOf(libs.mekanism, "api"))
+        coreApiCompileOnly(variantOf(libs.mekanism, "all"))
     }
 
     modImplementation(libs.kotlinForForge)
@@ -165,17 +165,18 @@ dependencies {
     modCompileOnly(libs.mekanismExtras)
     modCompileOnly(libs.evolvedMekanism)
     modCompileOnly(libs.mekanismElements)
+    modCompileOnly(libs.evolvedMekanismExtras)
+    modCompileOnly(libs.mekanismMoreMachines)
 
     modRuntimeOnly(libs.jei)
 
-    if (loadMekExt) {
-        modRuntimeOnly(libs.mekanismExtras)
-    }
-
     if (loadAddons) {
+        modRuntimeOnly(libs.mekanismExtras)
         modRuntimeOnly(libs.igleelib)
         modRuntimeOnly(libs.evolvedMekanism)
         modRuntimeOnly(libs.mekanismElements)
+        modRuntimeOnly(libs.evolvedMekanismExtras)
+        modRuntimeOnly(libs.mekanismMoreMachines)
     }
 
     modImplementation(libs.easyNestConfig)
@@ -250,15 +251,15 @@ legacyForge {
     }
 
     mods {
-        create(modId) {
+        create(modId, Action {
             sourceSet(mainSourceSet)
             sourceSet(mainApiSourceSet)
             sourceSet(dataSourceSet)
-        }
-        create("${modId}_core") {
-            sourceSet(coreApiSourceSet)
+        })
+        create("${modId}_core", Action {
             sourceSet(coreSourceSet)
-        }
+            sourceSet(coreApiSourceSet)
+        })
     }
 
     ideSyncTask(generateModMetadata)
@@ -346,13 +347,15 @@ val baseDependencies = listOf(
     ModDep("forge", libs.versions.forge.get()),
     ModDep("minecraft", mcVersion),
     ModDep("kotlinforforge", kffVersion),
-    ModDep("mekanism", "1.20.1-10.4", ordering = Order.AFTER),
+    ModDep("mekanism", "10.4.16", ordering = Order.AFTER),
 )
 val mainModDependencies = baseDependencies.toMutableList().apply {
     add(ModDep("mekanism_empowered_core", Constants.Mod.VERSION, ordering = Order.AFTER))
-    add(ModDep("evolvedmekanism", "1.1-beta", ordering = Order.AFTER, mandatory = false))
+    add(ModDep("evolvedmekanism", "1.2.1", ordering = Order.AFTER, mandatory = false))
     add(ModDep("mekanismelements", "2.3", ordering = Order.AFTER, mandatory = false))
-    add(ModDep("mekanism_extras", "999.999.999-INCOMPATIBLE", false))
+    add(ModDep("mekanism_extras", "1.20.1-1.4.6", ordering = Order.AFTER, mandatory = false))
+    add(ModDep("mekmm", "1.20.1-1.0.1", ordering = Order.AFTER, mandatory = false))
+    add(ModDep("emextras", "1.3.3", ordering = Order.AFTER, mandatory = false))
     add(ModDep("mekanismtweaks", "999.999.999-INCOMPATIBLE", false))
     add(ModDep("mekanismupgradesreborn", "999.999.999-INCOMPATIBLE", false))
 }
@@ -480,9 +483,11 @@ tasks {
             setShared()
 
             addRequirement("mekanism-empowered-core")
-//            addOptional("mekanism-extras")
+            addOptional("mekanism-extras")
             addOptional("evolved-mekanism")
             addOptional("mekanism-elements")
+            addOptional("evolved-mekanism-extras")
+            addOptional("mekanism-more-machine")
             addIncompatibility("mekanism-tweaks")
             addIncompatibility("mekanism-upgrades-reborn")
         }

@@ -1,12 +1,14 @@
 package dev.lapis256.mekanism_empowered.core.mixin.common;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.sugar.Local;
 import dev.lapis256.mekanism_empowered.core.mixin_impl.MixinImplUpgrade;
 import mekanism.api.Upgrade;
 import mekanism.api.text.APILang;
 import mekanism.api.text.EnumColor;
 import net.minecraft.nbt.CompoundTag;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -22,11 +24,18 @@ import java.util.Map;
 import java.util.Set;
 
 
-@Mixin(value = Upgrade.class, remap = false)
+/**
+ * 追加のアップグレードを Mekanism の Upgrade 列挙型に注入します。
+ * アップグレードの追加によって保存時とずれないように別途名前付きで保存・読み込みを行います。
+ * また、これらの対策を講じずに同様の変更を行う他の Mod との併用時にそれらの Mod も含めた保護を行うため、確実に優先される必要があるため、優先度を最大に設定しています。
+ * もし、このコメントを読んでいるあなたが Mod 開発者であり、同様の変更を行う場合は、この Mod によるアップグレードの追加機能の使用を検討してください。
+ */
+@Mixin(value = Upgrade.class, remap = false, priority = Integer.MAX_VALUE)
 public class MixinUpgrade {
     @Shadow
     @Final
     @Mutable
+    @Dynamic
     private static Upgrade[] $VALUES;
 
     @Unique
@@ -43,18 +52,13 @@ public class MixinUpgrade {
         $VALUES = mekanismEmpoweredCore$impl.initAdditionalUpgrades($VALUES);
     }
 
-    @ModifyVariable(method = "buildMap", at = @At(value = "STORE", ordinal = 0), ordinal = 0)
+    @ModifyVariable(method = "buildMap", at = @At(value = "STORE", ordinal = 0), name = "upgrades")
     private static Map<Upgrade, Integer> mekanismEmpoweredCore$buildAdditionalMap(@Nullable Map<Upgrade, Integer> upgrades, @Nullable CompoundTag nbtTags) {
         return mekanismEmpoweredCore$impl.buildAdditionalMap(upgrades, nbtTags);
     }
 
     @ModifyExpressionValue(method = "saveMap", at = @At(value = "INVOKE", target = "Ljava/util/Map;entrySet()Ljava/util/Set;"))
-    private static Set<Map.Entry<Upgrade, Integer>> mekanismEmpoweredCore$filterUpgrades(Set<Map.Entry<Upgrade, Integer>> original) {
-        return mekanismEmpoweredCore$impl.filterUpgrades(original);
-    }
-
-    @Inject(method = "saveMap", at = @At("RETURN"))
-    private static void mekanismEmpoweredCore$saveAdditionalMap(Map<Upgrade, Integer> upgrades, CompoundTag nbtTags, CallbackInfo ci) {
-        mekanismEmpoweredCore$impl.saveAdditionalMap(upgrades, nbtTags);
+    private static Set<Map.Entry<Upgrade, Integer>> mekanismEmpoweredCore$filterUpgrades(Set<Map.Entry<Upgrade, Integer>> original, @Local(argsOnly = true, name = "arg1") CompoundTag nbtTags) {
+        return mekanismEmpoweredCore$impl.saveAdditionalMap(original, nbtTags);
     }
 }

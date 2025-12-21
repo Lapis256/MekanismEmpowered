@@ -1,29 +1,34 @@
 package dev.lapis256.mekanism_empowered.mixin.common.tile.machine;
 
-import dev.lapis256.mekanism_empowered.mixin_impl.MixinImplTileMachine;
+import dev.lapis256.mekanism_empowered.mixin_impl.MixinImplTileMachineKt;
 import mekanism.api.providers.IBlockProvider;
-import mekanism.api.recipes.MekanismRecipe;
-import mekanism.api.recipes.cache.CachedRecipe;
+import mekanism.common.tile.base.TileEntityMekanism;
 import mekanism.common.tile.machine.TileEntityPressurizedReactionChamber;
-import mekanism.common.tile.prefab.TileEntityProgressMachine;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.List;
 
-
-@Mixin(value = TileEntityPressurizedReactionChamber.class, remap = false)
-public abstract class MixinTileEntityPressurizedReactionChamber extends TileEntityProgressMachine<MekanismRecipe> {
-    protected MixinTileEntityPressurizedReactionChamber(IBlockProvider blockProvider, BlockPos pos, BlockState state, List<CachedRecipe.OperationTracker.RecipeError> errorTypes, int baseTicksRequired) {
-        super(blockProvider, pos, state, errorTypes, baseTicksRequired);
+@Pseudo
+@Mixin(
+    value = TileEntityPressurizedReactionChamber.class,
+    targets = {
+        "com.jerry.mekaf.common.tile.TileEntityPressurizedReactingFactory"
+    },
+    remap = false
+)
+public abstract class MixinTileEntityPressurizedReactionChamber extends TileEntityMekanism {
+    public MixinTileEntityPressurizedReactionChamber(IBlockProvider blockProvider, BlockPos pos, BlockState state) {
+        super(blockProvider, pos, state);
     }
 
-    @Inject(method = "onCachedRecipeChanged", at = @At(value = "INVOKE", target = "Lmekanism/common/tile/machine/TileEntityPressurizedReactionChamber;recalculateUpgrades(Lmekanism/api/Upgrade;)V"))
+    @Inject(method = "onCachedRecipeChanged", at = @At(value = "FIELD", target = "Lmekanism/api/Upgrade;SPEED:Lmekanism/api/Upgrade;", opcode = Opcodes.GETSTATIC))
     private void mekanismEmpowered$recalculateAdditionalUpgrades(CallbackInfo ci) {
-        MixinImplTileMachine.prcRecalculateAdditionalUpgrades(this);
+        MixinImplTileMachineKt.prcRecalculateAdditionalUpgrades(this);
     }
 }

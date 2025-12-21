@@ -1,13 +1,12 @@
 package dev.lapis256.mekanism_empowered.common.init
 
-import com.jerry.mekanism_extras.common.registry.ExtraBlockType
-import com.jerry.mekanism_extras.common.tier.AdvancedFactoryTier
 import com.jerry.mekanism_extras.common.tile.machine.TileEntityAdvancedElectricPump
 import dev.lapis256.mekanism_empowered.api.MekEmpUpgrade
 import dev.lapis256.mekanism_empowered.core.common.upgrade.UpgradeInfoHandler
 import dev.lapis256.mekanism_empowered.core.common.util.AdditionalUpgradeUtil
 import dev.lapis256.mekanism_empowered.core.extension.getInstalledOrDefault
-import dev.lapis256.mekanism_empowered.integration.MekExt
+import dev.lapis256.mekanism_empowered.integration.Integrations
+import dev.lapis256.mekanism_empowered.integration.provider.FactoryUpgradeIntegration
 import mekanism.api.Upgrade
 import mekanism.common.content.blocktype.FactoryType
 import mekanism.common.registries.MekanismBlockTypes
@@ -57,15 +56,15 @@ object MekEmpUpgrades {
         AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.PURIFICATION_CHAMBER, *ITEM_IN_OUT_MACHINE_UPGRADES)
         AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.CHEMICAL_INJECTION_CHAMBER, *ITEM_IN_OUT_MACHINE_UPGRADES)
 
-        registerFactoryUpgrades(FactoryType.ENRICHING, ITEM_IN_OUT_MACHINE_UPGRADES)
-        registerFactoryUpgrades(FactoryType.CRUSHING, ITEM_IN_OUT_MACHINE_UPGRADES)
-        registerFactoryUpgrades(FactoryType.SMELTING, ITEM_IN_OUT_MACHINE_UPGRADES)
-        registerFactoryUpgrades(FactoryType.SAWING, ITEM_IN_OUT_MACHINE_UPGRADES)
-        registerFactoryUpgrades(FactoryType.COMPRESSING, ITEM_IN_OUT_MACHINE_UPGRADES)
-        registerFactoryUpgrades(FactoryType.COMBINING, ITEM_IN_OUT_MACHINE_UPGRADES)
-        registerFactoryUpgrades(FactoryType.INFUSING, ITEM_IN_OUT_MACHINE_UPGRADES)
-        registerFactoryUpgrades(FactoryType.PURIFYING, ITEM_IN_OUT_MACHINE_UPGRADES)
-        registerFactoryUpgrades(FactoryType.INJECTING, ITEM_IN_OUT_MACHINE_UPGRADES)
+        addSupportedFactoryUpgrades(FactoryType.ENRICHING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addSupportedFactoryUpgrades(FactoryType.CRUSHING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addSupportedFactoryUpgrades(FactoryType.SMELTING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addSupportedFactoryUpgrades(FactoryType.SAWING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addSupportedFactoryUpgrades(FactoryType.COMPRESSING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addSupportedFactoryUpgrades(FactoryType.COMBINING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addSupportedFactoryUpgrades(FactoryType.INFUSING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addSupportedFactoryUpgrades(FactoryType.PURIFYING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addSupportedFactoryUpgrades(FactoryType.INJECTING, *ITEM_IN_OUT_MACHINE_UPGRADES)
 
         AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.PRESSURIZED_REACTION_CHAMBER, *ITEM_IN_OUT_MACHINE_UPGRADES)
         AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.FORMULAIC_ASSEMBLICATOR, *ITEM_IN_OUT_MACHINE_UPGRADES)
@@ -93,16 +92,13 @@ object MekEmpUpgrades {
         AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.ELECTRIC_PUMP, *SPEED_AND_ENERGY_UPGRADES)
     }
 
-    fun registerFactoryUpgrades(type: FactoryType, upgrades: Array<Upgrade>) {
+    fun addSupportedFactoryUpgrades(type: FactoryType, vararg upgrades: Upgrade) {
         for (tier in EnumUtils.FACTORY_TIERS) {
             AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.getFactory(tier, type), *upgrades)
         }
 
-        if (MekExt.loaded) {
-            AdditionalUpgradeUtil.addSupported(ExtraBlockType.getAdvancedFactory(AdvancedFactoryTier.ABSOLUTE, type), *upgrades)
-            AdditionalUpgradeUtil.addSupported(ExtraBlockType.getAdvancedFactory(AdvancedFactoryTier.SUPREME, type), *upgrades)
-            AdditionalUpgradeUtil.addSupported(ExtraBlockType.getAdvancedFactory(AdvancedFactoryTier.COSMIC, type), *upgrades)
-            AdditionalUpgradeUtil.addSupported(ExtraBlockType.getAdvancedFactory(AdvancedFactoryTier.INFINITE, type), *upgrades)
+        Integrations.getProviders<FactoryUpgradeIntegration>().forEach {
+            it.addSupportedFactoryUpgrades(type, *upgrades)
         }
     }
 }

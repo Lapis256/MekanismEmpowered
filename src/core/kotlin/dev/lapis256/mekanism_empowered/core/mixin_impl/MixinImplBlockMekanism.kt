@@ -1,6 +1,6 @@
 package dev.lapis256.mekanism_empowered.core.mixin_impl
 
-import dev.lapis256.mekanism_empowered.core.common.tile.component.IAdditionalTileComponent
+import dev.lapis256.mekanism_empowered.core.api.tile.component.IAdditionalTileComponent
 import mekanism.common.tile.base.TileEntityMekanism
 import net.minecraft.nbt.CompoundTag
 

@@ -3,7 +3,7 @@ package dev.lapis256.mekanism_empowered.core.common.loot
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonObject
 import com.google.gson.JsonSerializationContext
-import dev.lapis256.mekanism_empowered.core.common.tile.component.IAdditionalTileComponent
+import dev.lapis256.mekanism_empowered.core.api.tile.component.IAdditionalTileComponent
 import mekanism.common.tile.base.TileEntityMekanism
 import net.minecraft.util.GsonHelper
 import net.minecraft.world.level.storage.loot.LootContext

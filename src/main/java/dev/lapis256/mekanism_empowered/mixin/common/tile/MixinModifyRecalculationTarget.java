@@ -49,6 +49,11 @@ class MixinModifyRecalculationTarget {
             "com.jerry.mekextras.common.tile.factory.TileEntityItemStackChemicalToItemStackAdvancedFactory",
             "com.jerry.mekextras.common.tile.machine.TileEntityAdvanceElectricPump",
 
+            "com.jerry.mekaf.common.tile.base.TileEntityAdvancedFactoryBase",
+            "com.jerry.mekmm.common.tile.factory.TileEntityMoreMachineFactory",
+
+            "io.github.masyumero.emextras.common.tile.factory.TileEntityEMExtraFactory",
+
             "com.fxd927.mekanismelements.common.tile.prefab.MSTileEntityProgressMachine"
         },
         remap = false
@@ -58,7 +63,7 @@ class MixinModifyRecalculationTarget {
         @Definition(id = "SPEED", field = "Lmekanism/api/Upgrade;SPEED:Lmekanism/api/Upgrade;")
         @Expression("upgrade == SPEED")
         @ModifyExpressionValue(method = "recalculateUpgrades", at = @At("MIXINEXTRAS:EXPRESSION"))
-        private boolean mekanismEmpowered$modifyRecalculationTarget(boolean original, @Local(argsOnly = true) Upgrade upgrade) {
+        private boolean mekanismEmpowered$modifyRecalculationTarget(boolean original, @Local(argsOnly = true, name = "arg1") Upgrade upgrade) {
             return MixinImplModifyRecalculationTarget.modifySpeed(original, upgrade);
         }
     }
@@ -69,7 +74,7 @@ class MixinModifyRecalculationTarget {
         @Definition(id = "ENERGY", field = "Lmekanism/api/Upgrade;ENERGY:Lmekanism/api/Upgrade;")
         @Expression("upgrade == ENERGY")
         @ModifyExpressionValue(method = "recalculateUpgrades", at = @At("MIXINEXTRAS:EXPRESSION"))
-        private boolean mekanismEmpowered$modifyRecalculationTarget(boolean original, @Local(argsOnly = true) Upgrade upgrade) {
+        private boolean mekanismEmpowered$modifyRecalculationTarget(boolean original, @Local(argsOnly = true, name = "arg1") Upgrade upgrade) {
             return MixinImplModifyRecalculationTarget.modifyEnergy(original, upgrade);
         }
     }
