@@ -144,8 +144,8 @@ class TileComponentInserter(private val tile: TileEntityConfigurableMachine) : I
                 continue
             }
             val remaining = toTank.insert(simulated, Action.EXECUTE, AutomationType.EXTERNAL)
-            simulated.amount -= remaining.amount
-            fromHandler.drain(simulated, IFluidHandler.FluidAction.EXECUTE)
+            val insertedAmount = simulated.amount - remaining.amount
+            fromHandler.drain(insertedAmount, IFluidHandler.FluidAction.EXECUTE)
         }
     }
 
@@ -193,9 +193,9 @@ class TileComponentInserter(private val tile: TileEntityConfigurableMachine) : I
                 }
 
                 val remaining = toSlot.insertItem(simulated, Action.EXECUTE, AutomationType.EXTERNAL)
-                simulated.count -= remaining.count
-                extractCount -= simulated.count
-                fromHandler.extractItem(i, simulated.count, false)
+                val insertedCount = simulated.count - remaining.count
+                extractCount -= insertedCount
+                fromHandler.extractItem(i, insertedCount, false)
 
                 if (extractCount <= 0) {
                     break
