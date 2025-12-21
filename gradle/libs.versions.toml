@@ -9,7 +9,7 @@ minecraft = "1.20.1"
 forge = "47.4.0"
 kotlinForForge = "4.12.0"
 parchmentmc = "2023.09.03"
-mixin = "0.8.6"
+mixin = "0.8.5"
 mixinExtras = "0.5.0"
 
 easyNestConfig = "3.0.0"
