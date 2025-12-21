@@ -94,12 +94,12 @@ class TileComponentInserter(private val tile: TileEntityConfigurableMachine) : I
 
             for (side in getSidesForData(info, facing, dataType)) {
                 val target = getTarget(level, side) ?: continue
-                val slotSide = side.opposite
+                val targetSide = side.opposite
                 when {
-                    type.isChemical && slotInfo is ChemicalSlotInfo<*, *, *> -> insertChemical(type, target, slotInfo, slotSide)
-                    type == TransmissionType.FLUID && slotInfo is FluidSlotInfo -> insertFluid(target, slotInfo, slotSide)
-                    type == TransmissionType.ENERGY && slotInfo is EnergySlotInfo -> insertEnergy(target, slotInfo, slotSide)
-                    type == TransmissionType.ITEM && slotInfo is InventorySlotInfo -> insertItem(target, slotInfo, slotSide)
+                    type.isChemical && slotInfo is ChemicalSlotInfo<*, *, *> -> insertChemical(type, target, slotInfo, targetSide)
+                    type == TransmissionType.FLUID && slotInfo is FluidSlotInfo -> insertFluid(target, slotInfo, targetSide)
+                    type == TransmissionType.ENERGY && slotInfo is EnergySlotInfo -> insertEnergy(target, slotInfo, targetSide)
+                    type == TransmissionType.ITEM && slotInfo is InventorySlotInfo -> insertItem(target, slotInfo, targetSide)
                 }
             }
         }
@@ -109,15 +109,15 @@ class TileComponentInserter(private val tile: TileEntityConfigurableMachine) : I
      * @param type 搬入する [TransmissionType][type]
      * @param target 搬入元となる [BlockEntity]
      * @param slotInfo 搬入先の [ChemicalSlotInfo]
-     * @param slotSide 搬入元の面方向
+     * @param targetSide 搬入元の面方向
      */
     private fun <CHEMICAL : Chemical<CHEMICAL>, STACK : ChemicalStack<CHEMICAL>> insertChemical(
         type: TransmissionType,
         target: BlockEntity,
         slotInfo: ChemicalSlotInfo<*, *, *>,
-        slotSide: Direction,
+        targetSide: Direction,
     ) {
-        val handler = getChemicalCapability(type, target, slotSide) ?: return
+        val handler = getChemicalCapability(type, target, targetSide) ?: return
         for (tank in slotInfo.tanks) {
             val simulated = handler.extractChemical(getIOCapacity(type), Action.SIMULATE)
             if (simulated.isEmpty) {
@@ -133,10 +133,10 @@ class TileComponentInserter(private val tile: TileEntityConfigurableMachine) : I
     /**
      * @param target 搬入元となる [BlockEntity]
      * @param slotInfo 搬入先の [FluidSlotInfo]
-     * @param slotSide 搬入元の面方向
+     * @param targetSide 搬入元の面方向
      */
-    private fun insertFluid(target: BlockEntity, slotInfo: FluidSlotInfo, slotSide: Direction) {
-        val fromHandler = getCapability(target, ForgeCapabilities.FLUID_HANDLER, slotSide) ?: return
+    private fun insertFluid(target: BlockEntity, slotInfo: FluidSlotInfo, targetSide: Direction) {
+        val fromHandler = getCapability(target, ForgeCapabilities.FLUID_HANDLER, targetSide) ?: return
 
         for (toTank in slotInfo.tanks) {
             val simulated = fromHandler.drain(getIOCapacity(TransmissionType.FLUID).toInt(), IFluidHandler.FluidAction.SIMULATE)
@@ -152,10 +152,10 @@ class TileComponentInserter(private val tile: TileEntityConfigurableMachine) : I
     /**
      * @param target 搬入元となる [BlockEntity]
      * @param slotInfo 搬入先の [EnergySlotInfo]
-     * @param slotSide 搬入元の面方向
+     * @param targetSide 搬入元の面方向
      */
-    private fun insertEnergy(target: BlockEntity, slotInfo: EnergySlotInfo, slotSide: Direction) {
-        val fromHandler = EnergyCompatUtils.getLazyStrictEnergyHandler(target, slotSide).resolve().getOrNull() ?: return
+    private fun insertEnergy(target: BlockEntity, slotInfo: EnergySlotInfo, targetSide: Direction) {
+        val fromHandler = EnergyCompatUtils.getLazyStrictEnergyHandler(target, targetSide).resolve().getOrNull() ?: return
 
         for (toContainer in slotInfo.containers) {
             val simulated = fromHandler.extractEnergy(FloatingLong.create(getIOCapacity(TransmissionType.ENERGY)), Action.SIMULATE)
@@ -172,10 +172,10 @@ class TileComponentInserter(private val tile: TileEntityConfigurableMachine) : I
     /**
      * @param target 搬入元となる [BlockEntity]
      * @param slotInfo 搬入先の [InventorySlotInfo]
-     * @param slotSide 搬入元の面方向
+     * @param targetSide 搬入元の面方向
      */
-    private fun insertItem(target: BlockEntity, slotInfo: InventorySlotInfo, slotSide: Direction) {
-        val fromHandler = getCapability(target, ForgeCapabilities.ITEM_HANDLER, slotSide) ?: return
+    private fun insertItem(target: BlockEntity, slotInfo: InventorySlotInfo, targetSide: Direction) {
+        val fromHandler = getCapability(target, ForgeCapabilities.ITEM_HANDLER, targetSide) ?: return
 
         val notEmptySlots = (0..<fromHandler.slots).filterNot { fromHandler.getStackInSlot(it).isEmpty }.toMutableList()
         if (notEmptySlots.isEmpty()) {
