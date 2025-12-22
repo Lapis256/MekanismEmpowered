@@ -10,7 +10,7 @@ import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.neoforge.data.event.GatherDataEvent
 
 
-@EventBusSubscriber(modid = MekanismEmpoweredAPI.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = MekanismEmpoweredAPI.MOD_ID)
 object MekanismEmpoweredDataGenerator {
     @SubscribeEvent
     private fun onGatherData(event: GatherDataEvent) {

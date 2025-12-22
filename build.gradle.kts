@@ -66,14 +66,14 @@ repositories {
 val generateModMetadata by tasks.registering(ProcessResources::class)
 val generateCoreModMetadata by tasks.registering(ProcessResources::class)
 
-val coreApiSourceSet = sourceSets.create("core.api") {}
+val coreApiSourceSet: SourceSet = sourceSets.create("core.api", Action {})
 
-val mainApiSourceSet = sourceSets.create("main.api") {
+val mainApiSourceSet: SourceSet = sourceSets.create("main.api", Action {
     compileClasspath += coreApiSourceSet.output
     runtimeClasspath += coreApiSourceSet.output
-}
+})
 
-val coreSourceSet = sourceSets.create("core") {
+val coreSourceSet: SourceSet = sourceSets.create("core", Action {
     compileClasspath += coreApiSourceSet.output
     runtimeClasspath += coreApiSourceSet.output
 
@@ -83,9 +83,9 @@ val coreSourceSet = sourceSets.create("core") {
         )
         exclude("**/.cache")
     }
-}
+})
 
-val mainSourceSet = sourceSets.getByName("main") {
+val mainSourceSet: SourceSet = sourceSets.getByName("main") {
     compileClasspath += mainApiSourceSet.output + coreApiSourceSet.output + coreSourceSet.output
     runtimeClasspath += mainApiSourceSet.output + coreApiSourceSet.output + coreSourceSet.output
 
@@ -98,10 +98,10 @@ val mainSourceSet = sourceSets.getByName("main") {
     }
 }
 
-val dataSourceSet = sourceSets.create("data") {
+val dataSourceSet: SourceSet = sourceSets.create("data", Action {
     compileClasspath += coreSourceSet.output + mainSourceSet.compileClasspath + mainSourceSet.output
     runtimeClasspath += coreSourceSet.output + mainSourceSet.runtimeClasspath + mainSourceSet.output
-}
+})
 
 dependencies {
     run {
@@ -118,14 +118,6 @@ dependencies {
         coreCompileOnly(libs.easyNestConfig)
 
         val coreJarJar by configurations.getting
-//        coreJarJar(variantOf(libs.mixinExtras, "slim")) { // https://github.com/Soaryn/XyCraftTracker/issues/83
-        coreJarJar(libs.mixinExtras) {
-            version {
-                strictly("[$this,)")
-                prefer(this.toString())
-            }
-        }
-
         coreJarJar(libs.easyNestConfig) {
             version {
                 strictly("[$this,)")
@@ -162,13 +154,13 @@ dependencies {
     }
 
     implementation(libs.easyNestConfig)
-
-    annotationProcessor(libs.mixinExtras)
-    implementation(libs.mixinExtras) { isTransitive = false }
 }
 
 neoForge {
-    version = libs.versions.neoforge.get()
+    enable {
+        version = libs.versions.neoforge.get()
+        this.isDisableRecompilation = System.getenv("CI") == "true"
+    }
 
     addModdingDependenciesTo(coreApiSourceSet)
     addModdingDependenciesTo(coreSourceSet)
@@ -189,24 +181,24 @@ neoForge {
     }
 
     runs {
-        create("client") {
+        create("client", Action {
             client()
             gameDirectory.set(rootProject.file("run"))
             systemProperty("neoforge.enabledGameTestNamespaces", modId)
             jvmArgument("-Dmixin.debug.export=$exportMixin")
             jvmArgument("-XX:+AllowEnhancedClassRedefinition")
-        }
+        })
 
-        create("server") {
+        create("server", Action {
             server()
             gameDirectory.set(rootProject.file("run-server"))
             programArgument("--nogui")
             systemProperty("neoforge.enabledGameTestNamespaces", modId)
             jvmArgument("-Dmixin.debug.export=$exportMixin")
             jvmArgument("-XX:+AllowEnhancedClassRedefinition")
-        }
+        })
 
-        create("data") {
+        create("data", Action {
             data()
             sourceSet = dataSourceSet
             gameDirectory.set(rootProject.file("run-data"))
@@ -219,7 +211,7 @@ neoForge {
                 "--existing",
                 file("src/main/resources/").absolutePath
             )
-        }
+        })
 
         configureEach {
             systemProperty("forge.logging.markers", "REGISTRIES")
@@ -229,15 +221,15 @@ neoForge {
     }
 
     mods {
-        create(modId) {
+        create(modId, Action {
             sourceSet(mainSourceSet)
             sourceSet(mainApiSourceSet)
             sourceSet(dataSourceSet)
-        }
-        create("${modId}_core") {
+        })
+        create("${modId}_core", Action {
             sourceSet(coreApiSourceSet)
             sourceSet(coreSourceSet)
-        }
+        })
     }
 
     ideSyncTask(generateModMetadata)
@@ -395,6 +387,7 @@ tasks {
             languageVersion.set(JavaLanguageVersion.of(jdkVersion))
             vendor.set(jvmVendor)
         })
+        standardInput = System.`in`
     }
 
     withType<Jar>().configureEach {
