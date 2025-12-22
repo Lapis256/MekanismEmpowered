@@ -1,6 +1,8 @@
 package dev.lapis256.mekanism_empowered.core.common
 
 import dev.lapis256.mekanism_empowered.core.api.MekanismEmpoweredCoreAPI
+import dev.lapis256.mekanism_empowered.core.common.init.GlobalLootModifierSerializers
+import dev.lapis256.mekanism_empowered.core.common.init.LootConditionTypes
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.Mod
@@ -13,6 +15,11 @@ class MekanismEmpoweredCore(modContainer: ModContainer, modEventBus: IEventBus) 
     companion object {
         @JvmField
         val LOGGER: Logger = LoggerFactory.getLogger(MekanismEmpoweredCoreAPI.MOD_ID)
+    }
+
+    init {
+        GlobalLootModifierSerializers.REGISTRY.register(modEventBus)
+        LootConditionTypes.REGISTRY.register(modEventBus)
     }
 
     object SerializationConstants {
