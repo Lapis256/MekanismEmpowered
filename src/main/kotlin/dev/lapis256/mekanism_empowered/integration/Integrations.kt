@@ -1,17 +1,35 @@
 package dev.lapis256.mekanism_empowered.integration
 
+import dev.lapis256.mekanism_empowered.integration.mods.*
+import dev.lapis256.mekanism_empowered.integration.provider.IntegrationProvider
+import kotlin.reflect.KClass
 
-object Integrations {
+
+internal object Integrations {
     private val integrations = listOf(
+        EvoMek,
         MekExt,
         MekMM
     )
 
+    private val integrationProviders: MutableMap<IntegrationProviderName, MutableSet<IntegrationProvider>> = mutableMapOf()
+
+    init {
+        val providerRegistry = IntegrationProviderRegistry { integrationProviders.getOrPut(it.name, ::mutableSetOf).add(it) }
+        integrations.forEach { it.initIntegrationProvider(providerRegistry) }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    fun <P : IntegrationProvider> getProviders(type: KClass<out P>) =
+        integrationProviders.getOrPut(IntegrationProviderName.of(type), ::mutableSetOf).toSet() as Set<P>
+
+    inline fun <reified T : IntegrationProvider> getProviders() = getProviders(T::class)
+
     fun initCommon() {
-        integrations.forEach(IIntegration::initCommonIntegration)
+        integrations.forEach(ModIntegration::initCommonIntegration)
     }
 
     fun initClient() {
-        integrations.forEach(IIntegration::initClientIntegration)
+        integrations.forEach(ModIntegration::initClientIntegration)
     }
 }

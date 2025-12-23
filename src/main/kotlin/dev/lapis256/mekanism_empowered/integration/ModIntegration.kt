@@ -4,29 +4,39 @@ import dev.lapis256.mekanism_empowered.common.MekanismEmpowered
 import net.neoforged.fml.ModList
 
 
-interface IIntegration {
+internal interface ModIntegration {
     val modId: String
 
-    val loaded: Boolean
+    val isLoaded: Boolean
         get() = ModList.get().isLoaded(modId)
 
     fun initCommon()
 
     fun initCommonIntegration() {
-        if (!loaded) return
+        if (!isLoaded) return
 
         MekanismEmpowered.LOGGER.info("Initializing integration with $modId")
 
         initCommon()
     }
 
-    fun initClient()
+    fun initClient() {}
 
     fun initClientIntegration() {
-        if (!loaded) return
+        if (!isLoaded) return
 
         MekanismEmpowered.LOGGER.info("Initializing client integration with $modId")
 
         initClient()
+    }
+
+    fun initProvider(registry: IntegrationProviderRegistry) {}
+
+    fun initIntegrationProvider(registry: IntegrationProviderRegistry) {
+        if (!isLoaded) return
+
+        MekanismEmpowered.LOGGER.info("Initializing integration providers for $modId")
+
+        initProvider(registry)
     }
 }

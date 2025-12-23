@@ -32,7 +32,6 @@ val jvmVendor = Constants.Dev.JVM_VENDOR
 
 
 val exportMixin = true
-val loadMekExt = false
 val loadAddons = true
 
 
@@ -141,15 +140,17 @@ dependencies {
 
     compileOnly(libs.mekanismExtras)
 //    compileOnly(libs.mekanismElements)
+    compileOnly(libs.igleelib)
+    compileOnly(libs.evolvedMekanism)
     compileOnly(libs.mekanismMoreMachine)
 
     localRuntime(libs.jei)
 
-    if (loadMekExt) {
-        localRuntime(libs.mekanismExtras)
-    }
     if (loadAddons) {
 //        localRuntime(libs.mekanismElements)
+        localRuntime(libs.mekanismExtras)
+        localRuntime(libs.igleelib)
+        localRuntime(libs.evolvedMekanism)
         localRuntime(libs.mekanismMoreMachine)
     }
 
@@ -294,16 +295,17 @@ fun setupJarTask(modName: String, renameFile: Boolean, task: TaskProvider<Jar>, 
 }
 
 val baseDependencies = listOf(
-    ModDep("neoforge", RangeInclusiveMin(libs.versions.neoforge.get(), "21.2")),
-    ModDep("minecraft", Equal(mcVersion)),
-    ModDep("kotlinforforge", GreaterThanOrEqual(kffVersion)),
-    ModDep("mekanism", Equal("10.7.14"), ordering = Order.AFTER),
+    ModDep("neoforge", libs.versions.neoforge.get() ..< "21.2"),
+    ModDep("minecraft", mcVersion.eq()),
+    ModDep("kotlinforforge", kffVersion.gte()),
+    ModDep("mekanism", "10.7.17".gte(), ordering = Order.AFTER),
 )
 val mainModDependencies = baseDependencies.toMutableList().apply {
-    add(ModDep("mekanism_empowered_core", Equal(Constants.Mod.VERSION), type = DependencyType.OPTIONAL, ordering = Order.AFTER))
-    add(ModDep("mekmm", RangeInclusiveMin("1.21.1-1.0.2", "1.21.1-2.0.0"), type = DependencyType.OPTIONAL))
-    add(ModDep("mekanism_extras", GreaterThanOrEqual("1.21.1-1.2.1"), type = DependencyType.INCOMPATIBLE, reason = "Incompatible Mixins"))
-    add(ModDep("mekanism_unleashed", GreaterThanOrEqual("0.0.0"), type = DependencyType.INCOMPATIBLE, reason = "Because Advanced Speed Upgrade becomes meaningless"))
+    add(ModDep.optional("mekanism_empowered_core", Constants.Mod.VERSION.eq(), ordering = Order.AFTER))
+    add(ModDep.optional("mekanism_extras", "1.2.6.1".gte()))
+    add(ModDep.optional("evolvedmekanism", "1.2.1-fix2".gte()))
+    add(ModDep.optional("mekmm", "1.2.1".gte()))
+    add(ModDep.incompatible("mekanism_unleashed", "0.0.0".gte(), "Incompatible Mixins"))
 }
 
 setupMetaDataTask(modId, Constants.Mod.NAME, generateModMetadata, mainModDependencies)
@@ -423,9 +425,10 @@ tasks {
             setShared()
 
             addRequirement("mekanism-empowered-core")
+            addOptional("mekanism-extras")
+            addOptional("evolved-mekanism")
             addOptional("mekansim-more-machine")
 
-            addIncompatibility("mekanism-extras")
             addIncompatibility("mekanism-unleashed")
         }
 

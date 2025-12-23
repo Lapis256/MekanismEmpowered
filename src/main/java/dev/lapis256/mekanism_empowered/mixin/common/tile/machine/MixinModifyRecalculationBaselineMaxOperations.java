@@ -1,7 +1,7 @@
 package dev.lapis256.mekanism_empowered.mixin.common.tile.machine;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import dev.lapis256.mekanism_empowered.mixin_impl.MixinImplTileMachine;
+import dev.lapis256.mekanism_empowered.mixin_impl.MixinImplTileMachineKt;
 import mekanism.common.tile.base.TileEntityMekanism;
 import mekanism.common.tile.machine.TileEntityChemicalInfuser;
 import mekanism.common.tile.machine.TileEntityChemicalWasher;
@@ -31,7 +31,11 @@ import org.spongepowered.asm.mixin.injection.At;
     targets = {
         "com.jerry.mekaf.common.tile.factory.TileEntityCentrifugingFactory",
         "com.jerry.mekaf.common.tile.factory.TileEntityChemicalInfusingFactory",
-        "com.jerry.mekaf.common.tile.factory.TileEntityWashingFactory"
+        "com.jerry.mekaf.common.tile.factory.TileEntityWashingFactory",
+        "com.jerry.meklm.common.tile.machine.TileEntityLargeChemicalInfuser",
+        "com.jerry.meklm.common.tile.machine.TileEntityLargeElectrolyticSeparator",
+        "com.jerry.meklm.common.tile.machine.TileEntityLargeRotaryCondensentrator",
+        "com.jerry.meklm.common.tile.machine.TileEntityLargeSolarNeutronActivator"
     },
     remap = false
 )
@@ -42,6 +46,6 @@ public class MixinModifyRecalculationBaselineMaxOperations extends TileEntityMek
 
     @ModifyExpressionValue(method = "recalculateUpgrades", at = @At(value = "INVOKE", target = "Ljava/lang/Math;pow(DD)D"))
     private double mekanismEmpowered$modifyRecalculationBaselineMaxOperations(double original) {
-        return MixinImplTileMachine.modifyRecalculationBaselineMaxOperations(this, original);
+        return MixinImplTileMachineKt.modifyRecalculationBaselineMaxOperations(this, original);
     }
 }

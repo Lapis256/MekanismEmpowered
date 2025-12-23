@@ -1,4 +1,4 @@
-package dev.lapis256.mekanism_empowered.mixin.common.tile;
+package dev.lapis256.mekanism_empowered.mixin.common.tile.machine;
 
 import dev.lapis256.mekanism_empowered.mixin_impl.MixinImplTileEntityElectricPump;
 import mekanism.common.tile.base.TileEntityMekanism;

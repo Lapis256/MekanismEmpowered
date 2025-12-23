@@ -47,12 +47,16 @@ class MixinModifyRecalculationTarget {
 
         },
         targets = {
-            "com.jerry.mekextras.common.tile.factory.TileEntityAdvancedFactory",
-            "com.jerry.mekextras.common.tile.factory.TileEntityItemStackChemicalToItemStackAdvancedFactory",
-            "com.jerry.mekextras.common.tile.machine.TileEntityAdvanceElectricPump",
+            "com.jerry.mekextras.common.tile.factory.TileEntityExtraFactory",
+            "com.jerry.mekextras.common.tile.factory.TileEntityItemStackChemicalToItemStackExtraFactory",
+            "com.jerry.mekextras.common.tile.machine.TileEntityAdvancedElectricPump",
 
             "com.jerry.mekaf.common.tile.factory.TileEntityAdvancedFactoryBase",
-            "com.jerry.mekmm.common.tile.factory.MMTileEntityFactory"
+            "com.jerry.mekmm.common.tile.factory.TileEntityMoreMachineFactory",
+            "com.jerry.meklm.common.tile.machine.TileEntityLargeChemicalInfuser",
+            "com.jerry.meklm.common.tile.machine.TileEntityLargeElectrolyticSeparator",
+            "com.jerry.meklm.common.tile.machine.TileEntityLargeRotaryCondensentrator",
+            "com.jerry.meklm.common.tile.machine.TileEntityLargeSolarNeutronActivator"
         },
         remap = false
     )
