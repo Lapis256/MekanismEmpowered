@@ -1,4 +1,4 @@
-package dev.lapis256.mekanism_empowered.mixin.common.tile;
+package dev.lapis256.mekanism_empowered.mixin.common.tile.machine;
 
 import com.llamalad7.mixinextras.expression.Definition;
 import com.llamalad7.mixinextras.expression.Expression;

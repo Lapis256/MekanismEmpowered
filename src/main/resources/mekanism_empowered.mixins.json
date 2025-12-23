@@ -14,7 +14,7 @@
         "common.MixinUpgradeBasedUnsignedLongCache",
         "common.tile.MixinModifyRecalculationTarget$Energy",
         "common.tile.MixinModifyRecalculationTarget$Speed",
-        "common.tile.MixinTileEntityAdvanceElectricPump",
+        "common.tile.machine.MixinTileEntityAdvanceElectricPump",
         "common.tile.MixinTileEntityConfigurableMachine",
         "common.tile.component.MixinTileComponentEjector",
         "common.tile.component.MixinTileComponentUpgrade",
