@@ -1,22 +1,21 @@
 package dev.lapis256.mekanism_empowered.common.init
 
-import com.jerry.mekextras.common.registries.ExtraBlockTypes
-import com.jerry.mekextras.common.tier.AdvancedFactoryTier
-import com.jerry.mekextras.common.tile.machine.TileEntityAdvanceElectricPump
+import com.jerry.mekextras.common.tile.machine.TileEntityAdvancedElectricPump
 import dev.lapis256.mekanism_empowered.api.MekEmpUpgrade
 import dev.lapis256.mekanism_empowered.core.common.upgrade.UpgradeInfoHandler
 import dev.lapis256.mekanism_empowered.core.common.util.AdditionalUpgradeUtil
 import dev.lapis256.mekanism_empowered.core.extension.getInstalledOrDefault
-import dev.lapis256.mekanism_empowered.integration.MekExt
+import dev.lapis256.mekanism_empowered.integration.Integrations
+import dev.lapis256.mekanism_empowered.integration.mods.MekExt
+import dev.lapis256.mekanism_empowered.integration.provider.FactoryUpgradeIntegration
 import mekanism.api.Upgrade
 import mekanism.common.content.blocktype.FactoryType
 import mekanism.common.registries.MekanismBlockTypes
-import mekanism.common.tier.FactoryTier
 import mekanism.common.tile.interfaces.IUpgradeTile
 import mekanism.common.tile.machine.TileEntityElectricPump
+import mekanism.common.util.EnumUtils
 import mekanism.common.util.UpgradeUtils
 import net.minecraft.network.chat.Component
-import net.neoforged.fml.ModList
 
 
 object MekEmpUpgrades {
@@ -33,9 +32,9 @@ object MekEmpUpgrades {
 
         UpgradeInfoHandler.register(MekEmpUpgrade.EMPOWERED_SPEED, UpgradeUtils::getExpScaledInfo)
             .registerOverrideForTiles(TileEntityElectricPump::class) { it, _ -> empoweredSpeedUpgradePumpInfo.invoke(it) }
-            .conditionallyRegisterOverride(ModList.get().isLoaded("mekanism_extras")) {
-                registerOverrideForTiles(TileEntityAdvanceElectricPump::class) { it, _ -> empoweredSpeedUpgradePumpInfo.invoke(it) }
-            }
+            .conditionallyRegisterOverride(MekExt.isLoaded) {
+                registerOverrideForTiles(TileEntityAdvancedElectricPump::class) { it, _ -> empoweredSpeedUpgradePumpInfo.invoke(it) }
+            } // TODO: Move to MekExt integration
 
         UpgradeInfoHandler.register(MekEmpUpgrade.EMPOWERED_ENERGY, UpgradeUtils::getMultScaledInfo)
 
@@ -57,15 +56,15 @@ object MekEmpUpgrades {
         AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.PURIFICATION_CHAMBER, *ITEM_IN_OUT_MACHINE_UPGRADES)
         AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.CHEMICAL_INJECTION_CHAMBER, *ITEM_IN_OUT_MACHINE_UPGRADES)
 
-        registerFactoryUpgrades(FactoryType.ENRICHING, ITEM_IN_OUT_MACHINE_UPGRADES)
-        registerFactoryUpgrades(FactoryType.CRUSHING, ITEM_IN_OUT_MACHINE_UPGRADES)
-        registerFactoryUpgrades(FactoryType.SMELTING, ITEM_IN_OUT_MACHINE_UPGRADES)
-        registerFactoryUpgrades(FactoryType.SAWING, ITEM_IN_OUT_MACHINE_UPGRADES)
-        registerFactoryUpgrades(FactoryType.COMPRESSING, ITEM_IN_OUT_MACHINE_UPGRADES)
-        registerFactoryUpgrades(FactoryType.COMBINING, ITEM_IN_OUT_MACHINE_UPGRADES)
-        registerFactoryUpgrades(FactoryType.INFUSING, ITEM_IN_OUT_MACHINE_UPGRADES)
-        registerFactoryUpgrades(FactoryType.PURIFYING, ITEM_IN_OUT_MACHINE_UPGRADES)
-        registerFactoryUpgrades(FactoryType.INJECTING, ITEM_IN_OUT_MACHINE_UPGRADES)
+        addSupportedFactoryUpgrades(FactoryType.ENRICHING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addSupportedFactoryUpgrades(FactoryType.CRUSHING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addSupportedFactoryUpgrades(FactoryType.SMELTING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addSupportedFactoryUpgrades(FactoryType.SAWING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addSupportedFactoryUpgrades(FactoryType.COMPRESSING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addSupportedFactoryUpgrades(FactoryType.COMBINING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addSupportedFactoryUpgrades(FactoryType.INFUSING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addSupportedFactoryUpgrades(FactoryType.PURIFYING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addSupportedFactoryUpgrades(FactoryType.INJECTING, *ITEM_IN_OUT_MACHINE_UPGRADES)
 
         AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.PRESSURIZED_REACTION_CHAMBER, *ITEM_IN_OUT_MACHINE_UPGRADES)
         AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.FORMULAIC_ASSEMBLICATOR, *ITEM_IN_OUT_MACHINE_UPGRADES)
@@ -91,23 +90,16 @@ object MekEmpUpgrades {
 
         AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.DIGITAL_MINER, *SPEED_AND_ENERGY_UPGRADES)
         AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.ELECTRIC_PUMP, *SPEED_AND_ENERGY_UPGRADES)
-
-        if (ModList.get().isLoaded("mekanism_extras")) {
-            AdditionalUpgradeUtil.addSupported(ExtraBlockTypes.ADVANCE_ELECTRIC_PUMP, *SPEED_AND_ENERGY_UPGRADES)
-        }
     }
 
-    private fun registerFactoryUpgrades(type: FactoryType, upgrades: Array<Upgrade>) {
-        AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.getFactory(FactoryTier.BASIC, type), *upgrades)
-        AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.getFactory(FactoryTier.ADVANCED, type), *upgrades)
-        AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.getFactory(FactoryTier.ELITE, type), *upgrades)
-        AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.getFactory(FactoryTier.ULTIMATE, type), *upgrades)
+    fun addSupportedFactoryUpgrades(type: FactoryType, vararg upgrades: Upgrade) {
+        for (tier in EnumUtils.FACTORY_TIERS) {
+            val blockType = MekanismBlockTypes.getFactory(tier, type) ?: continue
+            AdditionalUpgradeUtil.addSupported(blockType, *upgrades)
+        }
 
-        if (MekExt.loaded) {
-            AdditionalUpgradeUtil.addSupported(ExtraBlockTypes.getAdvancedFactory(AdvancedFactoryTier.ABSOLUTE, type), *upgrades)
-            AdditionalUpgradeUtil.addSupported(ExtraBlockTypes.getAdvancedFactory(AdvancedFactoryTier.SUPREME, type), *upgrades)
-            AdditionalUpgradeUtil.addSupported(ExtraBlockTypes.getAdvancedFactory(AdvancedFactoryTier.COSMIC, type), *upgrades)
-            AdditionalUpgradeUtil.addSupported(ExtraBlockTypes.getAdvancedFactory(AdvancedFactoryTier.INFINITE, type), *upgrades)
+        Integrations.getProviders<FactoryUpgradeIntegration>().forEach {
+            it.addSupportedFactoryUpgrades(type, *upgrades)
         }
     }
 }

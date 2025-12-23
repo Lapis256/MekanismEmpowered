@@ -16,13 +16,13 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 
 @Pseudo
-@Mixin(targets = "com.jerry.mekextras.common.tile.machine.TileEntityAdvanceElectricPump", remap = false)
+@Mixin(targets = "com.jerry.mekextras.common.tile.machine.TileEntityAdvancedElectricPump", remap = false)
 public class MixinTileEntityAdvanceElectricPump extends TileEntityMekanism {
     public MixinTileEntityAdvanceElectricPump(Holder<Block> blockProvider, BlockPos pos, BlockState state) {
         super(blockProvider, pos, state);
     }
 
-    @Definition(id = "upgradeComponent", field = "Lcom/jerry/mekextras/common/tile/machine/TileEntityAdvanceElectricPump;upgradeComponent:Lmekanism/common/tile/component/TileComponentUpgrade;")
+    @Definition(id = "upgradeComponent", field = "Lcom/jerry/mekextras/common/tile/machine/TileEntityAdvancedElectricPump;upgradeComponent:Lmekanism/common/tile/component/TileComponentUpgrade;")
     @Definition(id = "getUpgrades", method = "Lmekanism/common/tile/component/TileComponentUpgrade;getUpgrades(Lmekanism/api/Upgrade;)I")
     @Definition(id = "SPEED", field = "Lmekanism/api/Upgrade;SPEED:Lmekanism/api/Upgrade;")
     @Expression("? * (1 + this.upgradeComponent.getUpgrades(SPEED))")

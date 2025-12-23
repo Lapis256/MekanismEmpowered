@@ -1,7 +1,7 @@
 package dev.lapis256.mekanism_empowered.core.mixin.common;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.mojang.serialization.Codec;
+import com.llamalad7.mixinextras.sugar.Local;
 import dev.lapis256.mekanism_empowered.core.mixin_impl.MixinImplUpgrade;
 import mekanism.api.Upgrade;
 import mekanism.api.text.EnumColor;
@@ -30,10 +30,6 @@ public class MixinUpgrade {
     @Mutable
     private static Upgrade[] $VALUES;
 
-    @Shadow
-    @Final
-    public static Codec<Upgrade> CODEC;
-
     @Unique
     private static MixinImplUpgrade mekanismEmpoweredCore$impl;
 
@@ -48,23 +44,13 @@ public class MixinUpgrade {
         $VALUES = mekanismEmpoweredCore$impl.initAdditionalUpgrades($VALUES);
     }
 
-    @Inject(method = "<clinit>", at = @At(value = "RETURN"))
-    private static void mekanismEmpoweredCore$initAdditionalCodec(CallbackInfo ci) {
-        mekanismEmpoweredCore$impl.setCodec(CODEC);
-    }
-
-    @ModifyVariable(method = "buildMap", at = @At(value = "STORE", ordinal = 0), ordinal = 0)
+    @ModifyVariable(method = "buildMap", at = @At(value = "STORE", ordinal = 0), name = "upgrades")
     private static Map<Upgrade, Integer> mekanismEmpoweredCore$buildAdditionalMap(@Nullable Map<Upgrade, Integer> upgrades, @Nullable CompoundTag nbtTags) {
         return mekanismEmpoweredCore$impl.buildAdditionalMap(upgrades, nbtTags);
     }
 
     @ModifyExpressionValue(method = "saveMap", at = @At(value = "INVOKE", target = "Ljava/util/Map;entrySet()Ljava/util/Set;"))
-    private static Set<Map.Entry<Upgrade, Integer>> mekanismEmpoweredCore$filterUpgrades(Set<Map.Entry<Upgrade, Integer>> original) {
-        return mekanismEmpoweredCore$impl.filterUpgrades(original);
-    }
-
-    @Inject(method = "saveMap", at = @At("RETURN"))
-    private static void mekanismEmpoweredCore$saveAdditionalMap(Map<Upgrade, Integer> upgrades, CompoundTag nbtTags, CallbackInfo ci) {
-        mekanismEmpoweredCore$impl.saveAdditionalMap(upgrades, nbtTags);
+    private static Set<Map.Entry<Upgrade, Integer>> mekanismEmpoweredCore$filterUpgrades(Set<Map.Entry<Upgrade, Integer>> upgrades, @Local(argsOnly = true) CompoundTag nbtTags) {
+        return mekanismEmpoweredCore$impl.saveAdditionalMap(upgrades, nbtTags);
     }
 }

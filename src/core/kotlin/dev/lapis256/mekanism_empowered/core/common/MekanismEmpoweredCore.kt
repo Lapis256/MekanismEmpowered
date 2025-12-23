@@ -21,8 +21,4 @@ class MekanismEmpoweredCore(modContainer: ModContainer, modEventBus: IEventBus) 
         GlobalLootModifierSerializers.REGISTRY.register(modEventBus)
         LootConditionTypes.REGISTRY.register(modEventBus)
     }
-
-    object SerializationConstants {
-        const val UPGRADES = "additional_upgrades"
-    }
 }
