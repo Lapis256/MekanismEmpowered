@@ -1,15 +1,10 @@
 package dev.lapis256.mekanism_empowered.integration.mods
 
 import dev.lapis256.mekanism_empowered.common.init.MekEmpUpgrades.ITEM_IN_OUT_MACHINE_UPGRADES
-import dev.lapis256.mekanism_empowered.common.util.AttributeUtil
 import dev.lapis256.mekanism_empowered.core.common.util.AdditionalUpgradeUtil
-import dev.lapis256.mekanism_empowered.integration.IntegrationProviderRegistry
 import dev.lapis256.mekanism_empowered.integration.ModIntegration
-import dev.lapis256.mekanism_empowered.integration.provider.FactoryParallelIntegration
-import io.github.masyumero.emextras.common.block.attribute.EMExtraAttributeTier
 import io.github.masyumero.emextras.common.content.blocktype.EMExtraFactoryType
 import io.github.masyumero.emextras.common.registry.EMExtrasBlockType
-import io.github.masyumero.emextras.common.tier.EMExtraFactoryTier
 import io.github.masyumero.emextras.common.util.EMExtraEnumUtils
 import mekanism.api.Upgrade
 
@@ -39,12 +34,5 @@ internal object EvoMekExt : ModIntegration {
 
             AdditionalUpgradeUtil.addSupported(EMExtrasBlockType.getEMExtraFactory(tier, type), *upgrades)
         }
-    }
-
-    override fun initProvider(registry: IntegrationProviderRegistry) {
-        registry.registerProvider(FactoryParallelIntegration {
-            val tier = AttributeUtil.get(it.blockType, EMExtraAttributeTier::class)?.tier as? EMExtraFactoryTier
-            tier?.processes ?: 1
-        })
     }
 }

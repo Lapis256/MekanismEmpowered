@@ -3,7 +3,6 @@ package dev.lapis256.mekanism_empowered.common.tile.component
 import dev.lapis256.mekanism_empowered.api.MekEmpSerializationConstants
 import dev.lapis256.mekanism_empowered.api.MekEmpUpgrade
 import dev.lapis256.mekanism_empowered.common.config.MekEmpGeneralConfig.AutoInserter
-import dev.lapis256.mekanism_empowered.common.util.parallelCount
 import dev.lapis256.mekanism_empowered.core.api.tile.component.IAdditionalTileComponent
 import dev.lapis256.mekanism_empowered.core.extension.canInput
 import dev.lapis256.mekanism_empowered.core.extension.getInstalledOrDefault
@@ -47,10 +46,6 @@ import kotlin.math.pow
 
 class TileComponentInserter(private val tile: TileEntityConfigurableMachine) : ITileComponent, IAdditionalTileComponent {
     private var tickDelay = 0
-
-    private val blockPos get() = tile.blockPos
-
-    private val parallelCount by lazy { tile.parallelCount }
 
     init {
         tile.addComponent(this)
@@ -204,7 +199,7 @@ class TileComponentInserter(private val tile: TileEntityConfigurableMachine) : I
         }
     }
 
-    private fun getTarget(level: ServerLevel, side: Direction) = level.getBlockEntity(blockPos.relative(side))
+    private fun getTarget(level: ServerLevel, side: Direction) = level.getBlockEntity(tile.blockPos.relative(side))
 
     private fun getSidesForData(info: ConfigInfo, facing: Direction, dataType: DataType): MutableSet<Direction> {
         return EnumSet.noneOf(Direction::class.java).also {
@@ -238,10 +233,10 @@ class TileComponentInserter(private val tile: TileEntityConfigurableMachine) : I
 
     private fun getIOCapacity(type: TransmissionType): Long {
         val capacityRatio = tile.getInstalledOrDefault(MekEmpUpgrade.IO_CAPACITY) / MekEmpUpgrade.IO_CAPACITY.max.toDouble()
-        val rateMultiplier = 1 + 32 * capacityRatio * parallelCount
+        val rateMultiplier = 1 + 32 * capacityRatio
         return MathUtils.clampToLong(
             when {
-                type == TransmissionType.ITEM -> AutoInserter.itemRate * 8.0.pow(capacityRatio) * parallelCount
+                type == TransmissionType.ITEM -> AutoInserter.itemRate * 8.0.pow(capacityRatio)
                 type == TransmissionType.FLUID -> AutoInserter.fluidRate * rateMultiplier
                 type == TransmissionType.ENERGY -> AutoInserter.energyRate * rateMultiplier
                 type.isChemical -> AutoInserter.chemicalRate * rateMultiplier

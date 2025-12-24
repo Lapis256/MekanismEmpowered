@@ -24,12 +24,6 @@ import java.util.Map;
 import java.util.Set;
 
 
-/**
- * 追加のアップグレードを Mekanism の Upgrade 列挙型に注入します。
- * アップグレードの追加によって保存時とずれないように別途名前付きで保存・読み込みを行います。
- * また、これらの対策を講じずに同様の変更を行う他の Mod との併用時にそれらの Mod も含めた保護を行うため、確実に優先される必要があるため、優先度を最大に設定しています。
- * もし、このコメントを読んでいるあなたが Mod 開発者であり、同様の変更を行う場合は、この Mod によるアップグレードの追加機能の使用を検討してください。
- */
 @Mixin(value = Upgrade.class, remap = false, priority = Integer.MAX_VALUE)
 public class MixinUpgrade {
     @Shadow
