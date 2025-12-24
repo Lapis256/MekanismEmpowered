@@ -14,11 +14,11 @@
         "common.MixinUpgradeBasedUnsignedLongCache",
         "common.tile.MixinModifyRecalculationTarget$Energy",
         "common.tile.MixinModifyRecalculationTarget$Speed",
-        "common.tile.machine.MixinTileEntityAdvanceElectricPump",
         "common.tile.MixinTileEntityConfigurableMachine",
         "common.tile.component.MixinTileComponentEjector",
         "common.tile.component.MixinTileComponentUpgrade",
         "common.tile.machine.MixinModifyRecalculationBaselineMaxOperations",
+        "common.tile.machine.MixinTileEntityAdvanceElectricPump",
         "common.tile.machine.MixinTileEntityElectricPump",
         "common.tile.machine.MixinTileEntityPressurizedReactionChamber",
         "common.tile.qio.MixinTileEntityQIOExporter",
@@ -26,7 +26,9 @@
         "common.tile.qio.MixinTileEntityQIOImporter"
     ],
     "client": [
-        "client.MixinGuiConfigurableTile"
+        "client.gui.MixinGuiConfigurableTile",
+        "client.gui.MixinGuiMekanism",
+        "client.gui.MixinGuiMekanismTile"
     ],
     "server": [
     ],

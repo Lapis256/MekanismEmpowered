@@ -28,8 +28,16 @@ class GuiSideInserterConfigurationTab<TILE>(
         setTooltip(MekEmpLang.INSERTER_CONFIG)
     }
 
+    var latestWindow: GuiSideInserterConfiguration<TILE>? = null
+
     override fun createWindow(windowData: SelectedWindowData) =
         GuiSideInserterConfiguration<TILE>(gui(), (guiWidth - 156) / 2, 15, dataSource, windowData)
+            .also { latestWindow = it }
+
+    override fun onWindowClose() {
+        super.onWindowClose()
+        latestWindow = null
+    }
 
     override fun getNextWindowData() = WINDOW_DATA
 

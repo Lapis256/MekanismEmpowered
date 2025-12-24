@@ -33,15 +33,13 @@ class GuiSideInserterConfiguration<TILE>(
     }
 
     private fun addSideDataButton(side: RelativeSide, xPos: Int, yPos: Int) {
-        sideConfigButtons.put(
-            side, addChild(
-                SideInserterButton(
-                    gui(),
-                    relativeX + xPos,
-                    relativeY + yPos,
-                    tile,
-                    side
-                )
+        sideConfigButtons[side] = addChild(
+            SideInserterButton(
+                gui(),
+                relativeX + xPos,
+                relativeY + yPos,
+                tile,
+                side
             )
         )
     }
