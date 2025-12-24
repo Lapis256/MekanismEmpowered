@@ -2,14 +2,17 @@ package dev.lapis256.mekanism_empowered.common.tile.component
 
 import dev.lapis256.mekanism_empowered.api.MekEmpSerializationConstants
 import dev.lapis256.mekanism_empowered.api.MekEmpUpgrade
-import dev.lapis256.mekanism_empowered.common.config.MekEmpGeneralConfig
+import dev.lapis256.mekanism_empowered.common.config.MekEmpGeneralConfig.AutoInsert
 import dev.lapis256.mekanism_empowered.core.common.util.WrappedCapabilityCache
 import dev.lapis256.mekanism_empowered.core.extension.canInput
+import dev.lapis256.mekanism_empowered.core.extension.fractionUpgrades
 import dev.lapis256.mekanism_empowered.core.extension.getInstalledOrDefault
 import dev.lapis256.mekanism_empowered.core.extension.isUpgradeInstalled
 import dev.lapis256.mekanism_empowered.extension.inserterConfig
 import mekanism.api.Action
 import mekanism.api.AutomationType
+import mekanism.api.chemical.IChemicalHandler
+import mekanism.api.energy.IStrictEnergyHandler
 import mekanism.api.math.MathUtils
 import mekanism.common.lib.transmitter.TransmissionType
 import mekanism.common.tile.component.ITileComponent
@@ -26,6 +29,7 @@ import net.minecraft.core.Direction
 import net.minecraft.core.HolderLookup
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.server.level.ServerLevel
+import net.neoforged.neoforge.fluids.capability.IFluidHandler
 import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction
 import net.neoforged.neoforge.items.IItemHandler
 import java.util.*
@@ -33,31 +37,40 @@ import kotlin.math.pow
 
 
 class TileComponentInserter(private val tile: TileEntityConfigurableMachine) : ITileComponent {
-    private val wrappedCapabilityCaches = EnumMap<TransmissionType, WrappedCapabilityCache<*, *>>(TransmissionType::class.java)
+    private val wrappedCapabilityCaches = EnumMap<TransmissionType, EnumMap<Direction, WrappedCapabilityCache<*>>>(TransmissionType::class.java)
 
-    private var tickDelay = 0
+    /**
+     * @param side 搬入設定の面方向
+     */
+    private inline fun <reified CAPABILITY : Any> getCapability(type: TransmissionType, side: Direction): CAPABILITY? {
+        val typeCaches = wrappedCapabilityCaches.computeIfAbsent(type) { EnumMap(Direction::class.java) }
+        val cache = typeCaches.computeIfAbsent(side) {
+            val level = tile.level as ServerLevel
+            val pos = tile.blockPos.relative(side)
+            WrappedCapabilityCache.createFromTransmissionType(type, level, pos, side.opposite)
+        }
 
-    private val sideConfig = tile.config
-
-    private var ioCapacities = buildIOCapacities()
+        return cache.capability as? CAPABILITY
+    }
 
     init {
         tile.addComponent(this)
     }
+
+    private var tickDelay = 0
 
     fun tickServer() {
         if (!tile.isUpgradeInstalled(MekEmpUpgrade.AUTO_INSERTER)) {
             return
         }
 
-        ioCapacities = buildIOCapacities()
-
         for (type in EnumUtils.TRANSMISSION_TYPES) {
-            val info = sideConfig.getConfig(type) ?: continue
+            val info = tile.config.getConfig(type) ?: continue
 
             if (type == TransmissionType.ITEM) {
                 if (tickDelay == 0) {
-                    insertItems(tile.direction, info)
+                    insert(tile.direction, type, info)
+                    resetTickDelay()
                 } else {
                     tickDelay--
                 }
@@ -67,10 +80,13 @@ class TileComponentInserter(private val tile: TileEntityConfigurableMachine) : I
         }
     }
 
-    private fun insert(facing: Direction, type: TransmissionType, info: ConfigInfo) {
-        val level = tile.level as? ServerLevel ?: return
-        val typeCaches = wrappedCapabilityCaches.computeIfAbsent(type) { WrappedCapabilityCache.newCache(type) } ?: return
+    private fun resetTickDelay() {
+        val max = MekEmpUpgrade.FAST_ITEM_INSERT.max.toDouble()
+        val installed = tile.getInstalledOrDefault(MekEmpUpgrade.FAST_ITEM_INSERT)
+        tickDelay = MathUtils.clampToInt((SharedConstants.TICKS_PER_SECOND + 1.0).pow((max - installed) / max) - 1)
+    }
 
+    private fun insert(facing: Direction, type: TransmissionType, info: ConfigInfo) {
         for (dataType in info.supportedDataTypes) {
             if (!dataType.canInput) {
                 continue
@@ -78,121 +94,123 @@ class TileComponentInserter(private val tile: TileEntityConfigurableMachine) : I
             val slotInfo = info.getSlotInfo(dataType) ?: continue
 
             for (side in getSidesForData(info, facing, dataType)) {
-                when {
-                    slotInfo is ChemicalSlotInfo && typeCaches is WrappedCapabilityCache.Chemical -> {
-                        val capability = typeCaches.getCapability(level, tile.blockPos, side) ?: return
-
-                        for (tank in slotInfo.tanks) {
-                            val simulated = capability.extractChemical(ioCapacities[type] ?: 1024, Action.SIMULATE)
-                            if (simulated.isEmpty) {
-                                continue
-                            }
-                            val remaining = tank.insert(simulated, Action.EXECUTE, AutomationType.EXTERNAL)
-                            simulated.amount -= remaining.amount
-                            capability.extractChemical(simulated, Action.EXECUTE)
-                        }
-                    }
-
-                    slotInfo is FluidSlotInfo && typeCaches is WrappedCapabilityCache.Fluid -> {
-                        val capability = typeCaches.getCapability(level, tile.blockPos, side) ?: return
-
-                        for (tank in slotInfo.tanks) {
-                            val simulated = capability.drain(ioCapacities[type]?.toInt() ?: 1024, FluidAction.SIMULATE)
-                            if (simulated.isEmpty) {
-                                continue
-                            }
-                            val remaining = tank.insert(simulated, Action.EXECUTE, AutomationType.EXTERNAL)
-                            simulated.amount -= remaining.amount
-                            capability.fill(simulated, FluidAction.EXECUTE)
-                        }
-                    }
-
-                    slotInfo is EnergySlotInfo && typeCaches is WrappedCapabilityCache.Energy -> {
-                        val capability = typeCaches.getCapability(level, tile.blockPos, side) ?: return
-
-                        for (container in slotInfo.containers) {
-                            var simulated = capability.extractEnergy(ioCapacities[type] ?: 1024, Action.SIMULATE)
-                            if (simulated <= 0) {
-                                continue
-                            }
-                            val remaining = container.insert(simulated, Action.EXECUTE, AutomationType.EXTERNAL)
-                            simulated -= remaining
-                            capability.insertEnergy(simulated, Action.EXECUTE)
-                        }
-                    }
+                when (slotInfo) {
+                    is ChemicalSlotInfo -> insertChemical(slotInfo, getCapability(type, side) ?: continue)
+                    is FluidSlotInfo -> insertFluid(slotInfo, getCapability(type, side) ?: continue)
+                    is EnergySlotInfo -> insertEnergy(slotInfo, getCapability(type, side) ?: continue)
+                    is InventorySlotInfo -> insertItem(slotInfo, getCapability(type, side) ?: continue)
                 }
             }
         }
     }
 
-    private fun insertItems(facing: Direction, info: ConfigInfo) {
-        val level = tile.level as? ServerLevel ?: return
-        val typeCaches = wrappedCapabilityCaches.computeIfAbsent(TransmissionType.ITEM) { WrappedCapabilityCache.Item() }
-
-        for (dataType in info.supportedDataTypes) {
-            if (!dataType.canInput) {
+    /**
+     * @param slotInfo 搬入先の [ChemicalSlotInfo]
+     * @param fromHandler 搬入元の [IChemicalHandler]
+     */
+    private fun insertChemical(slotInfo: ChemicalSlotInfo, fromHandler: IChemicalHandler) {
+        for (tank in slotInfo.tanks) {
+            val simulated = fromHandler.extractChemical(getIOCapacity(TransmissionType.CHEMICAL), Action.SIMULATE)
+            if (simulated.isEmpty) {
                 continue
             }
-            val slotInfo = info.getSlotInfo(dataType) as? InventorySlotInfo ?: continue
+            val remaining = tank.insert(simulated, Action.EXECUTE, AutomationType.EXTERNAL)
+            val insertedAmount = simulated.amount - remaining.amount
+            fromHandler.extractChemical(insertedAmount, Action.EXECUTE)
+        }
+    }
 
-            for (side in getSidesForData(info, facing, dataType)) {
-                val capability = typeCaches.getCapability(level, tile.blockPos, side) as? IItemHandler ?: continue
+    /**
+     * @param slotInfo 搬入先の [FluidSlotInfo]
+     * @param fromHandler 搬入元の [IFluidHandler]
+     */
+    private fun insertFluid(slotInfo: FluidSlotInfo, fromHandler: IFluidHandler) {
+        for (toTank in slotInfo.tanks) {
+            val simulated = fromHandler.drain(getIOCapacity(TransmissionType.FLUID).toInt(), FluidAction.SIMULATE)
+            if (simulated.isEmpty) {
+                continue
+            }
+            val remaining = toTank.insert(simulated, Action.EXECUTE, AutomationType.EXTERNAL)
+            val insertedAmount = simulated.amount - remaining.amount
+            fromHandler.drain(insertedAmount, FluidAction.EXECUTE)
+        }
+    }
 
-                val notEmptySlots = (0..<capability.slots).filterNot { capability.getStackInSlot(it).isEmpty }.toMutableList()
-                if (notEmptySlots.isEmpty()) {
+    /**
+     * @param slotInfo 搬入先の [EnergySlotInfo]
+     * @param fromHandler 搬入元の [IStrictEnergyHandler]
+     */
+    private fun insertEnergy(slotInfo: EnergySlotInfo, fromHandler: IStrictEnergyHandler) {
+        for (toContainer in slotInfo.containers) {
+            val simulated = fromHandler.extractEnergy(getIOCapacity(TransmissionType.ENERGY), Action.SIMULATE)
+            if (simulated <= 0) {
+                continue
+            }
+
+            val remaining = toContainer.insert(simulated, Action.EXECUTE, AutomationType.EXTERNAL)
+            val inserted = simulated - remaining
+            fromHandler.extractEnergy(inserted, Action.EXECUTE)
+        }
+    }
+
+
+    /**
+     * @param slotInfo 搬入先の [InventorySlotInfo]
+     * @param fromHandler 搬入元の面方向
+     */
+    private fun insertItem(slotInfo: InventorySlotInfo, fromHandler: IItemHandler) {
+        val notEmptySlots = (0..<fromHandler.slots).filterNot { fromHandler.getStackInSlot(it).isEmpty }.toMutableList()
+        if (notEmptySlots.isEmpty()) {
+            return
+        }
+
+        for (toSlot in slotInfo.slots) {
+            var extractCount = getIOCapacity(TransmissionType.ITEM).toInt()
+
+            for (i in notEmptySlots.toList()) {
+                val simulated = fromHandler.extractItem(i, extractCount, true)
+                if (simulated.isEmpty) {
+                    notEmptySlots.remove(i)
                     continue
                 }
 
-                for (slot in slotInfo.slots) {
-                    var extractCount = ioCapacities[TransmissionType.ITEM]?.toInt() ?: 8
+                val remaining = toSlot.insertItem(simulated, Action.EXECUTE, AutomationType.EXTERNAL)
+                val insertedCount = simulated.count - remaining.count
+                extractCount -= insertedCount
+                fromHandler.extractItem(i, insertedCount, false)
 
-                    for (i in notEmptySlots.toList()) {
-                        val simulated = capability.extractItem(i, extractCount, true)
-                        if (simulated.isEmpty) {
-                            notEmptySlots.remove(i)
-                            continue
-                        }
-
-                        val remaining = slot.insertItem(simulated, Action.EXECUTE, AutomationType.EXTERNAL)
-                        simulated.count -= remaining.count
-                        extractCount -= simulated.count
-                        capability.extractItem(i, simulated.count, false)
-
-                        if (extractCount <= 0) {
-                            break
-                        }
-                    }
+                if (extractCount <= 0) {
+                    break
                 }
             }
         }
+    }
 
-        tickDelay = run {
-            val max = MekEmpUpgrade.FAST_ITEM_INSERT.max.toDouble()
-            val installed = tile.getInstalledOrDefault(MekEmpUpgrade.FAST_ITEM_INSERT)
-            MathUtils.clampToInt((SharedConstants.TICKS_PER_SECOND + 1.0).pow((max - installed) / max) - 1)
+    private fun getSidesForData(info: ConfigInfo, facing: Direction, dataType: DataType): MutableSet<Direction> {
+        return EnumSet.noneOf(Direction::class.java).also {
+            for ((key, value) in info.sideConfig) {
+                if (value == dataType && tile.inserterConfig.isSideEnabled(key)) {
+                    it.add(key.getDirection(facing))
+                }
+            }
         }
+    }
+
+    private fun getIOCapacity(type: TransmissionType): Long {
+        val capacityRatio = tile.fractionUpgrades(MekEmpUpgrade.IO_CAPACITY)
+        val rateMultiplier = 1 + 32 * capacityRatio
+        return MathUtils.clampToLong(
+            when (type) {
+                TransmissionType.ITEM -> AutoInsert.itemRate * 8.0.pow(capacityRatio)
+                TransmissionType.FLUID -> AutoInsert.fluidRate * rateMultiplier
+                TransmissionType.ENERGY -> AutoInsert.energyRate * rateMultiplier
+                TransmissionType.CHEMICAL -> AutoInsert.chemicalRate * rateMultiplier
+                else -> error("Unsupported transmission type: $type")
+            }
+        )
     }
 
     override fun getComponentKey() = MekEmpSerializationConstants.COMPONENT_INSERTER
     override fun deserialize(componentTag: CompoundTag, provider: HolderLookup.Provider) = Unit
     override fun serialize(provider: HolderLookup.Provider) = CompoundTag()
-
-    private fun getSidesForData(info: ConfigInfo, facing: Direction, dataType: DataType): MutableSet<Direction> {
-        return EnumSet.noneOf(Direction::class.java).also {
-            for (entry in info.sideConfig) {
-                if (entry.value == dataType && tile.inserterConfig.isSideEnabled(entry.key)) {
-                    it.add(entry.key.getDirection(facing))
-                }
-            }
-        }
-    }
-
-    private fun buildIOCapacities() = buildMap {
-        val installed = tile.getInstalledOrDefault(MekEmpUpgrade.IO_CAPACITY)
-        val max = MekEmpUpgrade.IO_CAPACITY.max.toDouble()
-        put(TransmissionType.ITEM, MathUtils.clampToLong(MekEmpGeneralConfig.AutoInsert.itemRate * 8.0.pow(installed / max)))
-        put(TransmissionType.CHEMICAL, MathUtils.clampToLong(MekEmpGeneralConfig.AutoInsert.chemicalRate * (1 + 32 * (installed / max))))
-        put(TransmissionType.FLUID, MathUtils.clampToLong(MekEmpGeneralConfig.AutoInsert.fluidRate * (1 + 32 * (installed / max))))
-        put(TransmissionType.ENERGY, MathUtils.clampToLong(MekEmpGeneralConfig.AutoInsert.energyRate * (1 + 32 * (installed / max))))
-    }
 }
