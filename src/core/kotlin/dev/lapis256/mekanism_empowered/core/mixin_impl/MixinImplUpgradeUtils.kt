@@ -6,8 +6,5 @@ import mekanism.common.tile.interfaces.ITileUpgradable
 import net.minecraft.network.chat.Component
 
 
-object MixinImplUpgradeUtils {
-    @JvmStatic
-    fun modifyAdditionalUpgradeInfo(tile: Upgrade.IUpgradeInfoHandler, upgrade: Upgrade, original: List<Component>) =
-        UpgradeInfoHandler.getInfo(tile as ITileUpgradable, upgrade) ?: original
-}
+fun modifyAdditionalUpgradeInfo(tile: Upgrade.IUpgradeInfoHandler, upgrade: Upgrade, original: List<Component>) =
+    UpgradeInfoHandler.getInfo(tile as ITileUpgradable, upgrade) ?: original

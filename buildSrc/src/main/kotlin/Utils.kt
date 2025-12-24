@@ -1,24 +1,22 @@
+@file:Suppress("unused")
+
 import org.gradle.api.artifacts.MinimalExternalModuleDependency
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.api.provider.Provider
 
 
-@Suppress("unused")
 enum class Order {
     NONE, BEFORE, AFTER;
 }
 
-@Suppress("unused")
 enum class Side {
     CLIENT, SERVER, BOTH;
 }
 
-@Suppress("unused")
 enum class DisplayTest {
     MATCH_VERSION, IGNORE_SERVER_VERSION, IGNORE_ALL_VERSION, NONE;
 }
 
-@Suppress("unused")
 enum class DependencyType {
     REQUIRED, OPTIONAL, INCOMPATIBLE, DISCOURAGED;
 }
@@ -41,7 +39,18 @@ class RangeInclusiveMax(min: String, max: String) : VersionRange("($min,$max]")
 
 class Or(vararg ranges: VersionRange) : VersionRange(ranges.joinToString(",") { it.versionRange })
 
-@Suppress("unused")
+fun String.eq() = Equal(this)
+fun String.gt() = GreaterThan(this)
+fun String.gte() = GreaterThanOrEqual(this)
+fun String.lt() = LessThan(this)
+fun String.lte() = LessThanOrEqual(this)
+fun String.neq() = NotEqual(this)
+
+infix operator fun String.rangeTo(other: String) = RangeInclusive(this, other)
+infix operator fun String.rangeUntil(other: String) = RangeInclusiveMin(this, other)
+infix fun String.rangeToExclusive(other: String) = RangeExclusive(this, other)
+infix fun String.rangeToMax(other: String) = RangeInclusiveMax(this, other)
+
 data class ModDep(
     val id: String,
     val versionRange: VersionRange,
@@ -49,9 +58,24 @@ data class ModDep(
     val ordering: Order = Order.NONE,
     val side: Side = Side.BOTH,
     val reason: String? = null
-)
+) {
+    companion object {
+        fun optional(
+            id: String,
+            versionRange: VersionRange,
+            ordering: Order = Order.NONE,
+            side: Side = Side.BOTH,
+            reason: String? = null
+        ) = ModDep(id, versionRange, DependencyType.OPTIONAL, ordering, side, reason)
 
-@Suppress("unused")
+        fun incompatible(
+            id: String,
+            versionRange: VersionRange,
+            reason: String
+        ) = ModDep(id, versionRange, DependencyType.INCOMPATIBLE, Order.NONE, Side.BOTH, reason)
+    }
+}
+
 fun buildDeps(
     vararg deps: ModDep,
     modId: String = Constants.Mod.ID,
@@ -68,14 +92,11 @@ fun buildDeps(
     }
 }
 
-@Suppress("unused")
 fun extractVersionSegments(versionString: String, numberOfSegments: Int = 1) =
     versionString.split(".").take(numberOfSegments).joinToString(".")
 
-@Suppress("unused")
 fun extractVersionSegments(version: Provider<String>, numberOfSegments: Int = 1) =
     extractVersionSegments(version.get(), numberOfSegments)
 
-@Suppress("unused")
-fun DependencyHandler.variantOf(dependency: Provider<MinimalExternalModuleDependency>, classifier: String) =
+fun DependencyHandler.variantOf(dependency: Provider<MinimalExternalModuleDependency>, classifier: String): Provider<MinimalExternalModuleDependency> =
     variantOf(dependency) { classifier(classifier) }

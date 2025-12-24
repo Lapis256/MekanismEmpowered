@@ -2,34 +2,33 @@
     "required": true,
     "minVersion": "0.8",
     "mixinextras": {
-        "minVersion": "0.5.0-rc.2"
+        "minVersion": "0.5.0"
     },
     "package": "dev.lapis256.mekanism_empowered.mixin",
     "refmap": "mekanism_empowered.refmap.json",
     "compatibilityLevel": "JAVA_21",
     "mixins": [
-        "api.MixinBasicChemicalTank",
-        "api.MixinBasicFluidTank",
         "common.MixinMachineEnergyContainer",
         "common.MixinMekanismUtils",
         "common.MixinPacketDropperUse",
         "common.MixinUpgradeBasedUnsignedLongCache",
         "common.tile.MixinModifyRecalculationTarget$Energy",
         "common.tile.MixinModifyRecalculationTarget$Speed",
-        "common.tile.MixinTileEntityAdvanceElectricPump",
         "common.tile.MixinTileEntityConfigurableMachine",
-        "common.tile.MixinTileEntityElectricPump",
-        "common.tile.MixinTileEntityMekanism",
         "common.tile.component.MixinTileComponentEjector",
         "common.tile.component.MixinTileComponentUpgrade",
         "common.tile.machine.MixinModifyRecalculationBaselineMaxOperations",
+        "common.tile.machine.MixinTileEntityAdvanceElectricPump",
+        "common.tile.machine.MixinTileEntityElectricPump",
         "common.tile.machine.MixinTileEntityPressurizedReactionChamber",
         "common.tile.qio.MixinTileEntityQIOExporter",
         "common.tile.qio.MixinTileEntityQIOFilterHandler",
         "common.tile.qio.MixinTileEntityQIOImporter"
     ],
     "client": [
-        "client.MixinGuiConfigurableTile"
+        "client.gui.MixinGuiConfigurableTile",
+        "client.gui.MixinGuiMekanism",
+        "client.gui.MixinGuiMekanismTile"
     ],
     "server": [
     ],

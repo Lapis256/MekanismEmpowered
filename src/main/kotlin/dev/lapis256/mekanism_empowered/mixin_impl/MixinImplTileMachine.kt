@@ -8,18 +8,14 @@ import mekanism.common.tile.prefab.TileEntityConfigurableMachine
 import kotlin.math.pow
 
 
-object MixinImplTileMachine {
-    @JvmStatic
-    fun TileEntityConfigurableMachine.prcRecalculateAdditionalUpgrades() {
-        recalculateUpgrades(MekEmpUpgrade.EMPOWERED_SPEED)
-    }
+fun TileEntityConfigurableMachine.prcRecalculateAdditionalUpgrades() {
+    recalculateUpgrades(MekEmpUpgrade.EMPOWERED_SPEED)
+}
 
-    @JvmStatic
-    fun TileEntityMekanism.modifyRecalculationBaselineMaxOperations(original: Double): Double {
-        if (!isSpeedMaxed()) {
-            return original
-        }
-        val speed = getInstalled(MekEmpUpgrade.EMPOWERED_SPEED) ?: return original
-        return original + 2 * 2.0.pow(speed.toDouble())
+fun TileEntityMekanism.modifyRecalculationBaselineMaxOperations(original: Double): Double {
+    if (!isSpeedMaxed()) {
+        return original
     }
+    val speed = getInstalled(MekEmpUpgrade.EMPOWERED_SPEED) ?: return original
+    return original + 2 * 2.0.pow(speed.toDouble())
 }

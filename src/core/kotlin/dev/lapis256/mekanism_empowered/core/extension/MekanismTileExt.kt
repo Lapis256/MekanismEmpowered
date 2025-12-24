@@ -5,9 +5,9 @@ import mekanism.common.tile.interfaces.IUpgradeTile
 import mekanism.common.util.MekanismUtils
 
 
-fun IUpgradeTile.getInstalled(upgrade: Upgrade) = this.component?.getUpgrades(upgrade)
+fun IUpgradeTile.getInstalled(upgrade: Upgrade) = this.component?.getUpgrades(upgrade)?.takeIf { it > 0 }
 
-fun IUpgradeTile.getInstalledOrDefault(upgrade: Upgrade) = this.getInstalled(upgrade) ?: 0
+fun IUpgradeTile.getInstalledOrDefault(upgrade: Upgrade) = this.component?.getUpgrades(upgrade) ?: 0
 
 fun IUpgradeTile.isUpgradeInstalled(upgrade: Upgrade) = this.component?.isUpgradeInstalled(upgrade) == true
 

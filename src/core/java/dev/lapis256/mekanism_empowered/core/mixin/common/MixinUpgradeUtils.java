@@ -3,7 +3,7 @@ package dev.lapis256.mekanism_empowered.core.mixin.common;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import dev.lapis256.mekanism_empowered.core.common.upgrade.UpgradeItemRegistry;
-import dev.lapis256.mekanism_empowered.core.mixin_impl.MixinImplUpgradeUtils;
+import dev.lapis256.mekanism_empowered.core.mixin_impl.MixinImplUpgradeUtilsKt;
 import mekanism.api.Upgrade;
 import mekanism.common.util.UpgradeUtils;
 import net.minecraft.core.Holder;
@@ -28,7 +28,7 @@ public abstract class MixinUpgradeUtils {
     }
 
     @ModifyExpressionValue(method = "getInfo", at = @At(value = "INVOKE", target = "Lmekanism/api/Upgrade$IUpgradeInfoHandler;getInfo(Lmekanism/api/Upgrade;)Ljava/util/List;"))
-    private static List<Component> mekanismEmpoweredCore$getAdditionalUpgradeInfo(List<Component> original, @Local(argsOnly = true) Upgrade upgrade, @Local Upgrade.IUpgradeInfoHandler infoHandler) {
-        return MixinImplUpgradeUtils.modifyAdditionalUpgradeInfo(infoHandler, upgrade, original);
+    private static List<Component> mekanismEmpoweredCore$getAdditionalUpgradeInfo(List<Component> original, @Local(argsOnly = true) Upgrade upgrade, @Local(name = "upgradeInfoHandler") Upgrade.IUpgradeInfoHandler infoHandler) {
+        return MixinImplUpgradeUtilsKt.modifyAdditionalUpgradeInfo(infoHandler, upgrade, original);
     }
 }
