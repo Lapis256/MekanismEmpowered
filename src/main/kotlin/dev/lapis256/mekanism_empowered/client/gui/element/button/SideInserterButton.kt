@@ -11,13 +11,17 @@ import mekanism.client.gui.IGuiWrapper
 import mekanism.client.gui.element.GuiElement
 import mekanism.client.gui.element.button.BasicColorButton
 import mekanism.client.gui.tooltip.TooltipUtils
+import mekanism.common.block.BlockBounding
 import mekanism.common.network.PacketUtils
 import mekanism.common.tile.base.TileEntityMekanism
 import mekanism.common.tile.interfaces.ISideConfiguration
+import mekanism.common.util.EnumUtils
+import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.components.Tooltip
 import net.minecraft.network.chat.Component
 import net.minecraft.world.item.ItemStack
+import net.minecraft.world.phys.BlockHitResult
 
 
 class SideInserterButton<TILE>(
@@ -30,9 +34,26 @@ class SideInserterButton<TILE>(
     gui, x, y, 22,
     { getColor(tile.inserterConfig, slotPos) }, ::onClick, ::onClick
 ) where TILE : TileEntityMekanism, TILE : ISideConfiguration {
+    private fun shouldActivateByConfig(): Boolean {
+        return EnumUtils.TRANSMISSION_TYPES
+            .asSequence()
+            .mapNotNull { tile.config.getConfig(it) }
+            .any { it.isSideEnabled(slotPos) }
+    }
+
+    private fun shouldActivateByBounding(): Boolean {
+        val level = tile.level ?: return false
+        val side = slotPos.getDirection(tile.direction)
+        val blockPos = tile.blockPos.relative(side)
+        return BlockBounding.getMainBlockPos(level, blockPos) != tile.blockPos
+    }
+
+    init {
+        this.active = shouldActivateByConfig() || shouldActivateByBounding()
+    }
 
     val otherBlockItem: ItemStack by lazy {
-        val level = tile.getLevel() ?: return@lazy ItemStack.EMPTY
+        val level = tile.level ?: return@lazy ItemStack.EMPTY
         val side = slotPos.getDirection(tile.direction)
         val blockPos = tile.blockPos.relative(side)
         val blockState = level.getBlockState(blockPos)
@@ -40,7 +61,17 @@ class SideInserterButton<TILE>(
         return@lazy if (blockState.isAir) {
             ItemStack.EMPTY
         } else {
-            ItemStack(blockState.block)
+            blockState.getCloneItemStack(
+                BlockHitResult(
+                    blockPos.center.relative(side.opposite, 0.5),
+                    side.opposite,
+                    blockPos,
+                    false
+                ),
+                level,
+                blockPos,
+                Minecraft.getInstance().player ?: return@lazy ItemStack.EMPTY
+            )
         }
     }
 
