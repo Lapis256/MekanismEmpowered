@@ -24,7 +24,9 @@
         "common.tile.qio.MixinTileEntityQIOImporter"
     ],
     "client": [
-        "client.MixinGuiConfigurableTile"
+        "client.gui.MixinGuiConfigurableTile",
+        "client.gui.MixinGuiMekanism",
+        "client.gui.MixinGuiMekanismTile"
     ],
     "server": [
     ],

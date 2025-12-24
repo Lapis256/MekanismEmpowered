@@ -30,8 +30,16 @@ class GuiSideInserterConfigurationTab<TILE>(
         displayTooltips(guiGraphics, mouseX, mouseY, MekEmpLang.INSERTER_CONFIG.translate())
     }
 
+    var latestWindow: GuiSideInserterConfiguration<TILE>? = null
+
     override fun createWindow() =
         GuiSideInserterConfiguration<TILE>(gui(), (guiWidth - 156) / 2, 15, dataSource, WINDOW_DATA)
+            .also { latestWindow = it }
+
+    override fun onWindowClose() {
+        super.onWindowClose()
+        latestWindow = null
+    }
 
     override fun colorTab(guiGraphics: GuiGraphics) {
         MekanismRenderer.color(guiGraphics, SpecialColors.TAB_CONFIGURATION)
