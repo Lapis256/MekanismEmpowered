@@ -143,6 +143,7 @@ dependencies {
     compileOnly(libs.igleelib)
     compileOnly(libs.evolvedMekanism)
     compileOnly(libs.mekanismMoreMachine)
+    compileOnly(libs.evolvedMekanismExtras)
 
     localRuntime(libs.jei)
 
@@ -152,6 +153,7 @@ dependencies {
         localRuntime(libs.igleelib)
         localRuntime(libs.evolvedMekanism)
         localRuntime(libs.mekanismMoreMachine)
+        localRuntime(libs.evolvedMekanismExtras)
     }
 
     implementation(libs.easyNestConfig)
@@ -302,9 +304,10 @@ val baseDependencies = listOf(
 )
 val mainModDependencies = baseDependencies.toMutableList().apply {
     add(ModDep.optional("mekanism_empowered_core", Constants.Mod.VERSION.eq(), ordering = Order.AFTER))
-    add(ModDep.optional("mekanism_extras", "1.2.6.1".gte()))
+    add(ModDep.optional("mekanism_extras", "1.3.3".gte()))
     add(ModDep.optional("evolvedmekanism", "1.2.1-fix2".gte()))
-    add(ModDep.optional("mekmm", "1.2.1".gte()))
+    add(ModDep.optional("mekmm", "1.3.1".gte()))
+    add(ModDep.optional("emextras", "1.1.1".gte()))
     add(ModDep.incompatible("mekanism_unleashed", "0.0.0".gte(), "Incompatible Mixins"))
 }
 
@@ -428,6 +431,7 @@ tasks {
             addOptional("mekanism-extras")
             addOptional("evolved-mekanism")
             addOptional("mekansim-more-machine")
+            addOptional("evolved-mekanism-extras")
 
             addIncompatibility("mekanism-unleashed")
         }
