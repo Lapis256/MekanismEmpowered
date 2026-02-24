@@ -9,7 +9,8 @@ internal object Integrations {
     private val integrations = listOf(
         EvoMek,
         MekExt,
-        MekMM
+        MekMM,
+        EvoMekExt
     )
 
     private val integrationProviders: MutableMap<IntegrationProviderName, MutableSet<IntegrationProvider>> = mutableMapOf()
