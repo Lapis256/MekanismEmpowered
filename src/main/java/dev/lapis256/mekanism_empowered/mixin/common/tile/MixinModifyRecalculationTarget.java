@@ -50,6 +50,8 @@ class MixinModifyRecalculationTarget {
             "com.jerry.mekextras.common.tile.factory.TileEntityExtraFactory",
             "com.jerry.mekextras.common.tile.factory.TileEntityItemStackChemicalToItemStackExtraFactory",
             "com.jerry.mekextras.common.tile.machine.TileEntityAdvancedElectricPump",
+            "com.jerry.mekextras.common.integration.mekaf.tile.factory.TileEntityExtraAdvancedBase",
+            "com.jerry.mekextras.common.integration.mekmm.tile.factory.TileEntityExtraMoreMachineFactory",
 
             "com.jerry.mekaf.common.tile.factory.TileEntityAdvancedFactoryBase",
             "com.jerry.mekmm.common.tile.factory.TileEntityMoreMachineFactory",

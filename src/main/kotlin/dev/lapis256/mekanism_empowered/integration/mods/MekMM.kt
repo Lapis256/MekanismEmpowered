@@ -2,9 +2,10 @@ package dev.lapis256.mekanism_empowered.integration.mods
 
 import com.jerry.mekaf.common.content.blocktype.AdvancedFactoryType
 import com.jerry.mekaf.common.registries.AdvancedFactoryBlockTypes
+import com.jerry.meklm.common.registries.LargeMachineBlockTypes
 import com.jerry.mekmm.common.content.blocktype.MoreMachineFactoryType
 import com.jerry.mekmm.common.registries.MoreMachineBlockTypes
-import com.jerry.meklm.common.registries.LargeMachineBlockTypes
+import com.jerry.mekmm.common.util.MoreMachineUtils
 import dev.lapis256.mekanism_empowered.api.MekEmpUpgrade
 import dev.lapis256.mekanism_empowered.common.init.MekEmpUpgrades.ITEM_INPUT_MACHINE_UPGRADES
 import dev.lapis256.mekanism_empowered.common.init.MekEmpUpgrades.ITEM_IN_OUT_MACHINE_UPGRADES
@@ -14,7 +15,6 @@ import dev.lapis256.mekanism_empowered.common.init.MekEmpUpgrades.SPEED_AND_ENER
 import dev.lapis256.mekanism_empowered.core.common.util.AdditionalUpgradeUtil
 import dev.lapis256.mekanism_empowered.integration.ModIntegration
 import mekanism.api.Upgrade
-import mekanism.common.util.EnumUtils
 
 
 internal object MekMM : ModIntegration {
@@ -56,14 +56,14 @@ internal object MekMM : ModIntegration {
     }
 
     private fun registerFactoryUpgrades(type: AdvancedFactoryType, vararg upgrades: Upgrade) {
-        for (tier in EnumUtils.FACTORY_TIERS) {
+        for (tier in MoreMachineUtils.getFactoryTier()) {
             val blockType = AdvancedFactoryBlockTypes.getAdvancedFactory(tier, type) ?: continue
             AdditionalUpgradeUtil.addSupported(blockType, *upgrades)
         }
     }
 
     private fun registerFactoryUpgrades(type: MoreMachineFactoryType, vararg upgrades: Upgrade) {
-        for (tier in EnumUtils.FACTORY_TIERS) {
+        for (tier in MoreMachineUtils.getFactoryTier()) {
             val blockType = MoreMachineBlockTypes.getMoreMachineFactory(tier, type)
             AdditionalUpgradeUtil.addSupported(blockType, *upgrades)
         }

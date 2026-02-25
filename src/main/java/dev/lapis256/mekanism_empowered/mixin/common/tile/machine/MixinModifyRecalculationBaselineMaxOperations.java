@@ -37,6 +37,10 @@ import org.spongepowered.asm.mixin.injection.At;
         "com.jerry.meklm.common.tile.machine.TileEntityLargeRotaryCondensentrator",
         "com.jerry.meklm.common.tile.machine.TileEntityLargeSolarNeutronActivator",
 
+        "com.jerry.mekextras.common.integration.mekaf.tile.factory.TileEntityExtraCentrifugingFactory",
+        "com.jerry.mekextras.common.integration.mekaf.tile.factory.TileEntityExtraChemicalInfusingFactory",
+        "com.jerry.mekextras.common.integration.mekaf.tile.factory.TileEntityExtraWashingFactory",
+
         "io.github.masyumero.emextras.common.integration.mekaf.tile.factory.TileEntityEMExtraCentrifugingFactory",
         "io.github.masyumero.emextras.common.integration.mekaf.tile.factory.TileEntityEMExtraChemicalInfusingFactory",
         "io.github.masyumero.emextras.common.integration.mekaf.tile.factory.TileEntityEMExtraWashingFactory"
