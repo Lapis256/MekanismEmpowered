@@ -50,13 +50,20 @@ class MixinModifyRecalculationTarget {
             "com.jerry.mekextras.common.tile.factory.TileEntityExtraFactory",
             "com.jerry.mekextras.common.tile.factory.TileEntityItemStackChemicalToItemStackExtraFactory",
             "com.jerry.mekextras.common.tile.machine.TileEntityAdvancedElectricPump",
+            "com.jerry.mekextras.common.integration.mekaf.tile.factory.TileEntityExtraAdvancedBase",
+            "com.jerry.mekextras.common.integration.mekmm.tile.factory.TileEntityExtraMoreMachineFactory",
 
             "com.jerry.mekaf.common.tile.factory.TileEntityAdvancedFactoryBase",
             "com.jerry.mekmm.common.tile.factory.TileEntityMoreMachineFactory",
             "com.jerry.meklm.common.tile.machine.TileEntityLargeChemicalInfuser",
             "com.jerry.meklm.common.tile.machine.TileEntityLargeElectrolyticSeparator",
             "com.jerry.meklm.common.tile.machine.TileEntityLargeRotaryCondensentrator",
-            "com.jerry.meklm.common.tile.machine.TileEntityLargeSolarNeutronActivator"
+            "com.jerry.meklm.common.tile.machine.TileEntityLargeSolarNeutronActivator",
+
+            "io.github.masyumero.emextras.common.tile.factory.TileEntityEMExtraFactory",
+            "io.github.masyumero.emextras.common.tile.factory.TileEntityEMExtraItemStackChemicalToItemStackFactory",
+            "io.github.masyumero.emextras.common.integration.mekaf.tile.factory.TileEntityEMExtraAdvancedBase",
+            "io.github.masyumero.emextras.common.integration.mekmm.tile.factory.TileEntityEMExtraMoreMachineFactory"
         },
         remap = false
     )
