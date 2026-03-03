@@ -35,24 +35,27 @@ internal object EvoMekExt : ModIntegration{
         addSupportedFactoryUpgrades(EMExtraFactoryType.INJECTING, *ITEM_IN_OUT_MACHINE_UPGRADES)
         addSupportedFactoryUpgrades(EMFactoryType.ALLOYING, *ITEM_IN_OUT_MACHINE_UPGRADES)
 
-        addSupportedFactoryUpgrades(AdvancedFactoryType.PRESSURISED_REACTING, *ITEM_IN_OUT_MACHINE_UPGRADES)
-        addSupportedFactoryUpgrades(AdvancedFactoryType.LIQUIFYING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        @Suppress("DuplicatedCode")
+        if (MekMM.isLoaded) {
+            addSupportedFactoryUpgrades(AdvancedFactoryType.PRESSURISED_REACTING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+            addSupportedFactoryUpgrades(AdvancedFactoryType.LIQUIFYING, *ITEM_IN_OUT_MACHINE_UPGRADES)
 
-        addSupportedFactoryUpgrades(AdvancedFactoryType.OXIDIZING, *ITEM_INPUT_MACHINE_UPGRADES)
-        addSupportedFactoryUpgrades(AdvancedFactoryType.DISSOLVING, *ITEM_INPUT_MACHINE_UPGRADES)
+            addSupportedFactoryUpgrades(AdvancedFactoryType.OXIDIZING, *ITEM_INPUT_MACHINE_UPGRADES)
+            addSupportedFactoryUpgrades(AdvancedFactoryType.DISSOLVING, *ITEM_INPUT_MACHINE_UPGRADES)
 
-        addSupportedFactoryUpgrades(AdvancedFactoryType.CRYSTALLIZING, *ITEM_OUTPUT_MACHINE_UPGRADES)
+            addSupportedFactoryUpgrades(AdvancedFactoryType.CRYSTALLIZING, *ITEM_OUTPUT_MACHINE_UPGRADES)
 
-        addSupportedFactoryUpgrades(AdvancedFactoryType.CHEMICAL_INFUSING, *MACHINE_UPGRADES)
-        addSupportedFactoryUpgrades(AdvancedFactoryType.WASHING, *MACHINE_UPGRADES)
-        addSupportedFactoryUpgrades(AdvancedFactoryType.CENTRIFUGING, *MACHINE_UPGRADES)
+            addSupportedFactoryUpgrades(AdvancedFactoryType.CHEMICAL_INFUSING, *MACHINE_UPGRADES)
+            addSupportedFactoryUpgrades(AdvancedFactoryType.WASHING, *MACHINE_UPGRADES)
+            addSupportedFactoryUpgrades(AdvancedFactoryType.CENTRIFUGING, *MACHINE_UPGRADES)
 
-        addSupportedFactoryUpgrades(MoreMachineFactoryType.RECYCLING, *ITEM_IN_OUT_MACHINE_UPGRADES)
-        addSupportedFactoryUpgrades(MoreMachineFactoryType.PLANTING_STATION, *ITEM_IN_OUT_MACHINE_UPGRADES)
-        addSupportedFactoryUpgrades(MoreMachineFactoryType.CNC_STAMPING, *ITEM_IN_OUT_MACHINE_UPGRADES)
-        addSupportedFactoryUpgrades(MoreMachineFactoryType.CNC_LATHING, *ITEM_IN_OUT_MACHINE_UPGRADES)
-        addSupportedFactoryUpgrades(MoreMachineFactoryType.CNC_ROLLING_MILL, *ITEM_IN_OUT_MACHINE_UPGRADES)
-        addSupportedFactoryUpgrades(MoreMachineFactoryType.REPLICATING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+            addSupportedFactoryUpgrades(MoreMachineFactoryType.RECYCLING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+            addSupportedFactoryUpgrades(MoreMachineFactoryType.PLANTING_STATION, *ITEM_IN_OUT_MACHINE_UPGRADES)
+            addSupportedFactoryUpgrades(MoreMachineFactoryType.CNC_STAMPING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+            addSupportedFactoryUpgrades(MoreMachineFactoryType.CNC_LATHING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+            addSupportedFactoryUpgrades(MoreMachineFactoryType.CNC_ROLLING_MILL, *ITEM_IN_OUT_MACHINE_UPGRADES)
+            addSupportedFactoryUpgrades(MoreMachineFactoryType.REPLICATING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        }
     }
 
     private fun addSupportedFactoryUpgrades(type: EMExtraFactoryType, vararg upgrades: Upgrade) {
