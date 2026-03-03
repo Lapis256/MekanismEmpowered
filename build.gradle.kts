@@ -300,7 +300,7 @@ val baseDependencies = listOf(
     ModDep("neoforge", libs.versions.neoforge.get() ..< "21.2"),
     ModDep("minecraft", mcVersion.eq()),
     ModDep("kotlinforforge", kffVersion.gte()),
-    ModDep("mekanism", "10.7.17".gte(), ordering = Order.AFTER),
+    ModDep("mekanism", "10.7.18".gte(), ordering = Order.AFTER),
 )
 val mainModDependencies = baseDependencies.toMutableList().apply {
     add(ModDep.optional("mekanism_empowered_core", Constants.Mod.VERSION.eq(), ordering = Order.AFTER))
