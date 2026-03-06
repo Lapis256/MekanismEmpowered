@@ -23,7 +23,9 @@ internal object EvoMek : ModIntegration {
         AdditionalUpgradeUtil.addSupported(EMBlockTypes.SOLIDIFIER, *ITEM_IN_OUT_MACHINE_UPGRADES)
     }
 
-    val FACTORY_TIERS = arrayOf(EMFactoryTier.OVERCLOCKED, EMFactoryTier.QUANTUM, EMFactoryTier.DENSE, EMFactoryTier.MULTIVERSAL, EMFactoryTier.CREATIVE)
+    val FACTORY_TIERS by lazy {
+        arrayOf(EMFactoryTier.OVERCLOCKED, EMFactoryTier.QUANTUM, EMFactoryTier.DENSE, EMFactoryTier.MULTIVERSAL, EMFactoryTier.CREATIVE)
+    }
 
     override fun initProvider(registry: IntegrationProviderRegistry) {
         registry.registerProvider(FactoryUpgradeIntegration { type, upgrades ->
