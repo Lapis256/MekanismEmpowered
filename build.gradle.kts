@@ -144,6 +144,7 @@ dependencies {
     compileOnly(libs.evolvedMekanism)
     compileOnly(libs.mekanismMoreMachine)
     compileOnly(libs.evolvedMekanismExtras)
+    compileOnly(libs.chemlibMekanized)
 
     localRuntime(libs.jei)
 
@@ -154,6 +155,7 @@ dependencies {
         localRuntime(libs.evolvedMekanism)
         localRuntime(libs.mekanismMoreMachine)
         localRuntime(libs.evolvedMekanismExtras)
+//        localRuntime(libs.chemlibMekanized)
     }
 
     implementation(libs.easyNestConfig)
