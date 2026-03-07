@@ -16,9 +16,10 @@ mekanism = "1.21.1-10.7.18.84"
 mekanismExtras = "7628313" # 1.3.3
 igleelib = "7000755" # 1.2.7
 evolvedMekanism = "7321395" # 1.2.1-fix2
-mekanismElements = "6393948" # 1.4
+mekanismElements = "7696139" # 2.3
 mekasnismMoreMachine = "7627187" # 1.3.1
 evolvedMekanismExtras = "7673420" # 1.1.1
+chemlibMekanized = "7710816" # 2.2.0
 
 
 [libraries]
@@ -33,6 +34,7 @@ evolvedMekanism = { module = "curse.maven:evolved-mekanism-1230085", version.ref
 mekanismElements = { module = "curse.maven:mekanism-elements-1103224", version.ref = "mekanismElements" }
 mekanismMoreMachine = { module = "curse.maven:mekanism-more-machine-1275257", version.ref = "mekasnismMoreMachine" }
 evolvedMekanismExtras = { module = "curse.maven:evolved-mekanism-extras-1268159", version.ref = "evolvedMekanismExtras"}
+chemlibMekanized = { module = "curse.maven:chemlib-mekanized-1463366", version.ref = "chemlibMekanized" }
 
 [plugins]
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "plugin_kotlin" }

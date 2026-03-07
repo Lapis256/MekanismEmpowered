@@ -139,21 +139,23 @@ dependencies {
     compileOnly(variantOf(libs.mekanism, "all"))
 
     compileOnly(libs.mekanismExtras)
-//    compileOnly(libs.mekanismElements)
+    compileOnly(libs.mekanismElements)
     compileOnly(libs.igleelib)
     compileOnly(libs.evolvedMekanism)
     compileOnly(libs.mekanismMoreMachine)
     compileOnly(libs.evolvedMekanismExtras)
+    compileOnly(libs.chemlibMekanized)
 
     localRuntime(libs.jei)
 
     if (loadAddons) {
-//        localRuntime(libs.mekanismElements)
+        localRuntime(libs.mekanismElements)
         localRuntime(libs.mekanismExtras)
         localRuntime(libs.igleelib)
         localRuntime(libs.evolvedMekanism)
         localRuntime(libs.mekanismMoreMachine)
         localRuntime(libs.evolvedMekanismExtras)
+//        localRuntime(libs.chemlibMekanized)
     }
 
     implementation(libs.easyNestConfig)

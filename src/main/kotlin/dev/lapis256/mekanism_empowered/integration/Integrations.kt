@@ -7,10 +7,12 @@ import kotlin.reflect.KClass
 
 internal object Integrations {
     private val integrations = listOf(
+        ChemLibMek,
         EvoMek,
+        EvoMekExt,
+        MekElm,
         MekExt,
         MekMM,
-        EvoMekExt
     )
 
     private val integrationProviders: MutableMap<IntegrationProviderName, MutableSet<IntegrationProvider>> = mutableMapOf()
