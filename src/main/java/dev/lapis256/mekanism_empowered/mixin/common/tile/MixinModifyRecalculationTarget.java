@@ -63,7 +63,9 @@ class MixinModifyRecalculationTarget {
             "io.github.masyumero.emextras.common.tile.factory.TileEntityEMExtraFactory",
             "io.github.masyumero.emextras.common.tile.factory.TileEntityEMExtraItemStackChemicalToItemStackFactory",
             "io.github.masyumero.emextras.common.integration.mekaf.tile.factory.TileEntityEMExtraAdvancedBase",
-            "io.github.masyumero.emextras.common.integration.mekmm.tile.factory.TileEntityEMExtraMoreMachineFactory"
+            "io.github.masyumero.emextras.common.integration.mekmm.tile.factory.TileEntityEMExtraMoreMachineFactory",
+
+            "com.fxd927.mekanismelements.common.tile.prefab.MSTileEntityProgressMachine"
         },
         remap = false
     )

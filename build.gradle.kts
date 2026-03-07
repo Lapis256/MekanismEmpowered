@@ -139,7 +139,7 @@ dependencies {
     compileOnly(variantOf(libs.mekanism, "all"))
 
     compileOnly(libs.mekanismExtras)
-//    compileOnly(libs.mekanismElements)
+    compileOnly(libs.mekanismElements)
     compileOnly(libs.igleelib)
     compileOnly(libs.evolvedMekanism)
     compileOnly(libs.mekanismMoreMachine)
@@ -149,7 +149,7 @@ dependencies {
     localRuntime(libs.jei)
 
     if (loadAddons) {
-//        localRuntime(libs.mekanismElements)
+        localRuntime(libs.mekanismElements)
         localRuntime(libs.mekanismExtras)
         localRuntime(libs.igleelib)
         localRuntime(libs.evolvedMekanism)

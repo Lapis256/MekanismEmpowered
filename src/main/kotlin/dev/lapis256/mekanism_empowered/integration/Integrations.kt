@@ -10,6 +10,7 @@ internal object Integrations {
         ChemLibMek,
         EvoMek,
         EvoMekExt,
+        MekElm,
         MekExt,
         MekMM,
     )
