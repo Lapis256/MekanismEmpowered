@@ -20,7 +20,7 @@ class MekanismEmpoweredClient(modContainer: ModContainer, modEventBus: IEventBus
             IConfigScreenFactory::class.java,
             IConfigScreenFactory { mc, parent -> ConfigurationScreen(mc, parent) })
 
-        Integrations.initClient()
+        Integrations.initClient(modEventBus)
     }
 
     private fun clientSetup(event: FMLClientSetupEvent) {

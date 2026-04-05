@@ -1,6 +1,7 @@
 package dev.lapis256.mekanism_empowered.integration
 
 import dev.lapis256.mekanism_empowered.common.MekanismEmpowered
+import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.ModList
 
 
@@ -10,24 +11,24 @@ internal interface ModIntegration {
     val isLoaded: Boolean
         get() = ModList.get().isLoaded(modId)
 
-    fun initCommon()
+    fun initCommon(modEventBus: IEventBus)
 
-    fun initCommonIntegration() {
+    fun initCommonIntegration(modEventBus: IEventBus) {
         if (!isLoaded) return
 
         MekanismEmpowered.LOGGER.info("Initializing integration with $modId")
 
-        initCommon()
+        initCommon(modEventBus)
     }
 
-    fun initClient() {}
+    fun initClient(modEventBus: IEventBus) {}
 
-    fun initClientIntegration() {
+    fun initClientIntegration(modEventBus: IEventBus) {
         if (!isLoaded) return
 
         MekanismEmpowered.LOGGER.info("Initializing client integration with $modId")
 
-        initClient()
+        initClient(modEventBus)
     }
 
     fun initProvider(registry: IntegrationProviderRegistry) {}

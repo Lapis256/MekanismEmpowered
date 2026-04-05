@@ -16,12 +16,18 @@ import dev.lapis256.mekanism_empowered.integration.IntegrationProviderRegistry
 import dev.lapis256.mekanism_empowered.integration.ModIntegration
 import dev.lapis256.mekanism_empowered.integration.provider.FactoryUpgradeIntegration
 import mekanism.api.Upgrade
+import net.neoforged.bus.api.IEventBus
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
 
 
 internal object MekExt : ModIntegration {
     override val modId = "mekanism_extras"
 
-    override fun initCommon() {
+    override fun initCommon(modEventBus: IEventBus) {
+        modEventBus.addListener { _: FMLCommonSetupEvent -> addSupportedFactoryUpgrades() }
+    }
+
+    private fun addSupportedFactoryUpgrades() {
         AdditionalUpgradeUtil.addSupported(ExtraBlockTypes.ADVANCED_ELECTRIC_PUMP, *SPEED_AND_ENERGY_UPGRADES)
 
         @Suppress("DuplicatedCode")

@@ -9,12 +9,18 @@ import dev.lapis256.mekanism_empowered.integration.provider.FactoryUpgradeIntegr
 import fr.iglee42.evolvedmekanism.registries.EMBlockTypes
 import fr.iglee42.evolvedmekanism.registries.EMFactoryType
 import fr.iglee42.evolvedmekanism.tiers.EMFactoryTier
+import net.neoforged.bus.api.IEventBus
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
 
 
 internal object EvoMek : ModIntegration {
     override val modId = "evolvedmekanism"
 
-    override fun initCommon() {
+    override fun initCommon(modEventBus: IEventBus) {
+        modEventBus.addListener { _: FMLCommonSetupEvent -> addSupportedFactoryUpgrades() }
+    }
+
+    private fun addSupportedFactoryUpgrades() {
         addSupportedFactoryUpgrades(EMFactoryType.ALLOYING, *ITEM_IN_OUT_MACHINE_UPGRADES)
 
         AdditionalUpgradeUtil.addSupported(EMBlockTypes.ALLOYER, *ITEM_IN_OUT_MACHINE_UPGRADES)

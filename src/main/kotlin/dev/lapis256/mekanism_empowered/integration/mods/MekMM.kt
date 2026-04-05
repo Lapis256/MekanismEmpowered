@@ -15,12 +15,18 @@ import dev.lapis256.mekanism_empowered.common.init.MekEmpUpgrades.SPEED_AND_ENER
 import dev.lapis256.mekanism_empowered.core.common.util.AdditionalUpgradeUtil
 import dev.lapis256.mekanism_empowered.integration.ModIntegration
 import mekanism.api.Upgrade
+import net.neoforged.bus.api.IEventBus
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
 
 
 internal object MekMM : ModIntegration {
     override val modId = "mekmm"
 
-    override fun initCommon() {
+    override fun initCommon(modEventBus: IEventBus) {
+        modEventBus.addListener { _: FMLCommonSetupEvent -> addSupportedFactoryUpgrades() }
+    }
+
+    private fun addSupportedFactoryUpgrades() {
         registerFactoryUpgrades(AdvancedFactoryType.PRESSURISED_REACTING, *ITEM_IN_OUT_MACHINE_UPGRADES)
         registerFactoryUpgrades(AdvancedFactoryType.LIQUIFYING, *ITEM_IN_OUT_MACHINE_UPGRADES)
 

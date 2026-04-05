@@ -17,11 +17,17 @@ import io.github.masyumero.emextras.common.registry.EMExtraBlockTypes
 import io.github.masyumero.emextras.common.util.EMExtraEnumUtils
 import mekanism.api.Upgrade
 import mekanism.common.content.blocktype.FactoryType
+import net.neoforged.bus.api.IEventBus
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
 
 internal object EvoMekExt : ModIntegration{
     override val modId = "emextras"
 
-    override fun initCommon() {
+    override fun initCommon(modEventBus: IEventBus) {
+        modEventBus.addListener { _: FMLCommonSetupEvent -> addSupportedFactoryUpgrades() }
+    }
+
+    private fun addSupportedFactoryUpgrades() {
         addSupportedFactoryUpgrades(EMExtraFactoryType.ALLOYING, *ITEM_IN_OUT_MACHINE_UPGRADES)
 
         addSupportedFactoryUpgrades(EMExtraFactoryType.ENRICHING, *ITEM_IN_OUT_MACHINE_UPGRADES)
