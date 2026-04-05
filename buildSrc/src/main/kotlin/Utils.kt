@@ -51,6 +51,23 @@ infix operator fun String.rangeUntil(other: String) = RangeInclusiveMin(this, ot
 infix fun String.rangeToExclusive(other: String) = RangeExclusive(this, other)
 infix fun String.rangeToMax(other: String) = RangeInclusiveMax(this, other)
 
+fun Provider<String>.eq() = Equal(this.get())
+fun Provider<String>.gt() = GreaterThan(this.get())
+fun Provider<String>.gte() = GreaterThanOrEqual(this.get())
+fun Provider<String>.lt() = LessThan(this.get())
+fun Provider<String>.lte() = LessThanOrEqual(this.get())
+fun Provider<String>.neq() = NotEqual(this.get())
+
+infix operator fun Provider<String>.rangeTo(other: Provider<String>) = RangeInclusive(this.get(), other.get())
+infix operator fun Provider<String>.rangeUntil(other: Provider<String>) = RangeInclusiveMin(this.get(), other.get())
+infix fun Provider<String>.rangeToExclusive(other: Provider<String>) = RangeExclusive(this.get(), other.get())
+infix fun Provider<String>.rangeToMax(other: Provider<String>) = RangeInclusiveMax(this.get(), other.get())
+
+infix operator fun Provider<String>.rangeTo(other: String) = RangeInclusive(this.get(), other)
+infix operator fun Provider<String>.rangeUntil(other: String) = RangeInclusiveMin(this.get(), other)
+infix fun Provider<String>.rangeToExclusive(other: String) = RangeExclusive(this.get(), other)
+infix fun Provider<String>.rangeToMax(other: String) = RangeInclusiveMax(this.get(), other)
+
 data class ModDep(
     val id: String,
     val versionRange: VersionRange,
