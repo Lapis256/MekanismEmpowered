@@ -12,12 +12,12 @@ parchmentmc = "2024.11.17"
 
 easyNestConfig = "4.0.0"
 jei = "19.21.0.247"
-mekanism = "1.21.1-10.7.18.84"
-mekanismExtras = "7628313" # 1.3.3
+mekanism = "1.21.1-10.7.19.85"
+mekanismExtras = "7921191" # 1.4.0
 igleelib = "7000755" # 1.2.7
 evolvedMekanism = "7321395" # 1.2.1-fix2
 mekanismElements = "7696139" # 2.3
-mekasnismMoreMachine = "7627187" # 1.3.1
+mekasnismMoreMachine = "7919872" # 1.3.3
 evolvedMekanismExtras = "7673420" # 1.1.1
 chemlibMekanized = "7710816" # 2.2.0
 

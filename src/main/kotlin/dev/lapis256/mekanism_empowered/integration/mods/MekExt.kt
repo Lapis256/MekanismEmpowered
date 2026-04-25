@@ -34,13 +34,15 @@ internal object MekExt : ModIntegration {
         if (MekMM.isLoaded) {
             addSupportedFactoryUpgrades(AdvancedFactoryType.PRESSURISED_REACTING, *ITEM_IN_OUT_MACHINE_UPGRADES)
             addSupportedFactoryUpgrades(AdvancedFactoryType.LIQUIFYING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+            addSupportedFactoryUpgrades(AdvancedFactoryType.PAINTING, *ITEM_IN_OUT_MACHINE_UPGRADES)
 
             addSupportedFactoryUpgrades(AdvancedFactoryType.OXIDIZING, *ITEM_INPUT_MACHINE_UPGRADES)
             addSupportedFactoryUpgrades(AdvancedFactoryType.DISSOLVING, *ITEM_INPUT_MACHINE_UPGRADES)
+            addSupportedFactoryUpgrades(AdvancedFactoryType.PIGMENT_EXTRACTING, *ITEM_INPUT_MACHINE_UPGRADES)
 
             addSupportedFactoryUpgrades(AdvancedFactoryType.CRYSTALLIZING, *ITEM_OUTPUT_MACHINE_UPGRADES)
 
-            addSupportedFactoryUpgrades(AdvancedFactoryType.CHEMICAL_INFUSING, *MACHINE_UPGRADES)
+            // addSupportedFactoryUpgrades(AdvancedFactoryType.CHEMICAL_INFUSING, *MACHINE_UPGRADES)
             addSupportedFactoryUpgrades(AdvancedFactoryType.WASHING, *MACHINE_UPGRADES)
             addSupportedFactoryUpgrades(AdvancedFactoryType.CENTRIFUGING, *MACHINE_UPGRADES)
 

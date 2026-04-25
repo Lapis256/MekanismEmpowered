@@ -154,7 +154,7 @@ dependencies {
         localRuntime(libs.igleelib)
         localRuntime(libs.evolvedMekanism)
         localRuntime(libs.mekanismMoreMachine)
-        localRuntime(libs.evolvedMekanismExtras)
+        // TODO: localRuntime(libs.evolvedMekanismExtras)
 //        localRuntime(libs.chemlibMekanized)
     }
 
@@ -302,13 +302,13 @@ val baseDependencies = listOf(
     ModDep("neoforge", libs.versions.neoforge..<"21.2"),
     ModDep("minecraft", mcVersion.eq()),
     ModDep("kotlinforforge", kffVersion.gte()),
-    ModDep("mekanism", "10.7.18".gte(), ordering = Order.AFTER),
+    ModDep("mekanism", "10.7.19".gte(), ordering = Order.AFTER),
 )
 val mainModDependencies = baseDependencies.toMutableList().apply {
     add(ModDep("mekanism_empowered_core", Constants.Mod.VERSION.eq(), ordering = Order.AFTER))
-    add(ModDep.optional("mekanism_extras", "1.3.3".gte()))
+    add(ModDep.optional("mekanism_extras", "1.4.0".gte()))
     add(ModDep.optional("evolvedmekanism", "1.2.1-fix2".gte()))
-    add(ModDep.optional("mekmm", "1.3.1".gte()))
+    add(ModDep.optional("mekmm", "1.3.3".gte()))
     add(ModDep.optional("emextras", "1.1.1".gte()))
     add(ModDep.incompatible("mekanism_unleashed", "0.0.0".gte(), "Incompatible Mixins"))
 }

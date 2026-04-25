@@ -29,13 +29,15 @@ internal object MekMM : ModIntegration {
     private fun addSupportedFactoryUpgrades() {
         registerFactoryUpgrades(AdvancedFactoryType.PRESSURISED_REACTING, *ITEM_IN_OUT_MACHINE_UPGRADES)
         registerFactoryUpgrades(AdvancedFactoryType.LIQUIFYING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        registerFactoryUpgrades(AdvancedFactoryType.PAINTING, *ITEM_IN_OUT_MACHINE_UPGRADES)
 
         registerFactoryUpgrades(AdvancedFactoryType.OXIDIZING, *ITEM_INPUT_MACHINE_UPGRADES)
         registerFactoryUpgrades(AdvancedFactoryType.DISSOLVING, *ITEM_INPUT_MACHINE_UPGRADES)
+        registerFactoryUpgrades(AdvancedFactoryType.PIGMENT_EXTRACTING, *ITEM_INPUT_MACHINE_UPGRADES)
 
         registerFactoryUpgrades(AdvancedFactoryType.CRYSTALLIZING, *ITEM_OUTPUT_MACHINE_UPGRADES)
 
-        registerFactoryUpgrades(AdvancedFactoryType.CHEMICAL_INFUSING, *MACHINE_UPGRADES)
+        // registerFactoryUpgrades(AdvancedFactoryType.CHEMICAL_INFUSING, *MACHINE_UPGRADES)
         registerFactoryUpgrades(AdvancedFactoryType.WASHING, *MACHINE_UPGRADES)
         registerFactoryUpgrades(AdvancedFactoryType.CENTRIFUGING, *MACHINE_UPGRADES)
 
@@ -59,6 +61,7 @@ internal object MekMM : ModIntegration {
         AdditionalUpgradeUtil.addSupported(LargeMachineBlockTypes.LARGE_CHEMICAL_INFUSER, *SPEED_AND_ENERGY_UPGRADES)
         AdditionalUpgradeUtil.addSupported(LargeMachineBlockTypes.LARGE_ELECTROLYTIC_SEPARATOR, *SPEED_AND_ENERGY_UPGRADES)
         AdditionalUpgradeUtil.addSupported(LargeMachineBlockTypes.LARGE_SOLAR_NEUTRON_ACTIVATOR, MekEmpUpgrade.EMPOWERED_SPEED)
+        AdditionalUpgradeUtil.addSupported(LargeMachineBlockTypes.LARGE_PIGMENT_MIXER, *SPEED_AND_ENERGY_UPGRADES)
     }
 
     private fun registerFactoryUpgrades(type: AdvancedFactoryType, vararg upgrades: Upgrade) {
