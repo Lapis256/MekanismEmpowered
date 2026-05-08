@@ -2,18 +2,24 @@ package dev.lapis256.mekanism_empowered.common.init
 
 import com.jerry.mekextras.common.tile.machine.TileEntityAdvancedElectricPump
 import dev.lapis256.mekanism_empowered.api.MekEmpUpgrade
+import dev.lapis256.mekanism_empowered.common.factory.MekanismFactoryTypeKeys
+import dev.lapis256.mekanism_empowered.common.factory.addDeferredSupportedForFactory
 import dev.lapis256.mekanism_empowered.core.common.upgrade.UpgradeInfoHandler
-import dev.lapis256.mekanism_empowered.core.common.util.AdditionalUpgradeUtil
+import dev.lapis256.mekanism_empowered.core.common.util.AdditionalUpgradeUtil.addSupported
+import dev.lapis256.mekanism_empowered.core.common.util.TileUpgradeSupportFallbackRegistry
 import dev.lapis256.mekanism_empowered.core.extension.getInstalledOrDefault
-import dev.lapis256.mekanism_empowered.integration.Integrations
+import dev.lapis256.mekanism_empowered.extension.chemicalHandlerManager
+import dev.lapis256.mekanism_empowered.extension.fluidHandlerManager
+import dev.lapis256.mekanism_empowered.extension.itemHandlerManager
 import dev.lapis256.mekanism_empowered.integration.mods.MekExt
-import dev.lapis256.mekanism_empowered.integration.provider.FactoryUpgradeIntegration
+import dev.lapis256.mekanism_empowered.mixin.common.AccessorBasicInventorySlot
 import mekanism.api.Upgrade
-import mekanism.common.content.blocktype.FactoryType
+import mekanism.common.block.attribute.Attribute
+import mekanism.common.block.attribute.AttributeUpgradeSupport
+import mekanism.common.inventory.container.slot.ContainerSlotType
 import mekanism.common.registries.MekanismBlockTypes
 import mekanism.common.tile.interfaces.IUpgradeTile
 import mekanism.common.tile.machine.TileEntityElectricPump
-import mekanism.common.util.EnumUtils
 import mekanism.common.util.UpgradeUtils
 import net.minecraft.network.chat.Component
 
@@ -46,60 +52,92 @@ object MekEmpUpgrades {
     fun registerSupportedUpgrades() {
         val qioUpgrades = arrayOf(MekEmpUpgrade.EMPOWERED_SPEED, MekEmpUpgrade.IO_CAPACITY)
 
-        AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.ENRICHMENT_CHAMBER, *ITEM_IN_OUT_MACHINE_UPGRADES)
-        AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.CRUSHER, *ITEM_IN_OUT_MACHINE_UPGRADES)
-        AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.ENERGIZED_SMELTER, *ITEM_IN_OUT_MACHINE_UPGRADES)
-        AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.PRECISION_SAWMILL, *ITEM_IN_OUT_MACHINE_UPGRADES)
-        AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.OSMIUM_COMPRESSOR, *ITEM_IN_OUT_MACHINE_UPGRADES)
-        AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.COMBINER, *ITEM_IN_OUT_MACHINE_UPGRADES)
-        AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.METALLURGIC_INFUSER, *ITEM_IN_OUT_MACHINE_UPGRADES)
-        AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.PURIFICATION_CHAMBER, *ITEM_IN_OUT_MACHINE_UPGRADES)
-        AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.CHEMICAL_INJECTION_CHAMBER, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addSupported(MekanismBlockTypes.ENRICHMENT_CHAMBER, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addSupported(MekanismBlockTypes.CRUSHER, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addSupported(MekanismBlockTypes.ENERGIZED_SMELTER, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addSupported(MekanismBlockTypes.PRECISION_SAWMILL, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addSupported(MekanismBlockTypes.OSMIUM_COMPRESSOR, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addSupported(MekanismBlockTypes.COMBINER, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addSupported(MekanismBlockTypes.METALLURGIC_INFUSER, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addSupported(MekanismBlockTypes.PURIFICATION_CHAMBER, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addSupported(MekanismBlockTypes.CHEMICAL_INJECTION_CHAMBER, *ITEM_IN_OUT_MACHINE_UPGRADES)
 
-        addSupportedFactoryUpgrades(FactoryType.ENRICHING, *ITEM_IN_OUT_MACHINE_UPGRADES)
-        addSupportedFactoryUpgrades(FactoryType.CRUSHING, *ITEM_IN_OUT_MACHINE_UPGRADES)
-        addSupportedFactoryUpgrades(FactoryType.SMELTING, *ITEM_IN_OUT_MACHINE_UPGRADES)
-        addSupportedFactoryUpgrades(FactoryType.SAWING, *ITEM_IN_OUT_MACHINE_UPGRADES)
-        addSupportedFactoryUpgrades(FactoryType.COMPRESSING, *ITEM_IN_OUT_MACHINE_UPGRADES)
-        addSupportedFactoryUpgrades(FactoryType.COMBINING, *ITEM_IN_OUT_MACHINE_UPGRADES)
-        addSupportedFactoryUpgrades(FactoryType.INFUSING, *ITEM_IN_OUT_MACHINE_UPGRADES)
-        addSupportedFactoryUpgrades(FactoryType.PURIFYING, *ITEM_IN_OUT_MACHINE_UPGRADES)
-        addSupportedFactoryUpgrades(FactoryType.INJECTING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addDeferredSupportedForFactory(MekanismFactoryTypeKeys.ENRICHING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addDeferredSupportedForFactory(MekanismFactoryTypeKeys.CRUSHING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addDeferredSupportedForFactory(MekanismFactoryTypeKeys.SMELTING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addDeferredSupportedForFactory(MekanismFactoryTypeKeys.SAWING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addDeferredSupportedForFactory(MekanismFactoryTypeKeys.COMPRESSING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addDeferredSupportedForFactory(MekanismFactoryTypeKeys.COMBINING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addDeferredSupportedForFactory(MekanismFactoryTypeKeys.INFUSING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addDeferredSupportedForFactory(MekanismFactoryTypeKeys.PURIFYING, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addDeferredSupportedForFactory(MekanismFactoryTypeKeys.INJECTING, *ITEM_IN_OUT_MACHINE_UPGRADES)
 
-        AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.PRESSURIZED_REACTION_CHAMBER, *ITEM_IN_OUT_MACHINE_UPGRADES)
-        AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.FORMULAIC_ASSEMBLICATOR, *ITEM_IN_OUT_MACHINE_UPGRADES)
-        AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.NUTRITIONAL_LIQUIFIER, *ITEM_IN_OUT_MACHINE_UPGRADES)
-        AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.PAINTING_MACHINE, *ITEM_IN_OUT_MACHINE_UPGRADES)
-        AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.ANTIPROTONIC_NUCLEOSYNTHESIZER, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addSupported(MekanismBlockTypes.PRESSURIZED_REACTION_CHAMBER, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addSupported(MekanismBlockTypes.FORMULAIC_ASSEMBLICATOR, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addSupported(MekanismBlockTypes.NUTRITIONAL_LIQUIFIER, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addSupported(MekanismBlockTypes.PAINTING_MACHINE, *ITEM_IN_OUT_MACHINE_UPGRADES)
+        addSupported(MekanismBlockTypes.ANTIPROTONIC_NUCLEOSYNTHESIZER, *ITEM_IN_OUT_MACHINE_UPGRADES)
 
-        AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.CHEMICAL_OXIDIZER, *ITEM_INPUT_MACHINE_UPGRADES)
-        AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.CHEMICAL_DISSOLUTION_CHAMBER, *ITEM_INPUT_MACHINE_UPGRADES)
-        AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.PIGMENT_EXTRACTOR, *ITEM_INPUT_MACHINE_UPGRADES)
+        addSupported(MekanismBlockTypes.CHEMICAL_OXIDIZER, *ITEM_INPUT_MACHINE_UPGRADES)
+        addSupported(MekanismBlockTypes.CHEMICAL_DISSOLUTION_CHAMBER, *ITEM_INPUT_MACHINE_UPGRADES)
+        addSupported(MekanismBlockTypes.PIGMENT_EXTRACTOR, *ITEM_INPUT_MACHINE_UPGRADES)
 
-        AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.CHEMICAL_CRYSTALLIZER, *ITEM_OUTPUT_MACHINE_UPGRADES)
+        addSupported(MekanismBlockTypes.CHEMICAL_CRYSTALLIZER, *ITEM_OUTPUT_MACHINE_UPGRADES)
 
-        AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.CHEMICAL_INFUSER, *MACHINE_UPGRADES)
-        AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.CHEMICAL_WASHER, *MACHINE_UPGRADES)
-        AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.ROTARY_CONDENSENTRATOR, *MACHINE_UPGRADES)
-        AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.ELECTROLYTIC_SEPARATOR, *MACHINE_UPGRADES)
-        AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.ISOTOPIC_CENTRIFUGE, *MACHINE_UPGRADES)
-        AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.PIGMENT_MIXER, *MACHINE_UPGRADES)
+        addSupported(MekanismBlockTypes.CHEMICAL_INFUSER, *MACHINE_UPGRADES)
+        addSupported(MekanismBlockTypes.CHEMICAL_WASHER, *MACHINE_UPGRADES)
+        addSupported(MekanismBlockTypes.ROTARY_CONDENSENTRATOR, *MACHINE_UPGRADES)
+        addSupported(MekanismBlockTypes.ELECTROLYTIC_SEPARATOR, *MACHINE_UPGRADES)
+        addSupported(MekanismBlockTypes.ISOTOPIC_CENTRIFUGE, *MACHINE_UPGRADES)
+        addSupported(MekanismBlockTypes.PIGMENT_MIXER, *MACHINE_UPGRADES)
 
-        AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.QIO_IMPORTER, *qioUpgrades, MekEmpUpgrade.FAST_ITEM_INSERT)
-        AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.QIO_EXPORTER, *qioUpgrades, MekEmpUpgrade.FAST_ITEM_EJECT)
+        addSupported(MekanismBlockTypes.QIO_IMPORTER, *qioUpgrades, MekEmpUpgrade.FAST_ITEM_INSERT)
+        addSupported(MekanismBlockTypes.QIO_EXPORTER, *qioUpgrades, MekEmpUpgrade.FAST_ITEM_EJECT)
 
-        AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.DIGITAL_MINER, *SPEED_AND_ENERGY_UPGRADES)
-        AdditionalUpgradeUtil.addSupported(MekanismBlockTypes.ELECTRIC_PUMP, *SPEED_AND_ENERGY_UPGRADES)
-    }
+        addSupported(MekanismBlockTypes.DIGITAL_MINER, *SPEED_AND_ENERGY_UPGRADES)
+        addSupported(MekanismBlockTypes.ELECTRIC_PUMP, *SPEED_AND_ENERGY_UPGRADES)
 
-    fun addSupportedFactoryUpgrades(type: FactoryType, vararg upgrades: Upgrade) {
-        for (tier in EnumUtils.FACTORY_TIERS) {
-            val blockType = MekanismBlockTypes.getFactory(tier, type) ?: continue
-            AdditionalUpgradeUtil.addSupported(blockType, *upgrades)
-        }
+        TileUpgradeSupportFallbackRegistry.registerSupportedUpgradeProvider { tile ->
+            buildSet {
+                run {
+                    val attribute = Attribute.get(tile.blockHolder, AttributeUpgradeSupport::class.java) ?: return@run
+                    val upgrades = attribute.supportedUpgrades
 
-        Integrations.getProviders<FactoryUpgradeIntegration>().forEach {
-            it.addSupportedFactoryUpgrades(type, *upgrades)
+                    if (upgrades.contains(Upgrade.SPEED)) {
+                        add(MekEmpUpgrade.EMPOWERED_SPEED)
+                    }
+
+                    if (upgrades.contains(Upgrade.ENERGY)) {
+                        add(MekEmpUpgrade.EMPOWERED_ENERGY)
+                    }
+                }
+
+                run {
+                    if (tile.chemicalHandlerManager != null || tile.fluidHandlerManager != null) {
+                        add(MekEmpUpgrade.AUTO_INSERTER)
+                        add(MekEmpUpgrade.IO_CAPACITY)
+                    }
+
+                    tile.itemHandlerManager?.getContainers(null)
+                        ?.asSequence()
+                        ?.mapNotNull { s -> (s as? AccessorBasicInventorySlot)?.getSlotType() }
+                        ?.distinct()
+                        ?.forEach { slotType ->
+                            when (slotType) {
+                                // エネルギースロットのみの場合は無視する。発電機等で大抵対応する必要がないので
+                                ContainerSlotType.INPUT, ContainerSlotType.EXTRA -> {
+                                    add(MekEmpUpgrade.IO_CAPACITY)
+                                    add(MekEmpUpgrade.AUTO_INSERTER)
+                                    add(MekEmpUpgrade.FAST_ITEM_INSERT)
+                                }
+
+                                ContainerSlotType.OUTPUT -> add(MekEmpUpgrade.FAST_ITEM_EJECT)
+
+                                else -> {}
+                            }
+                        }
+                }
+            }
         }
     }
 }

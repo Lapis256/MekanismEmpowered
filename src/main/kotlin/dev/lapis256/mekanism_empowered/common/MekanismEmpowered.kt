@@ -12,7 +12,6 @@ import mekanism.common.lib.Version
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.Mod
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -23,7 +22,7 @@ class MekanismEmpowered(modContainer: ModContainer, modEventBus: IEventBus) {
         MekEmpConfig.registerConfigs(modContainer)
 
         MekEmpUpgrades.registerUpgradeInfo()
-        modEventBus.addListener { _: FMLCommonSetupEvent -> MekEmpUpgrades.registerSupportedUpgrades() }
+        MekEmpUpgrades.registerSupportedUpgrades()
 
         modEventBus.addListener(MekEmpConfig::onConfigLoad)
 

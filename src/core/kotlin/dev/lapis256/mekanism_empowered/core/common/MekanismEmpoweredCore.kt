@@ -3,9 +3,11 @@ package dev.lapis256.mekanism_empowered.core.common
 import dev.lapis256.mekanism_empowered.core.api.MekanismEmpoweredCoreAPI
 import dev.lapis256.mekanism_empowered.core.common.init.GlobalLootModifierSerializers
 import dev.lapis256.mekanism_empowered.core.common.init.LootConditionTypes
+import dev.lapis256.mekanism_empowered.core.common.util.AdditionalUpgradeUtil
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.Mod
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -20,5 +22,9 @@ class MekanismEmpoweredCore(modContainer: ModContainer, modEventBus: IEventBus) 
     init {
         GlobalLootModifierSerializers.REGISTRY.register(modEventBus)
         LootConditionTypes.REGISTRY.register(modEventBus)
+
+        modEventBus.addListener<FMLCommonSetupEvent> {
+            AdditionalUpgradeUtil.applyDeferredSupportedUpgrades()
+        }
     }
 }
