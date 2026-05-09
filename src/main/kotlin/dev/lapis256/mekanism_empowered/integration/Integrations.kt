@@ -13,6 +13,7 @@ internal object Integrations {
         EvoMekExt,
         MekElm,
         MekExt,
+        MekGen,
         MekMM,
     )
 

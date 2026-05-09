@@ -4,11 +4,11 @@ import dev.lapis256.mekanism_empowered.api.MekEmpSerializationConstants
 import dev.lapis256.mekanism_empowered.api.MekEmpUpgrade
 import dev.lapis256.mekanism_empowered.common.config.MekEmpGeneralConfig.AutoInsert
 import dev.lapis256.mekanism_empowered.core.common.util.WrappedCapabilityCache
-import dev.lapis256.mekanism_empowered.core.extension.canInput
 import dev.lapis256.mekanism_empowered.core.extension.fractionUpgrades
 import dev.lapis256.mekanism_empowered.core.extension.getInstalledOrDefault
 import dev.lapis256.mekanism_empowered.core.extension.isUpgradeInstalled
 import dev.lapis256.mekanism_empowered.extension.inserterConfig
+import dev.lapis256.mekanism_empowered.extension.isAutoInsertTarget
 import mekanism.api.Action
 import mekanism.api.AutomationType
 import mekanism.api.chemical.IChemicalHandler
@@ -88,7 +88,7 @@ class TileComponentInserter(private val tile: TileEntityConfigurableMachine) : I
 
     private fun insert(facing: Direction, type: TransmissionType, info: ConfigInfo) {
         for (dataType in info.supportedDataTypes) {
-            if (!dataType.canInput) {
+            if (!dataType.isAutoInsertTarget) {
                 continue
             }
             val slotInfo = info.getSlotInfo(dataType) ?: continue
