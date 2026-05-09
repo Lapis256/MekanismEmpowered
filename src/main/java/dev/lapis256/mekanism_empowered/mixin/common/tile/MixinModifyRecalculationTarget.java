@@ -57,6 +57,7 @@ class MixinModifyRecalculationTarget {
             "com.jerry.mekmm.common.tile.factory.TileEntityMoreMachineFactory",
             "com.jerry.meklm.common.tile.machine.TileEntityLargeChemicalInfuser",
             "com.jerry.meklm.common.tile.machine.TileEntityLargeElectrolyticSeparator",
+            "com.jerry.meklm.common.tile.machine.TileEntityLargePigmentMixer",
             "com.jerry.meklm.common.tile.machine.TileEntityLargeRotaryCondensentrator",
             "com.jerry.meklm.common.tile.machine.TileEntityLargeSolarNeutronActivator",
 
