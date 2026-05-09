@@ -29,11 +29,10 @@ import org.spongepowered.asm.mixin.injection.At;
         TileEntityRotaryCondensentrator.class,
     },
     targets = {
-        "com.jerry.mekaf.common.tile.factory.TileEntityCentrifugingFactory",
-        "com.jerry.mekaf.common.tile.factory.TileEntityChemicalInfusingFactory",
-        "com.jerry.mekaf.common.tile.factory.TileEntityWashingFactory",
+        "com.jerry.mekaf.common.tile.factory.TileEntityAdvancedFactoryBase",
         "com.jerry.meklm.common.tile.machine.TileEntityLargeChemicalInfuser",
         "com.jerry.meklm.common.tile.machine.TileEntityLargeElectrolyticSeparator",
+        "com.jerry.meklm.common.tile.machine.TileEntityLargePigmentMixer",
         "com.jerry.meklm.common.tile.machine.TileEntityLargeRotaryCondensentrator",
         "com.jerry.meklm.common.tile.machine.TileEntityLargeSolarNeutronActivator",
 
