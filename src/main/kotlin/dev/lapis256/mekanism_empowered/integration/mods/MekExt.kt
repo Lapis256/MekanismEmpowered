@@ -11,7 +11,6 @@ import dev.lapis256.mekanism_empowered.common.init.MekEmpUpgrades.SPEED_AND_ENER
 import dev.lapis256.mekanism_empowered.core.common.util.AdditionalUpgradeUtil.addDeferredSupported
 import dev.lapis256.mekanism_empowered.integration.ModIntegration
 import net.neoforged.bus.api.IEventBus
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
 
 
 internal object MekExt : ModIntegration {
@@ -52,8 +51,6 @@ internal object MekExt : ModIntegration {
             FactoryBlockResolverRegistry.register(extraMoreMachineFactoryResolver)
         }
 
-        modEventBus.addListener { _: FMLCommonSetupEvent ->
-            addDeferredSupported({ ExtraBlockTypes.ADVANCED_ELECTRIC_PUMP }, *SPEED_AND_ENERGY_UPGRADES)
-        }
+        addDeferredSupported({ ExtraBlockTypes.ADVANCED_ELECTRIC_PUMP }, *SPEED_AND_ENERGY_UPGRADES)
     }
 }

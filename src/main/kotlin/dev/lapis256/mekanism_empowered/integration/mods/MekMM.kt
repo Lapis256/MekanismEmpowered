@@ -22,7 +22,6 @@ import dev.lapis256.mekanism_empowered.core.common.util.AdditionalUpgradeUtil.ad
 import dev.lapis256.mekanism_empowered.core.common.util.TileUpgradeSupportFallbackRegistry
 import dev.lapis256.mekanism_empowered.integration.ModIntegration
 import net.neoforged.bus.api.IEventBus
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
 
 
 internal object MekMM : ModIntegration {
@@ -105,7 +104,7 @@ internal object MekMM : ModIntegration {
             (tile is INotNeedConfig || tile is TileEntityMoreMachineGenerator) && unsupported.contains(upgrade)
         }
 
-        modEventBus.addListener { _: FMLCommonSetupEvent -> registerSupportedUpgrades() }
+        registerSupportedUpgrades()
     }
 
     private fun registerSupportedUpgrades() {

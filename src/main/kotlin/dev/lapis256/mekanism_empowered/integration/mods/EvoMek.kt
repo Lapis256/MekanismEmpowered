@@ -1,10 +1,6 @@
 package dev.lapis256.mekanism_empowered.integration.mods
 
-import dev.lapis256.mekanism_empowered.common.factory.FactoryBlockResolver
-import dev.lapis256.mekanism_empowered.common.factory.FactoryBlockResolverRegistry
-import dev.lapis256.mekanism_empowered.common.factory.FactoryTypeKey
-import dev.lapis256.mekanism_empowered.common.factory.addDeferredSupportedForFactory
-import dev.lapis256.mekanism_empowered.common.factory.mekanismFactoryTypeSuppliers
+import dev.lapis256.mekanism_empowered.common.factory.*
 import dev.lapis256.mekanism_empowered.common.init.MekEmpUpgrades.ITEM_IN_OUT_MACHINE_UPGRADES
 import dev.lapis256.mekanism_empowered.core.common.util.AdditionalUpgradeUtil.addDeferredSupported
 import dev.lapis256.mekanism_empowered.integration.ModIntegration
@@ -12,7 +8,6 @@ import fr.iglee42.evolvedmekanism.registries.EMBlockTypes
 import fr.iglee42.evolvedmekanism.registries.EMFactoryType
 import fr.iglee42.evolvedmekanism.tiers.EMFactoryTier
 import net.neoforged.bus.api.IEventBus
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
 
 
 internal object EvoMek : ModIntegration {
@@ -34,7 +29,7 @@ internal object EvoMek : ModIntegration {
     override fun initCommon(modEventBus: IEventBus) {
         FactoryBlockResolverRegistry.register(factoryResolver)
 
-        modEventBus.addListener { _: FMLCommonSetupEvent -> registerSupportedUpgrades() }
+        registerSupportedUpgrades()
     }
 
     private fun registerSupportedUpgrades() {
