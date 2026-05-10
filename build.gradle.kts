@@ -2,9 +2,11 @@ import net.darkhax.curseforgegradle.TaskPublishCurseForge
 import net.darkhax.curseforgegradle.UploadArtifact
 import net.neoforged.moddevgradle.internal.RunGameTask
 import org.apache.tools.ant.filters.ReplaceTokens
+import org.gradle.api.attributes.Attribute
 import org.slf4j.event.Level
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.text.replace
 import net.darkhax.curseforgegradle.Constants as CFGConstants
 
 
@@ -37,7 +39,6 @@ val loadAddons = true
 
 
 base {
-    archivesName = "${rootProject.name}-$mcVersion"
     version = Constants.Mod.VERSION
     group = Constants.Mod.GROUP
 }
@@ -303,6 +304,33 @@ fun setupMetaDataTask(modId: String, modName: String, task: TaskProvider<Process
 fun setupJarTask(modName: String, modID: String, task: TaskProvider<Jar>, sourceSet: SourceSet, additionalSourceSets: List<SourceSet> = emptyList()) =
     setupJarTask(modName, modID, false, task, null, sourceSet, additionalSourceSets)
 
+fun reobfConfigurationName(configurationName: String) =
+    "reobf" + configurationName.replaceFirstChar { it.titlecase(Locale.ROOT) }
+
+val reobfFeatureAttribute: Attribute<String> =
+    Attribute.of("dev.lapis256.mekanism_empowered.reobf_feature", String::class.java)
+
+val reobfFeatureByConfigurationName = listOf(
+    mainApiSourceSet,
+    coreSourceSet,
+    coreApiSourceSet,
+).flatMap { sourceSet ->
+    val featureName = sourceSet.name.replace(".", "-")
+    listOf(
+        reobfConfigurationName(sourceSet.runtimeElementsConfigurationName) to featureName,
+        reobfConfigurationName(sourceSet.apiElementsConfigurationName) to featureName,
+    )
+}.toMap()
+
+configurations
+    .matching { it.name in reobfFeatureByConfigurationName }
+    .configureEach {
+        attributes.attribute(
+            reobfFeatureAttribute,
+            reobfFeatureByConfigurationName.getValue(name)
+        )
+    }
+
 fun setupJarTask(
     modName: String,
     id: String,
@@ -314,7 +342,7 @@ fun setupJarTask(
     includesOwnOutput: Boolean = false
 ) {
     val cleanModName = modName.replace(" ", "").replace(":", "")
-    val newName = "$cleanModName-$mcVersion-${project.version}.jar"
+    val newName = "$cleanModName-${project.version}.jar"
 
     task {
         manifest {
@@ -530,7 +558,6 @@ run {
         publications {
             register<MavenPublication>("maven") {
                 from(components["java"])
-                version = "$mcVersion-${project.version}"
 
                 setArtifacts(listOf(tasks["reobfJar"], tasks["sourcesJar"], tasks["reobfApiJar"], tasks["reobfCoreJar"], tasks["reobfCoreApiJar"]))
                 artifact(layout.buildDirectory.file("copyAccessTransformersPublications/0-accesstransformer.cfg")) {
