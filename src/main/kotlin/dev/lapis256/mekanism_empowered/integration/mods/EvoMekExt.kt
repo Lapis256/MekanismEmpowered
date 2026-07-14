@@ -40,8 +40,8 @@ internal object EvoMekExt : ModIntegration {
         FactoryBlockResolver(
             name = "$modId:mekanism_extras",
             types = mekanismFactoryTypeSuppliers + (EvoMek.FactoryTypeKeys.ALLOYING to { EMFactoryType.ALLOYING }),
-            tiers = { ExtraEnumUtils.ADVANCED_FACTORY_TIERS.asIterable() },
-            resolver = { tier, type -> EMExtrasBlockType.getAdvancedFactory(tier, type) },
+            tiers = { ExtraEnumUtils.EXTRA_FACTORY_TIERS.asIterable() },
+            resolver = { tier, type -> EMExtrasBlockType.getExtraFactory(tier, type) },
         )
     }
 

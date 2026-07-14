@@ -1,6 +1,6 @@
 package dev.lapis256.mekanism_empowered.integration.mods
 
-import com.jerry.mekanism_extras.common.registry.ExtraBlockType
+import com.jerry.mekanism_extras.common.registries.ExtraBlockTypes
 import com.jerry.mekanism_extras.common.util.ExtraEnumUtils
 import dev.lapis256.mekanism_empowered.common.factory.FactoryBlockResolver
 import dev.lapis256.mekanism_empowered.common.factory.FactoryBlockResolverRegistry
@@ -18,8 +18,8 @@ internal object MekExt : ModIntegration {
         FactoryBlockResolver(
             name = "$modId:mekanism",
             types = mekanismFactoryTypeSuppliers,
-            tiers = { ExtraEnumUtils.ADVANCED_FACTORY_TIERS.asIterable() },
-            resolver = { tier, type -> ExtraBlockType.getAdvancedFactory(tier, type) },
+            tiers = { ExtraEnumUtils.EXTRA_FACTORY_TIERS.asIterable() },
+            resolver = { tier, type -> ExtraBlockTypes.getAdvancedFactory(tier, type) },
         )
     }
 
@@ -49,6 +49,6 @@ internal object MekExt : ModIntegration {
 //            FactoryBlockResolverRegistry.register(extraMoreMachineFactoryResolver)
 //        }
 
-        addDeferredSupported({ ExtraBlockType.ADVANCED_ELECTRIC_PUMP }, *SPEED_AND_ENERGY_UPGRADES)
+        addDeferredSupported({ ExtraBlockTypes.ADVANCED_ELECTRIC_PUMP }, *SPEED_AND_ENERGY_UPGRADES)
     }
 }
